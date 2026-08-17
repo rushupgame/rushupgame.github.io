@@ -2,31 +2,37 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO METADATA -->
-    <title>Rush'Up! - Free multiplayer party & guessing game</title>
-    <meta name="description" content="Discover Rush'Up!, the ultimate 3-round guessing party game (description, single word, mime). Play locally with one phone or online with live video rooms!">
-    <meta name="keywords" content="3 round guessing game, card game timer, mime and description game, mobile party game, online party game video, bringing people together, free party game">
+    <!-- METADONNÉES SEO -->
+    <title id="seo-title">Rush'Up! - Free multiplayer party & guessing game online</title>
+    <meta id="seo-desc" name="description" content="Play Rush'Up!, the ultimate free 3-round card guessing party game (description, single word, mime). Play locally on one phone or online with live video rooms!">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <link rel="canonical" href="https://rushupgame.github.io/">
+    
+    <!-- CANONICAL ET HREFLANGS -->
+    <link id="seo-canonical" rel="canonical" href="https://rushupgame.github.io/">
+    <link rel="alternate" hreflang="en" href="https://rushupgame.github.io/">
+    <link rel="alternate" hreflang="fr" href="https://rushupgame.github.io/?lang=fr">
+    <link rel="alternate" hreflang="es" href="https://rushupgame.github.io/?lang=es">
+    <link rel="alternate" hreflang="x-default" href="https://rushupgame.github.io/">
+
+    <link rel="icon" type="image/x-icon" href="https://rushupgame.github.io/favicon.ico">
 
     <!-- OPEN GRAPH -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://rushupgame.github.io/">
-    <meta property="og:title" content="Rush'Up! - Think fast, speak faster!">
-    <meta property="og:description" content="The ultimate free party game for your game nights, locally or online via video. 100% free, no ads.">
+    <meta id="og-url" property="og:url" content="https://rushupgame.github.io/">
+    <meta id="og-title" property="og:title" content="Rush'Up! - Free multiplayer party & guessing game">
+    <meta id="og-desc" property="og:description" content="The ultimate free digital party game for your game nights. Play locally or online via live video rooms. 100% free, no ads.">
     <meta property="og:image" content="https://rushupgame.github.io/og-image.jpg">
-    <meta property="og:locale" content="en_US">
+    <meta id="og-locale" property="og:locale" content="en_US">
 
     <!-- TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://rushupgame.github.io/">
-    <meta name="twitter:title" content="Rush'Up! - Think fast, speak faster!">
-    <meta name="twitter:description" content="Bring your friends and family closer with over 25 exciting guessing categories.">
+    <meta id="tw-title" name="twitter:title" content="Rush'Up! - Free multiplayer party & guessing game">
+    <meta id="tw-desc" name="twitter:description" content="Bring your friends and family together with over 25 exciting guessing card categories. Free online party game!">
     <meta name="twitter:image" content="https://rushupgame.github.io/twitter-image.jpg">
 
-    <!-- PWA & MOBILE METADATA -->
+    <!-- PWA & MOBILE -->
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#ff4757">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -34,20 +40,17 @@
     <meta name="apple-mobile-web-app-title" content="Rush'Up!">
 
     <!-- SCHEMA.ORG (JSON-LD) -->
-    <script type="application/ld+json">
+    <script id="schema-json" type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "Rush'Up!",
       "operatingSystem": "Web, iOS, Android, Windows, macOS",
       "applicationCategory": "GameApplication",
+      "applicationSubCategory": "Party Game",
       "genre": "Party Game",
-      "offers": {
-        "@type": "Offer",
-        "price": "0.00",
-        "priceCurrency": "USD"
-      },
-      "description": "Rush'Up! is a web-based party and guessing game designed to bring people together every day, locally on one phone or remotely with live video.",
+      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "USD" },
+      "description": "Rush'Up! is a free web-based party and card guessing game designed to bring people together, locally on one phone or remotely with live video.",
       "inLanguage": ["en", "fr", "es"]
     }
     </script>
@@ -55,23 +58,19 @@
     <style>
     :root {
         --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
-        --card-bg: rgba(30, 41, 59, 0.75);
-        --card-border: rgba(255, 255, 255, 0.12);
+        --card-bg: rgba(30, 41, 59, 0.85);
+        --card-border: rgba(255, 255, 255, 0.18);
         --primary: #ff4757;
         --primary-hover: #ff6b81;
-        --secondary: #70a1ff;
-        --success: #10b981;
-        --warning: #f59e0b;
+        --secondary: #93c5fd;
+        --warning: #fbbf24;
         --text-main: #f8fafc;
-        --text-muted: #94a3b8;
+        --text-muted: #cbd5e1;
         --radius-lg: 24px;
         --radius-md: 16px;
-        --radius-sm: 12px;
     }
 
-    html {
-        scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     * {
         box-sizing: border-box;
@@ -92,7 +91,6 @@
         overflow-x: hidden;
     }
 
-    /* NAVIGATION BAR */
     header {
         position: sticky;
         top: 12px;
@@ -103,7 +101,7 @@
     }
 
     .nav-bar {
-        background: rgba(15, 23, 42, 0.88);
+        background: rgba(15, 23, 42, 0.92);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border: 1px solid var(--card-border);
@@ -113,57 +111,54 @@
         justify-content: space-between;
         align-items: center;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        position: relative;
+    }
+
+    @keyframes colorShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    @keyframes pulseGlow {
+        0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.5); }
+        70% { box-shadow: 0 0 0 14px rgba(255, 71, 87, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
     }
 
     .brand-logo {
         font-size: 1.5rem;
         font-weight: 900;
-        letter-spacing: -0.5px;
-        background: linear-gradient(135deg, #ff4757, #ffa502);
+        background: linear-gradient(270deg, #ff4757, #ffa502, #ff6b81, #eccc68);
+        background-size: 300% 300%;
+        animation: colorShift 6s ease infinite;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         text-decoration: none;
+        transition: transform 0.3s ease;
     }
 
-    .nav-right {
-        display: flex;
-        align-items: center;
-        gap: 12px;
+    .brand-logo:hover {
+        transform: scale(1.05);
     }
 
-    .nav-links {
-        display: flex;
-        gap: 8px;
-        list-style: none;
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-links { display: flex; gap: 8px; list-style: none; }
+    .nav-links a { 
+        color: var(--text-main); 
+        text-decoration: none; 
+        font-size: 0.9rem; 
+        font-weight: 700; 
+        padding: 8px 14px; 
+        border-radius: 20px; 
+        transition: background 0.3s ease, transform 0.2s ease;
     }
-
-    .nav-links a {
-        color: var(--text-main);
-        text-decoration: none;
-        font-size: 0.9rem;
-        font-weight: 700;
-        padding: 8px 14px;
-        border-radius: 20px;
-        transition: all 0.25s ease;
-        white-space: nowrap;
-    }
-
     .nav-links a:hover {
-        background: rgba(255, 71, 87, 0.2);
-        color: var(--primary);
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
     }
+    .nav-links a:focus-visible, .btn:focus-visible, select:focus-visible { outline: 2px solid var(--warning); outline-offset: 2px; }
 
-    /* BURGER MENU MOBILE */
-    .mobile-burger-btn {
-        display: none;
-        background: transparent;
-        border: none;
-        color: var(--text-main);
-        font-size: 1.5rem;
-        cursor: pointer;
-        padding: 4px;
-    }
+    .mobile-burger-btn { display: none; background: transparent; border: none; color: var(--text-main); font-size: 1.5rem; cursor: pointer; padding: 4px; }
 
     .lang-select {
         background: rgba(15, 23, 42, 0.8);
@@ -174,548 +169,382 @@
         font-size: 0.85rem;
         font-weight: 700;
         cursor: pointer;
-        outline: none;
-        transition: border-color 0.2s ease;
+        transition: border-color 0.3s ease;
     }
-
     .lang-select:hover {
         border-color: var(--primary);
     }
 
-    /* MAIN CONTAINER */
-    main {
-        width: 100%;
-        max-width: 960px;
-        display: flex;
-        flex-direction: column;
-        gap: 48px;
-    }
+    main { width: 100%; max-width: 960px; display: flex; flex-direction: column; gap: 48px; }
 
     .section-card {
         background: var(--card-bg);
         backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
         border: 1px solid var(--card-border);
         border-radius: var(--radius-lg);
         padding: 40px 32px;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        scroll-margin-top: 100px;
+        transition: transform 0.3s ease, border-color 0.3s ease;
     }
 
-    /* HERO CONTENT */
-    .hero-content {
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
+    .hero-content { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    
+    .hero-title { 
+        font-size: 2.5rem; 
+        font-weight: 900; 
+        background: linear-gradient(270deg, #ff4757, #ffa502, #ff6b81, #70a1ff); 
+        background-size: 300% 300%;
+        animation: colorShift 8s ease infinite;
+        -webkit-background-clip: text; 
+        -webkit-text-fill-color: transparent; 
     }
 
-    .hero-title {
-        font-size: 2.8rem;
-        font-weight: 900;
-        line-height: 1.15;
-        letter-spacing: -0.5px;
-        background: linear-gradient(135deg, #ff4757 0%, #ffa502 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .slogan {
-        background: rgba(112, 161, 255, 0.15);
-        color: var(--secondary);
-        border: 1px solid rgba(112, 161, 255, 0.3);
-        padding: 8px 22px;
-        border-radius: 20px;
+    .slogan { 
+        background: rgba(112, 161, 255, 0.15); 
+        color: var(--secondary); 
+        border: 1px solid rgba(112, 161, 255, 0.3); 
+        padding: 8px 22px; 
+        border-radius: 20px; 
         font-weight: 700;
-        font-size: 1rem;
-        font-style: italic;
+        transition: transform 0.3s ease, background 0.3s ease;
+    }
+    .slogan:hover {
+        transform: scale(1.05);
+        background: rgba(112, 161, 255, 0.25);
     }
 
-    .hero-description {
-        color: var(--text-main);
-        font-size: 1.05rem;
-        max-width: 720px;
-        line-height: 1.6;
-    }
+    .hero-description { color: var(--text-main); font-size: 1.05rem; max-width: 720px; line-height: 1.6; }
 
-    /* ROUNDS INTRO GRID */
-    .rounds-intro-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 20px;
-        width: 100%;
-        margin-top: 8px;
-        text-align: left;
-    }
-
-    .round-card {
-        background: rgba(15, 23, 42, 0.65);
-        border: 1px solid var(--card-border);
-        border-radius: var(--radius-md);
+    .rounds-intro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; width: 100%; margin-top: 8px; text-align: left; }
+    
+    .round-card { 
+        background: rgba(15, 23, 42, 0.65); 
+        border: 1px solid var(--card-border); 
+        border-radius: var(--radius-md); 
         padding: 24px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        transition: transform 0.2s ease, border-color 0.2s ease;
+        transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
-
     .round-card:hover {
-        transform: translateY(-4px);
-        border-color: rgba(255, 71, 87, 0.4);
+        transform: translateY(-5px);
+        border-color: var(--warning);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     }
+    .round-card h3 { color: var(--warning); font-size: 1.15rem; font-weight: 800; }
 
-    .round-card h3 {
-        color: var(--warning);
-        font-size: 1.15rem;
-        font-weight: 800;
-    }
-
-    /* MODE SECTION (BOUTON + EXPLICATION EN BLOC INDIVIDUEL) */
-    .mode-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-        width: 100%;
-        margin-top: 8px;
-    }
-
-    .btn {
-        background: var(--primary);
-        color: white;
-        border: none;
-        padding: 18px 28px;
-        font-size: 1.1rem;
-        font-weight: 800;
-        border-radius: var(--radius-md);
-        cursor: pointer;
-        transition: all 0.25s ease;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        text-decoration: none;
-        box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
-        width: 100%;
+    .mode-section { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; margin-top: 8px; }
+    
+    .btn { 
+        background: var(--primary); 
+        color: #ffffff; 
+        padding: 18px 28px; 
+        font-size: 1.1rem; 
+        font-weight: 800; 
+        border-radius: var(--radius-md); 
+        text-decoration: none; 
+        display: inline-flex; 
+        justify-content: center; 
+        width: 100%; 
         max-width: 420px;
+        transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+        animation: pulseGlow 2.5s infinite;
     }
-
-    .btn-secondary-action {
-        background: rgba(112, 161, 255, 0.2);
-        color: #f8fafc;
-        border: 1px solid rgba(112, 161, 255, 0.5);
-        box-shadow: 0 6px 20px rgba(112, 161, 255, 0.25);
-    }
-
     .btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(255, 71, 87, 0.6);
+        background-color: var(--primary-hover);
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 10px 25px rgba(255, 71, 87, 0.4);
     }
 
+    .btn-secondary-action { 
+        background: rgba(112, 161, 255, 0.2); 
+        color: #ffffff; 
+        border: 1px solid rgba(112, 161, 255, 0.5); 
+        animation: none;
+    }
     .btn-secondary-action:hover {
         background: rgba(112, 161, 255, 0.35);
-        box-shadow: 0 8px 25px rgba(112, 161, 255, 0.4);
+        border-color: var(--secondary);
+        box-shadow: 0 10px 25px rgba(112, 161, 255, 0.3);
     }
 
-    .mode-card-full {
-        background: rgba(15, 23, 42, 0.65);
-        border: 1px solid var(--card-border);
-        border-radius: var(--radius-md);
-        padding: 20px;
-        width: 100%;
-        max-width: 720px;
+    .mode-card-full { 
+        background: rgba(15, 23, 42, 0.65); 
+        border: 1px solid var(--card-border); 
+        border-radius: var(--radius-md); 
+        padding: 20px; 
+        width: 100%; 
+        max-width: 720px; 
         text-align: left;
+        transition: border-color 0.3s ease;
     }
-
-    .mode-card-full h3 {
-        color: var(--secondary);
-        font-size: 1.15rem;
-        font-weight: 800;
-        margin-bottom: 6px;
+    .mode-card-full:hover {
+        border-color: var(--secondary);
     }
+    .mode-card-full h3 { color: var(--secondary); font-size: 1.15rem; font-weight: 800; }
 
-    /* HEADINGS & TEXT */
-    h2 {
-        color: var(--warning);
-        font-size: 1.8rem;
-        font-weight: 800;
-        margin-bottom: 16px;
-    }
+    h2 { color: var(--warning); font-size: 1.8rem; font-weight: 800; margin-bottom: 16px; }
+    h3.footer-heading { font-size: 1.05rem; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+    p { color: var(--text-muted); font-size: 1.02rem; line-height: 1.7; margin-bottom: 14px; }
 
-    p {
-        color: var(--text-muted);
-        font-size: 1.02rem;
-        line-height: 1.7;
-        margin-bottom: 14px;
-    }
-
-    /* HARMONIOUS 2x2 GRID DESIGN */
-    .grid-2x2 {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-        margin-top: 20px;
-    }
-
-    .grid-card {
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid var(--card-border);
-        border-radius: var(--radius-md);
+    .grid-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px; }
+    .grid-card { 
+        background: rgba(15, 23, 42, 0.6); 
+        border: 1px solid var(--card-border); 
+        border-radius: var(--radius-md); 
         padding: 24px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
+        transition: transform 0.3s ease, border-color 0.3s ease;
     }
-
-    .grid-card h3 {
-        color: var(--secondary);
-        font-size: 1.2rem;
-        font-weight: 700;
+    .grid-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--secondary);
     }
+    .grid-card h3 { color: var(--secondary); font-size: 1.2rem; }
 
-    /* SEO CONCEPT BLOCK */
-    .seo-concept-block {
-        background: rgba(15, 23, 42, 0.5);
-        border-left: 4px solid var(--primary);
-        padding: 20px;
-        border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    .seo-concept-block { 
+        background: rgba(15, 23, 42, 0.5); 
+        border-left: 4px solid var(--primary); 
+        padding: 20px; 
+        border-radius: 0 var(--radius-md) var(--radius-md) 0; 
         margin-top: 24px;
+        transition: border-color 0.3s ease;
     }
 
-    .seo-concept-block h3 {
-        color: var(--text-main);
-        font-size: 1.15rem;
-        margin-bottom: 8px;
-    }
+    footer { width: 100%; max-width: 960px; background: rgba(15, 23, 42, 0.85); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 40px 32px 24px; margin-top: 60px; }
+    .footer-top { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }
+    .footer-col { display: flex; flex-direction: column; gap: 12px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s ease, padding-left 0.2s ease; }
+    .footer-col a:hover { color: var(--text-main); text-decoration: underline; padding-left: 4px; }
+    .footer-bottom { border-top: 1px solid var(--card-border); padding-top: 20px; display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); margin-top: 20px; }
 
-    /* FOOTER */
-    footer {
-        width: 100%;
-        max-width: 960px;
-        background: rgba(15, 23, 42, 0.85);
-        backdrop-filter: blur(16px);
-        border: 1px solid var(--card-border);
-        border-radius: var(--radius-lg);
-        padding: 40px 32px 24px;
-        margin-top: 60px;
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-    }
-
-    .footer-top {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 32px;
-    }
-
-    .footer-col {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .footer-col h4 {
-        color: var(--text-main);
-        font-size: 1.1rem;
-        font-weight: 800;
-    }
-
-    .footer-col ul {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .footer-col a {
-        color: var(--text-muted);
-        text-decoration: none;
-        font-size: 0.9rem;
-        transition: color 0.2s ease;
-    }
-
-    .footer-col a:hover {
-        color: var(--primary);
-    }
-
-    .footer-bottom {
-        border-top: 1px solid var(--card-border);
-        padding-top: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 12px;
-        font-size: 0.85rem;
-        color: var(--text-muted);
-    }
-
-    .footer-bottom a {
-        color: var(--secondary);
-        text-decoration: none;
-    }
-
-    /* RESPONSIVE DESIGN & MOBILE MENU */
     @media (max-width: 768px) {
-        body { padding: 8px; }
-        .hero-title { font-size: 2.2rem; }
-        .section-card { padding: 28px 20px; }
-        
+        .hero-title { font-size: 1.9rem; }
         .mobile-burger-btn { display: block; }
-        
-        .nav-links {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-md);
-            margin-top: 12px;
-            padding: 16px;
-            flex-direction: column;
-            gap: 10px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-        }
-
+        .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(15, 23, 42, 0.95); padding: 16px; flex-direction: column; }
         .nav-links.open { display: flex; }
-        .nav-links a { width: 100%; text-align: center; }
-
         .grid-2x2 { grid-template-columns: 1fr; }
-        .footer-bottom { flex-direction: column; text-align: center; }
-        .btn { width: 100%; max-width: 100%; }
+        .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
     }
     </style>
 </head>
 <body>
 
-    <!-- NAVIGATION BAR -->
     <header>
-        <nav class="nav-bar">
-            <a href="https://rushupgame.github.io/localgame/" class="brand-logo">Rush'Up!</a>
+        <nav class="nav-bar" aria-label="Main Navigation">
+            <a href="https://rushupgame.github.io/" class="brand-logo" aria-label="Rush'Up! Home">Rush'Up!</a>
             <div class="nav-right">
-                <ul class="nav-links" id="nav-menu">
-                    <li><a href="https://rushupgame.github.io/localgame/" id="nav-play">🎮 Play local</a></li>
-                    <li><a href="https://rushupgame.github.io/onlinegame/" id="nav-online">🎥 Play online</a></li>
+                <ul class="nav-links" id="nav-menu" aria-hidden="false">
+                    <li><a href="https://rushupgame.github.io/localgame/" id="nav-play">🎮 Play local game</a></li>
+                    <li><a href="https://rushupgame.github.io/onlinegame/" id="nav-online">🎥 Play online room</a></li>
                     <li><a href="#features" id="nav-features">⚙️ Features</a></li>
                     <li><a href="#mission" id="nav-mission">🎯 Mission</a></li>
                     <li><a href="#story" id="nav-story">📖 Story</a></li>
                 </ul>
-                <select class="lang-select" id="lang-select" onchange="changeLanguage(this.value)">
-                    <option value="en" selected>🇬🇧 EN</option>
+                
+                <select class="lang-select" id="lang-select" aria-label="Select Language" onchange="switchLang(this.value)">
+                    <option value="en">🇬🇧 EN</option>
                     <option value="fr">🇫🇷 FR</option>
                     <option value="es">🇪🇸 ES</option>
                 </select>
-                <button class="mobile-burger-btn" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+                
+                <button class="mobile-burger-btn" id="burger-btn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu" onclick="toggleMobileMenu(this)">☰</button>
             </div>
         </nav>
     </header>
 
-    <!-- MAIN CONTENT -->
     <main>
-
-        <!-- SECTION 1: HERO, ROUNDS INTRO, LOCAL MODE, ONLINE MODE (#play) -->
-        <section id="play" class="section-card hero-content">
-            <h1 class="hero-title">Rush'Up!</h1>
+        <section id="play" class="section-card hero-content" aria-labelledby="h1-title">
+            <h1 class="hero-title" id="h1-title">Rush'Up! - Free multiplayer party & guessing game</h1>
             <p class="slogan">Think fast, speak faster!</p>
             
             <p class="hero-description" id="hero-desc">
-                Play around the same table or across the world! Choose your preferred way to play and guess the same deck of cards across <strong>3 intense rounds</strong>:
+                Play around the same table or across the world! Choose your preferred game mode and guess the same deck of cards across <strong>3 intense rounds</strong>:
             </p>
 
-            <!-- 1. LES 3 MANCHES -->
+            <h2 style="font-size: 1.4rem; color: var(--text-main); margin-top: 10px;" id="rounds-section-title">The 3 game rounds</h2>
+
             <div class="rounds-intro-grid">
                 <article class="round-card">
                     <h3 id="r1-title">💬 Round 1: free description</h3>
                     <p id="r1-desc">Describe the card on screen speaking freely without saying the word itself. Teammates can guess as many times as they want before the timer runs out!</p>
                 </article>
                 <article class="round-card">
-                    <h3 id="r2-title">☝️ Round 2: single word</h3>
+                    <h3 id="r2-title">☝️ Round 2: single word clue</h3>
                     <p id="r2-desc">The exact same deck returns! Give <strong>only one clue word</strong> per card. Be careful, your team gets only one guess per turn!</p>
                 </article>
                 <article class="round-card">
-                    <h3 id="r3-title">🎭 Round 3: mime & sounds</h3>
+                    <h3 id="r3-title">🎭 Round 3: mime & acting</h3>
                     <p id="r3-desc">Absolute silence! Use body language, acting, mimes, and sound effects to help your team guess the final cards in the deck.</p>
                 </article>
             </div>
 
-            <!-- 2. BOUTON LOCAL GAME ET EXPLICATION -->
             <div class="mode-section">
                 <a href="https://rushupgame.github.io/localgame/" class="btn" id="cta-hero">
-                    ⚡ Start a local game (100% free)
+                    ⚡ Play local game (100% free)
                 </a>
                 <article class="mode-card-full">
-                    <h3 id="mode-local-title">📱 Local game (in person)</h3>
+                    <h3 id="mode-local-title">📱 Local party game (in person)</h3>
                     <p id="mode-local-desc"><strong>One single phone for the whole room.</strong> Pass the smartphone around the table as your turn comes. Ideal for game nights, family dinners, or coffee breaks!</p>
                 </article>
             </div>
 
-            <!-- 3. BOUTON ONLINE GAME ET EXPLICATION -->
             <div class="mode-section">
                 <a href="https://rushupgame.github.io/onlinegame/" class="btn btn-secondary-action" id="cta-online">
-                    🎥 Play online (live video)
+                    🎥 Play online video room
                 </a>
                 <article class="mode-card-full">
-                    <h3 id="mode-online-title">🎥 Online video room (remote)</h3>
-                    <p id="mode-online-desc"><strong>Play remotely with live video.</strong> Create a private room, share the code, see everyone’s camera in real-time, and let the app handle synced timers and cards!</p>
+                    <h3 id="mode-online-title">🎥 Online video room (remote play)</h3>
+                    <p id="mode-online-desc"><strong>Play remotely with live video.</strong> Create a private room, share the code, see everyone’s camera in real-time, and let the app handle synced timers and card decks!</p>
                 </article>
             </div>
         </section>
 
-        <!-- SECTION 2: FEATURES & HARMONIOUS 2x2 GRID (#features) -->
-        <section id="features" class="section-card">
+        <section id="features" class="section-card" aria-labelledby="features-title">
             <h2 id="features-title">⚙️ The ultimate digital party game</h2>
             <p id="features-sub">
-                Looking for the perfect game to spice up a birthday party, family dinner, or game night with friends? Rush'Up! brings all the excitement of classic card guessing games straight to your mobile screen.
+                Looking for the perfect card guessing game to spice up a birthday party, family dinner, or game night with friends? Rush'Up! brings all the excitement of classic party guessing games straight to your browser.
             </p>
             
             <div class="grid-2x2">
-                <div class="grid-card">
-                    <h3 id="f1-title">📱 PWA installable app</h3>
+                <article class="grid-card">
+                    <h3 id="f1-title">📱 Progressive Web App (PWA)</h3>
                     <p id="f1-desc">Add the app directly to your iOS or Android home screen with one tap. Enjoy smooth, instant gameplay—even completely offline.</p>
-                </div>
-                <div class="grid-card">
-                    <h3 id="f2-title">📚 Over 25 themes</h3>
-                    <p id="f2-desc">Content for everyone: Pokémon, Marvel, Disney, Cinema, Anime, TV shows, Gaming, History, Geography, and Kids packs for ages 4+.</p>
-                </div>
-                <div class="grid-card">
-                    <h3 id="f3-title">🏆 Expert mode & trophies</h3>
-                    <p id="f3-desc">Track individual player stats, count total points, generate leaderboards, and award fun trophies at the end of the game.</p>
-                </div>
-                <div class="grid-card">
+                </article>
+                <article class="grid-card">
+                    <h3 id="f2-title">📚 Over 25 fun themes</h3>
+                    <p id="f2-desc">Content for everyone: pop culture, movies, anime, TV shows, gaming, history, geography, and kids packs for ages 4+.</p>
+                </article>
+                <article class="grid-card">
+                    <h3 id="f3-title">🏆 Score tracker & leaderboards</h3>
+                    <p id="f3-desc">Track individual player stats, count total points, generate automatic leaderboards, and award fun trophies at the end of the game.</p>
+                </article>
+                <article class="grid-card">
                     <h3 id="f4-title">🔒 100% free & no ads</h3>
-                    <p id="f4-desc">Enjoy your fun moments with zero ad interruptions, no hidden purchases, and complete respect for your data privacy.</p>
-                </div>
+                    <p id="f4-desc">Enjoy your fun party moments with zero ad interruptions, no hidden microtransactions, and complete respect for your data privacy.</p>
+                </article>
             </div>
 
-            <!-- SEO CONCEPT BLOCK -->
-            <div class="seo-concept-block">
-                <h3 id="seo-concept-title">💡 The classic 3-round card guessing experience, finally on mobile</h3>
+            <article class="seo-concept-block">
+                <h3 id="seo-concept-title">💡 The iconic 3-round card guessing experience, now on mobile</h3>
                 <p id="seo-concept-desc">
-                    If you love memory and speed-based party card games involving mimes, single clues, and a ticking clock, Rush'Up! captures the iconic mechanics of the best party games. Forget carrying heavy boxes, shuffling physical cards, or hunting for a missing hour-glass timer: everything is handled automatically on a single smartphone!
+                    If you love speed-based party games involving mimes, single clues, and a ticking clock, Rush'Up! captures the best mechanics of classic party card games. Forget carrying heavy game boxes, shuffling physical card decks, or hunting for a missing hourglass timer: everything is handled automatically on a single smartphone!
                 </p>
-            </div>
+            </article>
 
             <div style="display:flex; flex-wrap:wrap; gap:16px; justify-content:center; margin-top:28px;">
                 <a href="https://rushupgame.github.io/localgame/" class="btn" id="cta-features">
-                    🎮 Play local now
+                    🎮 Play local game now
                 </a>
                 <a href="https://rushupgame.github.io/onlinegame/" class="btn btn-secondary-action" id="cta-features-online">
-                    🎥 Play online room
+                    🎥 Join online video room
                 </a>
             </div>
         </section>
 
-        <!-- SECTION 3: MISSION (#mission) -->
-        <section id="mission" class="section-card">
+        <section id="mission" class="section-card" aria-labelledby="mission-title">
             <h2 id="mission-title">🎯 Our mission: bringing people together every day</h2>
             <p id="mission-p1">
-                In an era where technology often isolates individuals behind their personal screens, our fundamental mission with <strong>Rush'Up!</strong> is to do the exact opposite: <strong>use digital innovation to create real-world human connections</strong>.
+                In an era where technology often isolates individuals behind personal screens, our fundamental mission with <strong>Rush'Up!</strong> is to do the exact opposite: <strong>use digital innovation to create real-world human connections</strong>.
             </p>
             <p id="mission-p2">
-                We strongly believe that shared party games are the most powerful tool for breaking the ice, sparking laughter, and building lasting memories. Whether it's a family gathering, a birthday, a night out with friends, a coffee break with colleagues, or a road trip, Rush'Up! turns any moment into a joyful experience for all ages.
+                We strongly believe that shared party card games are the most powerful tool for breaking the ice, sparking laughter, and building lasting memories.
             </p>
         </section>
 
-        <!-- SECTION 4: STORY (#story) -->
-        <section id="story" class="section-card">
-            <h2 id="story-title">📖 The story of Rush'Up!</h2>
+        <section id="story" class="section-card" aria-labelledby="story-title">
+            <h2 id="story-title">📖 The story behind Rush'Up!</h2>
             <p id="story-p1">
-                The <strong>Rush'Up!</strong> project was born out of a simple frustration: wanting to play a great party guessing game with friends, but being stopped by missing equipment (bulky boxes to carry, broken timers, missing or worn-out cards).
+                The <strong>Rush'Up!</strong> project was born out of a simple frustration: wanting to play a great party guessing game with friends, but being stopped by missing physical equipment.
             </p>
             <p id="story-p2">
-                Created independently, this free web platform was designed to deliver a fast, seamless, and universal party experience. Thanks to community feedback, the game is regularly updated with fresh theme packs and powerful new features.
+                Created independently, this free web game was designed to deliver a fast, seamless, and universal party experience.
             </p>
         </section>
-
     </main>
 
-    <!-- FOOTER -->
     <footer>
         <div class="footer-top">
             <div class="footer-col">
-                <h4>Rush'Up! Game</h4>
-                <p style="font-size: 0.88rem;" id="footer-desc">The ultimate digital party and card game. Bringing people together through fun and laughter.</p>
+                <h3 class="footer-heading">Rush'Up! Game</h3>
+                <p style="font-size: 0.88rem;" id="footer-desc">The ultimate digital party and card guessing game. Bringing friends and families together through fun and laughter.</p>
             </div>
             <div class="footer-col">
-                <h4 id="footer-nav-title">Navigation</h4>
+                <h3 class="footer-heading" id="footer-nav-title">Navigation</h3>
                 <ul>
                     <li><a href="https://rushupgame.github.io/localgame/" id="footer-link-play">Start local game</a></li>
-                    <li><a href="https://rushupgame.github.io/onlinegame/" id="footer-link-online">Start online room</a></li>
+                    <li><a href="https://rushupgame.github.io/onlinegame/" id="footer-link-online">Start online video room</a></li>
                     <li><a href="#features" id="footer-link-features">Features & themes</a></li>
                     <li><a href="#mission" id="footer-link-mission">Our mission</a></li>
                     <li><a href="#story" id="footer-link-story">Our story</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4 id="footer-links-title">Editions & links</h4>
+                <h3 class="footer-heading" id="footer-links-title">Editions & links</h3>
                 <ul>
                     <li><a href="https://rushupgame.github.io/localgame/">Local game app</a></li>
                     <li><a href="https://rushupgame.github.io/onlinegame/">Live video room</a></li>
-                    <li><a href="https://www.paypal.com/donate?hosted_button_id=2NGJSLT76DX2G" target="_blank" rel="noopener" id="footer-link-donate">Support the project</a></li>
+                    <li><a href="https://www.paypal.com/donate?hosted_button_id=2NGJSLT76DX2G" target="_blank" rel="noopener noreferrer" id="footer-link-donate">Support the project</a></li>
                 </ul>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <div>
-                © 2026 <strong>Rush'Up!</strong> Ultimate edition.
-            </div>
-            <div>
-                Hosted eco-friendly on <a href="https://pages.github.com/" target="_blank" rel="nofollow">GitHub Pages</a> | Terms & legal notice included in app.
-            </div>
+            <div>© 2026 <strong>Rush'Up!</strong> Ultimate edition.</div>
+            <div>Hosted eco-friendly on <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a></div>
         </div>
     </footer>
 
-    <!-- DYNAMIC MULTILINGUAL TRANSLATION SCRIPT -->
     <script>
     const translations = {
         en: {
-            navPlay: "🎮 Play local", navOnline: "🎥 Play online", navFeatures: "⚙️ Features", navMission: "🎯 Mission", navStory: "📖 Story",
-            heroDesc: "Play around the same table or across the world! Choose your preferred way to play and guess the same deck of cards across <strong>3 intense rounds</strong>:",
-            modeLocalTitle: "📱 Local game (in person)", modeLocalDesc: "<strong>One single phone for the whole room.</strong> Pass the smartphone around the table as your turn comes. Ideal for game nights, family dinners, or coffee breaks!",
-            modeOnlineTitle: "🎥 Online video room (remote)", modeOnlineDesc: "<strong>Play remotely with live video.</strong> Create a private room, share the code, see everyone’s camera in real-time, and let the app handle synced timers and cards!",
+            title: "Rush'Up! - Free multiplayer party & guessing game online",
+            desc: "Play Rush'Up!, the ultimate free 3-round card guessing party game (description, single word, mime). Play locally on one phone or online with live video rooms!",
+            h1: "Rush'Up! - Free multiplayer party & guessing game",
+            navPlay: "🎮 Play local game", navOnline: "🎥 Play online room", navFeatures: "⚙️ Features", navMission: "🎯 Mission", navStory: "📖 Story",
+            heroDesc: "Play around the same table or across the world! Choose your preferred game mode and guess the same deck of cards across <strong>3 intense rounds</strong>:",
+            roundsTitle: "The 3 game rounds",
+            modeLocalTitle: "📱 Local party game (in person)", modeLocalDesc: "<strong>One single phone for the whole room.</strong> Pass the smartphone around the table as your turn comes. Ideal for game nights, family dinners, or coffee breaks!",
+            modeOnlineTitle: "🎥 Online video room (remote play)", modeOnlineDesc: "<strong>Play remotely with live video.</strong> Create a private room, share the code, see everyone’s camera in real-time, and let the app handle synced timers and card decks!",
             r1Title: "💬 Round 1: free description", r1Desc: "Describe the card on screen speaking freely without saying the word itself. Teammates can guess as many times as they want before the timer runs out!",
-            r2Title: "☝️ Round 2: single word", r2Desc: "The exact same deck returns! Give <strong>only one clue word</strong> per card. Be careful, your team gets only one guess per turn!",
-            r3Title: "🎭 Round 3: mime & sounds", r3Desc: "Absolute silence! Use body language, acting, mimes, and sound effects to help your team guess the final cards in the deck.",
-            ctaHero: "⚡ Start a local game (100% free)", ctaOnline: "🎥 Play online (live video)",
-            featuresTitle: "⚙️ The ultimate digital party game", featuresSub: "Looking for the perfect game to spice up a birthday party, family dinner, or game night with friends? Rush'Up! brings all the excitement of classic card guessing games straight to your mobile screen.",
-            f1Title: "📱 PWA installable app", f1Desc: "Add the app directly to your iOS or Android home screen with one tap. Enjoy smooth, instant gameplay—even completely offline.",
-            f2Title: "📚 Over 25 themes", f2Desc: "Content for everyone: Pokémon, Marvel, Disney, Cinema, Anime, TV shows, Gaming, History, Geography, and Kids packs for ages 4+.",
-            f3Title: "🏆 Expert mode & trophies", f3Desc: "Track individual player stats, count total points, generate leaderboards, and award fun trophies at the end of the game.",
-            f4Title: "🔒 100% free & no ads", f4Desc: "Enjoy your fun moments with zero ad interruptions, no hidden purchases, and complete respect for your data privacy.",
-            seoTitle: "💡 The classic 3-round card guessing experience, finally on mobile", seoDesc: "If you love memory and speed-based party card games involving mimes, single clues, and a ticking clock, Rush'Up! captures the iconic mechanics of the best party games. Forget carrying heavy boxes, shuffling physical cards, or hunting for a missing hour-glass timer: everything is handled automatically on a single smartphone!",
-            ctaFeatures: "🎮 Play local now", ctaFeaturesOnline: "🎥 Play online room",
+            r2Title: "☝️ Round 2: single word clue", r2Desc: "The exact same deck returns! Give <strong>only one clue word</strong> per card. Be careful, your team gets only one guess per turn!",
+            r3Title: "🎭 Round 3: mime & acting", r3Desc: "Absolute silence! Use body language, acting, mimes, and sound effects to help your team guess the final cards in the deck.",
+            ctaHero: "⚡ Play local game (100% free)", ctaOnline: "🎥 Play online video room",
+            featuresTitle: "⚙️ The ultimate digital party game", featuresSub: "Looking for the perfect card guessing game to spice up a birthday party, family dinner, or game night with friends? Rush'Up! brings all the excitement of classic party guessing games straight to your browser.",
+            f1Title: "📱 Progressive Web App (PWA)", f1Desc: "Add the app directly to your iOS or Android home screen with one tap. Enjoy smooth, instant gameplay—even completely offline.",
+            f2Title: "📚 Over 25 fun themes", f2Desc: "Content for everyone: pop culture, movies, anime, TV shows, gaming, history, geography, and kids packs for ages 4+.",
+            f3Title: "🏆 Score tracker & leaderboards", f3Desc: "Track individual player stats, count total points, generate automatic leaderboards, and award fun trophies at the end of the game.",
+            f4Title: "🔒 100% free & no ads", f4Desc: "Enjoy your fun party moments with zero ad interruptions, no hidden microtransactions, and complete respect for your data privacy.",
+            seoTitle: "💡 The iconic 3-round card guessing experience, now on mobile", seoDesc: "If you love speed-based party games involving mimes, single clues, and a ticking clock, Rush'Up! captures the best mechanics of classic party card games. Forget carrying heavy game boxes, shuffling physical card decks, or hunting for a missing hourglass timer: everything is handled automatically on a single smartphone!",
+            ctaFeatures: "🎮 Play local game now", ctaFeaturesOnline: "🎥 Join online video room",
             missionTitle: "🎯 Our mission: bringing people together every day",
-            missionP1: "In an era where technology often isolates individuals behind their personal screens, our fundamental mission with <strong>Rush'Up!</strong> is to do the exact opposite: <strong>use digital innovation to create real-world human connections</strong>.",
-            missionP2: "We strongly believe that shared party games are the most powerful tool for breaking the ice, sparking laughter, and building lasting memories. Whether it's a family gathering, a birthday, a night out with friends, a coffee break with colleagues, or a road trip, Rush'Up! turns any moment into a joyful experience for all ages.",
-            storyTitle: "📖 The story of Rush'Up!",
-            storyP1: "The <strong>Rush'Up!</strong> project was born out of a simple frustration: wanting to play a great party guessing game with friends, but being stopped by missing equipment (bulky boxes to carry, broken timers, missing or worn-out cards).",
-            storyP2: "Created independently, this free web platform was designed to deliver a fast, seamless, and universal party experience. Thanks to community feedback, the game is regularly updated with fresh theme packs and powerful new features.",
-            footerDesc: "The ultimate digital party and card game. Bringing people together through fun and laughter.",
-            footerNavTitle: "Navigation", footerLinkPlay: "Start local game", footerLinkOnline: "Start online room", footerLinkFeatures: "Features & themes", footerLinkMission: "Our mission", footerLinkStory: "Our story",
+            missionP1: "In an era where technology often isolates individuals behind personal screens, our fundamental mission with <strong>Rush'Up!</strong> is to do the exact opposite: <strong>use digital innovation to create real-world human connections</strong>.",
+            missionP2: "We strongly believe that shared party card games are the most powerful tool for breaking the ice, sparking laughter, and building lasting memories.",
+            storyTitle: "📖 The story behind Rush'Up!",
+            storyP1: "The <strong>Rush'Up!</strong> project was born out of a simple frustration: wanting to play a great party guessing game with friends, but being stopped by missing physical equipment.",
+            storyP2: "Created independently, this free web game was designed to deliver a fast, seamless, and universal party experience.",
+            footerDesc: "The ultimate digital party and card guessing game. Bringing friends and families together through fun and laughter.",
+            footerNavTitle: "Navigation", footerLinkPlay: "Start local game", footerLinkOnline: "Start online video room", footerLinkFeatures: "Features & themes", footerLinkMission: "Our mission", footerLinkStory: "Our story",
             footerLinksTitle: "Editions & links", footerLinkDonate: "Support the project"
         },
         fr: {
-            navPlay: "🎮 Jouer en local", navOnline: "🎥 Jouer en ligne", navFeatures: "⚙️ Fonctions", navMission: "🎯 Mission", navStory: "📖 Histoire",
+            title: "Rush'Up! - Le jeu d'ambiance et de devinettes gratuit en ligne",
+            desc: "Jouez à Rush'Up!, le jeu d'ambiance et de devinettes gratuit en 3 manches (description, un mot, mime). En local sur un téléphone ou en ligne avec salon vidéo !",
+            h1: "Rush'Up! - Le jeu d'ambiance et de devinettes gratuit",
+            navPlay: "🎮 Jouer en local", navOnline: "🎥 Salon en ligne", navFeatures: "⚙️ Fonctions", navMission: "🎯 Mission", navStory: "📖 Histoire",
             heroDesc: "Jouez autour de la même table ou à distance ! Choisissez votre mode préféré et faites deviner le même paquet de cartes à travers <strong>3 manches frénétiques</strong> :",
+            roundsTitle: "Les 3 manches du jeu",
             modeLocalTitle: "📱 Partie locale (en présentiel)", modeLocalDesc: "<strong>Un seul téléphone pour toute la pièce.</strong> Faites tourner le smartphone autour de la table quand vient votre tour. Idéal pour vos soirées, repas de famille ou pauses-café !",
-            modeOnlineTitle: "🎥 Salon vidéo (à distance)", modeOnlineDesc: "<strong>Jouez à distance avec vidéo en direct.</strong> Créez un salon privé, partagez le code, voyez la caméra de tout le monde en temps réel et laissez l'application synchroniser les cartes et chronos !",
+            modeOnlineTitle: "🎥 Salon vidéo (à distance)", modeOnlineDesc: "<strong>Jouez à distance avec vidéo en direct.</strong> Créez un salon privé, partagez le code, voyez la caméra de tout le monde en temps réel et laissez l'application synchroniser cartes et chronomètres !",
             r1Title: "💬 Manche 1 : description libre", r1Desc: "Décrivez la carte à l'écran en parlant librement, sans prononcer le mot. Vos coéquipiers proposent autant de réponses qu'ils le veulent !",
             r2Title: "☝️ Manche 2 : un seul mot", r2Desc: "Le même paquet réapparaît ! Donnez <strong>un unique mot d'indice</strong> par carte. Attention, votre équipe n'a droit qu'à une réponse par tour !",
-            r3Title: "🎭 Manche 3 : mime & bruitages", r3Desc: "Silence absolu ! Utilisez le mime, vos talents d'acteur et des bruitages pour faire deviner les ultimes cartes du paquet.",
-            ctaHero: "⚡ Lancer une partie (100% gratuit)", ctaOnline: "🎥 Faire une partie en ligne",
-            featuresTitle: "⚙️ Le jeu d'ambiance digital ultime", featuresSub: "Vous cherchez le jeu parfait pour animer un anniversaire, un repas de famille ou un apéro ? Rush'Up! réunit tout le dynamisme des grands jeux de devinettes sur mobile.",
+            r3Title: "🎭 Manche 3 : mime et bruitages", r3Desc: "Silence absolu ! Utilisez le mime, vos talents d'acteur et des bruitages pour faire deviner les ultimes cartes du paquet.",
+            ctaHero: "⚡ Lancer une partie locale (100% gratuit)", ctaOnline: "🎥 Lancer un salon vidéo en ligne",
+            featuresTitle: "⚙️ Le jeu d'ambiance digital ultime", featuresSub: "Vous cherchez le jeu parfait pour animer un anniversaire, un repas de famille ou un apéro entre amis ? Rush'Up! réunit tout le dynamisme des grands jeux de devinettes sur mobile.",
             f1Title: "📱 Application web PWA", f1Desc: "Installez l'application sur votre écran d'accueil iOS ou Android. Jouez de manière fluide et instantanée, même sans aucune connexion.",
-            f2Title: "📚 Plus de 25 thématiques", f2Desc: "Du contenu pour tous les goûts : Pokémon, Marvel, Disney, Cinéma, Mangas, Séries TV, Gaming, Histoire, Géographie et univers Famille dès 4 ans.",
-            f3Title: "🏆 Mode expert & trophées", f3Desc: "Suivez les classements individuels de vos invités, comptabilisez les victoires et remettez des trophées décalés en fin de partie.",
-            f4Title: "🔒 100% gratuit & sans pub", f4Desc: "Profitez de vos moments de partage sans aucune interruption publicitaire, sans achat caché et dans le respect de votre vie privée.",
+            f2Title: "📚 Plus de 25 thématiques", f2Desc: "Du contenu pour tous les goûts : cinéma, pop culture, mangas, séries TV, gaming, histoire, géographie et univers famille dès 4 ans.",
+            f3Title: "🏆 Classements et trophées", f3Desc: "Suivez les classements individuels de vos invités, comptabilisez les victoires et remettez des trophées décalés en fin de partie.",
+            f4Title: "🔒 100% gratuit et sans pub", f4Desc: "Profitez de vos moments de partage sans aucune interruption publicitaire, sans achat caché et dans le respect de votre vie privée.",
             seoTitle: "💡 L'expérience classique des jeux de devinettes en 3 manches, enfin sur mobile", seoDesc: "Si vous appréciez les jeux de cartes d'ambiance basés sur la mémoire, la rapidité et le mime, Rush'Up! reprend les mécaniques incontournables des plus grands succès du genre sans s'encombrer de boîtes ou de cartes physiques.",
-            ctaFeatures: "🎮 Jouer en local", ctaFeaturesOnline: "🎥 Salon en ligne",
+            ctaFeatures: "🎮 Jouer en local maintenant", ctaFeaturesOnline: "🎥 Rejoindre le salon en ligne",
             missionTitle: "🎯 Notre mission : rapprocher les gens au quotidien",
             missionP1: "À une époque où la technologie isole souvent les individus, la mission de <strong>Rush'Up!</strong> est d'inverser la tendance : <strong>utiliser le numérique pour rassembler les gens dans le monde réel</strong>.",
             missionP2: "Nous croyons que le jeu d'ambiance est le plus puissant vecteur de convivialité. Repas de famille, soirée, pause-déjeuner ou voyage : Rush'Up! transforme n'importe quel moment en instant de complicité.",
@@ -723,25 +552,29 @@
             storyP1: "Le projet <strong>Rush'Up!</strong> est né d'une contrainte simple : l'envie de jouer à un jeu d'ambiance sans avoir à transporter de matériel encombrant.",
             storyP2: "Développée de manière indépendante, cette plateforme web gratuite offre une expérience fluide et universelle, régulièrement enrichie par les retours de la communauté.",
             footerDesc: "Le jeu de cartes et d'ambiance ultime sur navigateur. Rapprocher les proches par le rire et le jeu.",
-            footerNavTitle: "Navigation", footerLinkPlay: "Partie locale", footerLinkOnline: "Salon en ligne", footerLinkFeatures: "Fonctionnalités & thèmes", footerLinkMission: "Notre mission", footerLinkStory: "Notre histoire",
-            footerLinksTitle: "Éditions & liens", footerLinkDonate: "Soutenir le projet"
+            footerNavTitle: "Navigation", footerLinkPlay: "Partie locale", footerLinkOnline: "Salon en ligne", footerLinkFeatures: "Fonctionnalités et thèmes", footerLinkMission: "Notre mission", footerLinkStory: "Notre histoire",
+            footerLinksTitle: "Éditions et liens", footerLinkDonate: "Soutenir le projet"
         },
         es: {
+            title: "Rush'Up! - Juego de cartas y adivinanzas gratis en línea",
+            desc: "¡Juega a Rush'Up!, el juego de fiesta y adivinanzas gratis en 3 rondas (descripción, una palabra, mímica). En local o en línea con sala de vídeo!",
+            h1: "Rush'Up! - Juego de adivinanzas gratis en línea",
             navPlay: "🎮 Jugar local", navOnline: "🎥 Jugar en línea", navFeatures: "⚙️ Ajustes", navMission: "🎯 Misión", navStory: "📖 Historia",
             heroDesc: "¡Juega alrededor de la misma mesa o a distancia! Elige tu modo preferido y adivinad el mismo mazo de cartas en <strong>3 rondas intensas</strong>:",
+            roundsTitle: "Las 3 rondas del juego",
             modeLocalTitle: "📱 Partida local (presencial)", modeLocalDesc: "<strong>Un solo teléfono para toda la sala.</strong> Pasa el smartphone por la mesa cuando llegue tu turno. ¡Ideal para fiestas, cenas familiares o pausas de café!",
             modeOnlineTitle: "🎥 Sala en vídeo (a distancia)", modeOnlineDesc: "<strong>Juega a distancia con vídeo en vivo.</strong> ¡Crea una sala privada, comparte el código, mira la cámara de todos en tiempo real y deja que la app sincronice cartas y cronómetros!",
             r1Title: "💬 Ronda 1: descripción libre", r1Desc: "Describe la palabra hablando libremente sin decir la palabra misma. Tus compañeros pueden adivinar tantas veces como quieran.",
             r2Title: "☝️ Ronda 2: una sola palabra", r2Desc: "¡El mismo mazo regresa! Da <strong>solo una palabra de pista</strong> por carta. Tu equipo solo tiene un intento por turno.",
-            r3Title: "🎭 Ronda 3: mímica y sonidos", r3Desc: "¡Silencio absoluto! Usa mímica, mímica corporal y efectos de sonido para adivinar las últimas cartas del mazo.",
-            ctaHero: "⚡ Start a local game (100% free)", ctaOnline: "🎥 Play online (live video)",
+            r3Title: "🎭 Ronda 3: mímica y sonidos", r3Desc: "¡Silencio absoluto! Usa mímica corporal, actuación y efectos de sonido para adivinar las últimas cartas del mazo.",
+            ctaHero: "⚡ Jugar partida local (100% gratis)", ctaOnline: "🎥 Entrar a sala en línea",
             featuresTitle: "⚙️ El juego de fiesta digital definitivo", featuresSub: "¿Buscas el juego perfecto para una fiesta de cumpleaños o cena familiar? Rush'Up! trae la emoción de los juegos de cartas a tu pantalla móvil.",
             f1Title: "📱 Aplicación PWA instalable", f1Desc: "Añade la app a tu pantalla de inicio en iOS o Android con un toque. Juega de forma fluida incluso totalmente sin conexión.",
-            f2Title: "📚 Más de 25 temáticas", f2Desc: "Contenido para todos: Pokémon, Marvel, Disney, Cine, Anime, Series, Videojuegos, Historia, Geografía y packs infantiles desde los 4 años.",
-            f3Title: "🏆 Modo experto y trofeos", f3Desc: "Sigue las estadísticas individuales de cada jugador, genera clasificaciones y entrega divertidos trofeos al final de la partida.",
+            f2Title: "📚 Más de 25 temáticas", f2Desc: "Contenido para todos: cine, pop culture, anime, series, videojuegos, historia, geografía y packs infantiles desde los 4 años.",
+            f3Title: "🏆 Clasificación y trofeos", f3Desc: "Sigue las estadísticas individuales de cada jugador, genera clasificaciones y entrega divertidos trofeos al final de la partida.",
             f4Title: "🔒 100% gratis y sin anuncios", f4Desc: "Disfruta sin interrupciones publicitarias, sin compras ocultas y con total respeto por tu privacidad de datos.",
             seoTitle: "💡 La experiencia clásica de los juegos de adivinanzas en 3 rondas, por fin en el móvil", seoDesc: "Si te gustan los juegos de cartas de fiesta basados en la memoria y la rapidez con pistas y mímica, Rush'Up! condensa las mejores mecánicas sin cargar con cajas físicas.",
-            ctaFeatures: "🎮 Jugar local ahora", ctaFeaturesOnline: "🎥 Sala en línea",
+            ctaFeatures: "🎮 Jugar partida local ahora", ctaFeaturesOnline: "🎥 Entrar a sala en línea",
             missionTitle: "🎯 Nuestra misión: unir a las personas cada día",
             missionP1: "En una época donde la tecnología suele aislar a las personas, nuestra misión con <strong>Rush'Up!</strong> es hacer lo contrario: <strong>usar la tecnología para crear conexiones humanas reales</strong>.",
             missionP2: "Creemos firmemente que los juegos de fiesta son la herramienta más poderosa para romper el hielo y crear recuerdos felices en familia o con amigos.",
@@ -754,74 +587,106 @@
         }
     };
 
-    function toggleMobileMenu() {
-        const menu = document.getElementById('nav-menu');
-        menu.classList.toggle('open');
-    }
-
-    function changeLanguage(lang) {
+    function applyLanguage(lang) {
         const t = translations[lang] || translations.en;
         document.documentElement.lang = lang;
 
-        document.getElementById('nav-play').innerText = t.navPlay;
-        document.getElementById('nav-online').innerText = t.navOnline;
-        document.getElementById('nav-features').innerText = t.navFeatures;
-        document.getElementById('nav-mission').innerText = t.navMission;
-        document.getElementById('nav-story').innerText = t.navStory;
+        document.title = t.title;
+        const setMeta = (id, val) => { const el = document.getElementById(id); if (el) el.setAttribute('content', val); };
+        setMeta('seo-desc', t.desc);
+        setMeta('og-title', t.title);
+        setMeta('og-desc', t.desc);
+        setMeta('tw-title', t.title);
+        setMeta('tw-desc', t.desc);
 
-        document.getElementById('hero-desc').innerHTML = t.heroDesc;
-        document.getElementById('mode-local-title').innerText = t.modeLocalTitle;
-        document.getElementById('mode-local-desc').innerHTML = t.modeLocalDesc;
-        document.getElementById('mode-online-title').innerText = t.modeOnlineTitle;
-        document.getElementById('mode-online-desc').innerHTML = t.modeOnlineDesc;
+        const urlLocale = lang === 'fr' ? 'https://rushupgame.github.io/?lang=fr' : (lang === 'es' ? 'https://rushupgame.github.io/?lang=es' : 'https://rushupgame.github.io/');
+        const setHref = (id, val) => { const el = document.getElementById(id); if (el) el.setAttribute('href', val); };
+        setHref('seo-canonical', urlLocale);
+        setMeta('og-url', urlLocale);
 
-        document.getElementById('r1-title').innerText = t.r1Title;
-        document.getElementById('r1-desc').innerText = t.r1Desc;
-        document.getElementById('r2-title').innerText = t.r2Title;
-        document.getElementById('r2-desc').innerHTML = t.r2Desc;
-        document.getElementById('r3-title').innerText = t.r3Title;
-        document.getElementById('r3-desc').innerText = t.r3Desc;
+        const setText = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+        const setHTML = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML = val; };
 
-        document.getElementById('cta-hero').innerText = t.ctaHero;
-        document.getElementById('cta-online').innerText = t.ctaOnline;
+        setText('h1-title', t.h1);
+        setText('nav-play', t.navPlay);
+        setText('nav-online', t.navOnline);
+        setText('nav-features', t.navFeatures);
+        setText('nav-mission', t.navMission);
+        setText('nav-story', t.navStory);
 
-        document.getElementById('features-title').innerText = t.featuresTitle;
-        document.getElementById('features-sub').innerText = t.featuresSub;
-        document.getElementById('f1-title').innerText = t.f1Title;
-        document.getElementById('f1-desc').innerText = t.f1Desc;
-        document.getElementById('f2-title').innerText = t.f2Title;
-        document.getElementById('f2-desc').innerText = t.f2Desc;
-        document.getElementById('f3-title').innerText = t.f3Title;
-        document.getElementById('f3-desc').innerText = t.f3Desc;
-        document.getElementById('f4-title').innerText = t.f4Title;
-        document.getElementById('f4-desc').innerText = t.f4Desc;
+        setHTML('hero-desc', t.heroDesc);
+        setText('rounds-section-title', t.roundsTitle);
+        setText('mode-local-title', t.modeLocalTitle);
+        setHTML('mode-local-desc', t.modeLocalDesc);
+        setText('mode-online-title', t.modeOnlineTitle);
+        setHTML('mode-online-desc', t.modeOnlineDesc);
 
-        document.getElementById('seo-concept-title').innerText = t.seoTitle;
-        document.getElementById('seo-concept-desc').innerText = t.seoDesc;
-        document.getElementById('cta-features').innerText = t.ctaFeatures;
-        document.getElementById('cta-features-online').innerText = t.ctaFeaturesOnline;
+        setText('r1-title', t.r1Title);
+        setText('r1-desc', t.r1Desc);
+        setText('r2-title', t.r2Title);
+        setHTML('r2-desc', t.r2Desc);
+        setText('r3-title', t.r3Title);
+        setText('r3-desc', t.r3Desc);
 
-        document.getElementById('mission-title').innerText = t.missionTitle;
-        document.getElementById('mission-p1').innerHTML = t.missionP1;
-        document.getElementById('mission-p2').innerText = t.missionP2;
+        setText('cta-hero', t.ctaHero);
+        setText('cta-online', t.ctaOnline);
 
-        document.getElementById('story-title').innerText = t.storyTitle;
-        document.getElementById('story-p1').innerHTML = t.storyP1;
-        document.getElementById('story-p2').innerText = t.storyP2;
+        setText('features-title', t.featuresTitle);
+        setText('features-sub', t.featuresSub);
+        setText('f1-title', t.f1Title);
+        setText('f1-desc', t.f1Desc);
+        setText('f2-title', t.f2Title);
+        setText('f2-desc', t.f2Desc);
+        setText('f3-title', t.f3Title);
+        setText('f3-desc', t.f3Desc);
+        setText('f4-title', t.f4Title);
+        setText('f4-desc', t.f4Desc);
 
-        document.getElementById('footer-desc').innerText = t.footerDesc;
-        document.getElementById('footer-nav-title').innerText = t.footerNavTitle;
-        document.getElementById('footer-link-play').innerText = t.footerLinkPlay;
-        document.getElementById('footer-link-online').innerText = t.footerLinkOnline;
-        document.getElementById('footer-link-features').innerText = t.footerLinkFeatures;
-        document.getElementById('footer-link-mission').innerText = t.footerLinkMission;
-        document.getElementById('footer-link-story').innerText = t.footerLinkStory;
-        document.getElementById('footer-links-title').innerText = t.footerLinksTitle;
-        document.getElementById('footer-link-donate').innerText = t.footerLinkDonate;
+        setText('seo-concept-title', t.seoTitle);
+        setText('seo-concept-desc', t.seoDesc);
+        setText('cta-features', t.ctaFeatures);
+        setText('cta-features-online', t.ctaFeaturesOnline);
 
-        document.getElementById('nav-menu').classList.remove('open');
+        setText('mission-title', t.missionTitle);
+        setHTML('mission-p1', t.missionP1);
+        setText('mission-p2', t.missionP2);
+
+        setText('story-title', t.storyTitle);
+        setHTML('story-p1', t.storyP1);
+        setText('story-p2', t.storyP2);
+
+        setText('footer-desc', t.footerDesc);
+        setText('footer-nav-title', t.footerNavTitle);
+        setText('footer-link-play', t.footerLinkPlay);
+        setText('footer-link-online', t.footerLinkOnline);
+        setText('footer-link-features', t.footerLinkFeatures);
+        setText('footer-link-mission', t.footerLinkMission);
+        setText('footer-link-story', t.footerLinkStory);
+        setText('footer-links-title', t.footerLinksTitle);
+        setText('footer-link-donate', t.footerLinkDonate);
+
+        const langSelect = document.getElementById('lang-select');
+        if (langSelect) langSelect.value = lang;
     }
-    </script>
 
+    function switchLang(lang) {
+        applyLanguage(lang);
+        const newUrl = lang === 'en' ? 'https://rushupgame.github.io/' : 'https://rushupgame.github.io/?lang=' + lang;
+        history.pushState({ lang: lang }, '', newUrl);
+    }
+
+    function toggleMobileMenu(btn) {
+        const menu = document.getElementById('nav-menu');
+        const isOpen = menu.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen);
+        menu.setAttribute('aria-hidden', !isOpen);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialLang = urlParams.get('lang') || 'en';
+        applyLanguage(initialLang);
+    });
+    </script>
 </body>
 </html>
