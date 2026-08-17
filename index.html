@@ -191,7 +191,7 @@
         -webkit-text-fill-color: transparent;
     }
 
-    /* SLOGAN ORIGINAL EN ANGLAIS MAINTENU */
+    /* SLOGAN EN ANGLAIS CONSERVÉ */
     .slogan {
         background: rgba(112, 161, 255, 0.15);
         color: var(--secondary);
@@ -267,7 +267,7 @@
         box-shadow: 0 8px 25px rgba(255, 71, 87, 0.6);
     }
 
-    /* TITRES DE SECTION & GRILLES */
+    /* TITRES DE SECTION */
     h2 {
         color: var(--warning);
         font-size: 1.8rem;
@@ -282,9 +282,10 @@
         margin-bottom: 14px;
     }
 
-    .grid {
+    /* GRILLE DESIGN RESPONSIVE HARMONIEUSE (DISPOSITION STRICTEMENT 2x2 SUR GRAND ÉCRAN) */
+    .grid-2x2 {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: 20px;
         margin-top: 20px;
     }
@@ -388,12 +389,14 @@
         text-decoration: none;
     }
 
+    /* PASSAGE D'UNE GRILLE 2x2 À 1 COLONNE SUR MOBILE ET TABLETTE EN PORTRAIT */
     @media (max-width: 768px) {
         body { padding: 8px; }
         .hero-title { font-size: 2.2rem; }
         .section-card { padding: 28px 20px; }
         .nav-links { gap: 4px; }
         .nav-links a { font-size: 0.8rem; padding: 6px 10px; }
+        .grid-2x2 { grid-template-columns: 1fr; }
         .footer-bottom { flex-direction: column; text-align: center; }
     }
     </style>
@@ -403,7 +406,7 @@
     <!-- BARRE DE NAVIGATION ANCRÉE -->
     <header>
         <nav class="nav-bar">
-            <a href="#jouer" class="brand-logo">Rush'Up!</a>
+            <a href="https://rushupgame.github.io/localgame/" class="brand-logo">Rush'Up!</a>
             <ul class="nav-links">
                 <li><a href="#jouer">🎮 Jouer</a></li>
                 <li><a href="#fonctionnalites">⚙️ Fonctions</a></li>
@@ -442,20 +445,21 @@
                 </article>
             </div>
 
-            <!-- BOUTON DE LANCEMENT (CTA) -->
+            <!-- BOUTON DE LANCEMENT (CTA REPOUNTANT VERS LOCALGAME) -->
             <a href="https://rushupgame.github.io/localgame/" class="btn" title="Démarrer une partie gratuite de Rush'Up!">
                 ⚡ Lancer une Partie (100% Gratuit)
             </a>
         </section>
 
-        <!-- SECTION 2 : FONCTIONNALITÉS & BLOC SEO POSITIONNEMENT (#fonctionnalites) -->
+        <!-- SECTION 2 : FONCTIONNALITÉS (#fonctionnalites) -->
         <section id="fonctionnalites" class="section-card">
             <h2>⚙️ Le jeu d'ambiance digital ultime pour vos événements</h2>
             <p>
                 Vous cherchez le jeu parfait pour animer une soirée d'anniversaire, un repas de famille ou un apéro entre amis ? Rush'Up! réunit tout le dynamisme des grands jeux de devinettes de cartes sur un simple écran mobile.
             </p>
             
-            <div class="grid">
+            <!-- GRILLE HARMONIEUSE STRICTEMENT 2x2 SUR GRAND ÉCRAN -->
+            <div class="grid-2x2">
                 <div class="grid-card">
                     <h3>📱 Application Web PWA</h3>
                     <p>Installez l'application sur votre écran d'accueil iOS ou Android. Jouez de manière fluide et instantanée, même sans aucune connexion Internet.</p>
@@ -504,7 +508,7 @@
         <section id="histoire" class="section-card">
             <h2>📖 L'Histoire de Rush'Up!</h2>
             <p>
-                Le projet <strong>Rush'Up!</strong> est né du constat d'une contrainte récurrente : l'envie de jouer à un grand jeu d'ambiance en groupe se heurte souvent à l'absence du matériel (boîte volumineuse à transporter, sablier introuvable, cartes abîmées ou répétitives).
+                Le projet <strong>Rush'Up!</strong> est borné du constat d'une contrainte récurrente : l'envie de jouer à un grand jeu d'ambiance en groupe se heurte souvent à l'absence du matériel (boîte volumineuse à transporter, sablier introuvable, cartes abîmées ou répétitives).
             </p>
             <p>
                 Développée de manière indépendante par <em>Arnaud Arnaud (gamesreviewspro)</em>, cette plateforme web gratuite a été conçue pour offrir une expérience fluide, rapide et universelle. Grâce au soutien de la communauté et aux retours des joueurs, le jeu s'enrichit régulièrement de nouvelles éditions et de fonctionnalités poussées.
@@ -533,7 +537,6 @@
                 <h4>Éditions & Liens</h4>
                 <ul>
                     <li><a href="https://rushupgame.github.io/localgame/">Application Local Game</a></li>
-                    <li><a href="https://github.com/gamesreviewspro" target="_blank" rel="noopener">Code Source GitHub</a></li>
                     <li><a href="https://www.paypal.com/donate?hosted_button_id=2NGJSLT76DX2G" target="_blank" rel="noopener">Soutenir le Projet</a></li>
                 </ul>
             </div>
