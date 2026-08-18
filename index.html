@@ -55,6 +55,55 @@
     }
     </script>
 
+    <script id="schema-faq-json" type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Rush'Up! and how do you play it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Rush'Up! is a free browser-based party game where players guess words from a shared deck of cards across three rounds: free description, one-word clue, and mime. Play locally by passing one phone around the table, or remotely in a live video room with friends anywhere in the world."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to download an app to play Rush'Up!?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No download is required. Rush'Up! runs directly in your browser as a Progressive Web App. You can optionally add it to your phone's home screen for one-tap access and offline play, but a browser is all you need to start."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Rush'Up! really free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Rush'Up! is 100% free to play, with no ads, no in-app purchases, and no account required to start a local game. The project is funded entirely through optional donations from players."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many players do I need for Rush'Up!?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Rush'Up! works best with 4 or more players split into two teams, though smaller groups can still play. The online video room mode supports remote players joining from different locations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Rush'Up! suitable for kids?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Rush'Up! includes dedicated kid-friendly card packs designed for players aged 4 and up, alongside more than 25 themes covering pop culture, movies, history, geography, and more for older players and adults."
+          }
+        }
+      ]
+    }
+    </script>
+
     <style>
     :root {
         --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
@@ -324,9 +373,273 @@
         .grid-2x2 { grid-template-columns: 1fr; }
         .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .brand-logo, .hero-title, .btn, .round-card, .grid-card, .slogan {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+
+    /* Accordion (themes list) */
+    .theme-accordion { width: 100%; margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .theme-item { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--card-border); border-radius: var(--radius-md); overflow: hidden; }
+    .theme-item summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 16px 20px;
+        font-weight: 800;
+        color: var(--text-main);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .theme-item summary::-webkit-details-marker { display: none; }
+    .theme-item summary::after { content: '+'; color: var(--warning); font-size: 1.3rem; }
+    .theme-item[open] summary::after { content: '−'; }
+    .theme-item .theme-body { padding: 0 20px 18px; }
+
+    /* FAQ */
+    .faq-item { border-bottom: 1px solid var(--card-border); padding: 16px 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-item h3 { color: var(--secondary); font-size: 1.05rem; margin-bottom: 6px; }
+
+    .skip-link {
+        position: absolute;
+        left: -999px;
+        top: auto;
+        background: var(--primary);
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 8px;
+        z-index: 2000;
+        font-weight: 700;
+        text-decoration: none;
+    }
+    .skip-link:focus {
+        left: 12px;
+        top: 12px;
+    }
+
+    /* Wallpaper texture: repeated tilted "Rush'Up!" words fading in and out */
+    .wallpaper-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        align-content: start;
+        gap: 26px 14px;
+        padding: 24px;
+    }
+    .wallpaper-word {
+        font-weight: 900;
+        font-size: 0.95rem;
+        white-space: nowrap;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.14);
+        opacity: 0.10;
+        animation: wallpaperFlicker 7s ease-in-out infinite;
+    }
+    @keyframes wallpaperFlicker {
+        0%, 100% { opacity: 0.08; }
+        50% { opacity: 0.32; }
+    }
+    .wallpaper-word:nth-child(5n+1) { transform: rotate(-11deg); }
+    .wallpaper-word:nth-child(5n+2) { transform: rotate(7deg); }
+    .wallpaper-word:nth-child(5n+3) { transform: rotate(-4deg); }
+    .wallpaper-word:nth-child(5n+4) { transform: rotate(10deg); }
+    .wallpaper-word:nth-child(5n+5) { transform: rotate(-15deg); }
+    .wallpaper-word:nth-child(2n) { animation-delay: 1.3s; }
+    .wallpaper-word:nth-child(3n) { animation-delay: 2.6s; animation-duration: 8.5s; }
+    .wallpaper-word:nth-child(4n) { animation-delay: 3.8s; }
+    .wallpaper-word:nth-child(7n) { animation-delay: 0.7s; animation-duration: 6s; }
+    .wallpaper-word:nth-child(6n+1) { color: rgba(255, 71, 87, 0.22); }
+    .wallpaper-word:nth-child(9n+2) { color: rgba(251, 191, 36, 0.22); }
+    .wallpaper-word:nth-child(11n+3) { color: rgba(147, 197, 253, 0.22); }
+
+    main, footer { position: relative; z-index: 1; }
+
+    @media (max-width: 768px) {
+        .wallpaper-bg { grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)); gap: 20px 10px; padding: 16px; }
+        .wallpaper-word { font-size: 0.8rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .wallpaper-word { animation: none; opacity: 0.16; }
+    }
     </style>
 </head>
 <body>
+    <div class="wallpaper-bg" aria-hidden="true">
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+                <span class="wallpaper-word">Rush'Up!</span>
+    </div>
+    <a href="#play" class="skip-link">Skip to content</a>
 
     <header>
         <nav class="nav-bar" aria-label="Main Navigation">
@@ -336,6 +649,8 @@
                     <li><a href="https://rushupgame.github.io/localgame/" id="nav-play">🎮 Play local game</a></li>
                     <li><a href="https://rushupgame.github.io/onlinegame/" id="nav-online">🎥 Play online room</a></li>
                     <li><a href="#features" id="nav-features">⚙️ Features</a></li>
+                    <li><a href="#themes" id="nav-themes">📚 Themes</a></li>
+                    <li><a href="#faq" id="nav-faq">❓ FAQ</a></li>
                     <li><a href="#mission" id="nav-mission">🎯 Mission</a></li>
                     <li><a href="#story" id="nav-story">📖 Story</a></li>
                 </ul>
@@ -440,6 +755,116 @@
             </div>
         </section>
 
+        <section id="how-to-play" class="section-card" aria-labelledby="htp-title">
+            <h2 id="htp-title">📋 How to play Rush'Up!: complete rules</h2>
+            <p id="htp-p1">
+                Setting up a game of Rush'Up! takes less than a minute. Split your guests into two teams (or more, if you're hosting a big party), pick a card theme, and set the round timer — 60 seconds is the classic pace, but you can go faster for an even more chaotic party game, or slower for younger players and beginners.
+            </p>
+            <p id="htp-p2">
+                Each round reuses the exact same deck of cards, which is what makes the game so replayable and so rewarding: the words you struggled to describe in round one become easy layups by round three, once your team has already heard them mimed or clued once before. That repetition is the secret behind why this style of party game keeps tables laughing for hours instead of minutes.
+            </p>
+            <div class="grid-2x2">
+                <article class="grid-card">
+                    <h3 id="htp-scoring-title">🧮 Scoring</h3>
+                    <p id="htp-scoring-desc">Every correctly guessed card earns one point for the active team. Skipped cards go back into the deck and come up again before the timer ends, so no card is ever wasted.</p>
+                </article>
+                <article class="grid-card">
+                    <h3 id="htp-teams-title">👥 Team setup</h3>
+                    <p id="htp-teams-desc">Works great from 4 players upward. Larger groups can form 3 or 4 teams and rotate turns, making it a perfect party game for big family gatherings or office events.</p>
+                </article>
+                <article class="grid-card">
+                    <h3 id="htp-timer-title">⏱️ Timer & pace</h3>
+                    <p id="htp-timer-desc">The built-in timer is fully adjustable. Shorten it for a fast-paced, high-energy party game, or extend it for a more relaxed pace with kids or first-time players.</p>
+                </article>
+                <article class="grid-card">
+                    <h3 id="htp-rules-title">🚫 House rules</h3>
+                    <p id="htp-rules-desc">No rhyming words, no spelling the answer out loud, and no using the title itself in Rounds 1 and 2. Rush'Up! displays the rules on-screen so nobody forgets mid-party.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="themes" class="section-card" aria-labelledby="themes-title">
+            <h2 id="themes-title">📚 25+ card themes to guess</h2>
+            <p id="themes-sub">
+                Whatever your group's taste, Rush'Up! has a deck for it. Tap any category below to see examples of the kind of cards you'll be describing, cluing, and miming during your party.
+            </p>
+            <div class="theme-accordion" id="theme-accordion">
+                <details class="theme-item">
+                    <summary id="th1-title">🎬 Movies & TV shows</summary>
+                    <div class="theme-body"><p id="th1-desc">Blockbusters, cult classics, and binge-worthy series — perfect for movie buffs and casual watchers alike.</p></div>
+                </details>
+                <details class="theme-item">
+                    <summary id="th2-title">🎤 Pop culture & celebrities</summary>
+                    <div class="theme-body"><p id="th2-desc">Trending topics, viral moments, musicians, and public figures everyone at the table will recognize.</p></div>
+                </details>
+                <details class="theme-item">
+                    <summary id="th3-title">🎮 Video games</summary>
+                    <div class="theme-body"><p id="th3-desc">From retro classics to today's biggest titles — a favorite theme for gamer game nights.</p></div>
+                </details>
+                <details class="theme-item">
+                    <summary id="th4-title">🐉 Anime & manga</summary>
+                    <div class="theme-body"><p id="th4-desc">Iconic series, characters, and moments for anime fans of every generation.</p></div>
+                </details>
+                <details class="theme-item">
+                    <summary id="th5-title">🌍 History & geography</summary>
+                    <div class="theme-body"><p id="th5-desc">Landmarks, historical figures, and world capitals — a great pick for trivia lovers and family game night.</p></div>
+                </details>
+                <details class="theme-item">
+                    <summary id="th6-title">🧸 Kids pack (ages 4+)</summary>
+                    <div class="theme-body"><p id="th6-desc">Simple, friendly cards designed so younger players can join the fun alongside adults.</p></div>
+                </details>
+            </div>
+        </section>
+
+        <section id="occasions" class="section-card" aria-labelledby="occasions-title">
+            <h2 id="occasions-title">🎉 The perfect party game for every occasion</h2>
+            <p id="occasions-sub">
+                Rush'Up! adapts to the moment: a loud, competitive party game for a birthday bash, or a calmer round of guessing after a family dinner. Here are a few of the most popular ways players use it.
+            </p>
+            <div class="grid-2x2">
+                <article class="grid-card">
+                    <h3 id="occ1-title">🎂 Birthday parties</h3>
+                    <p id="occ1-desc">Break the ice the moment guests arrive with a fast-paced round everyone can jump into, no explanation needed.</p>
+                </article>
+                <article class="grid-card">
+                    <h3 id="occ2-title">🍽️ Family dinners</h3>
+                    <p id="occ2-desc">A screen-free-feeling activity after dessert — one phone, no downloads, and instant fun for three generations at once.</p>
+                </article>
+                <article class="grid-card">
+                    <h3 id="occ3-title">💼 Team building & remote teams</h3>
+                    <p id="occ3-desc">Use the online video room mode to run a quick, energizing icebreaker with colleagues scattered across different cities.</p>
+                </article>
+                <article class="grid-card">
+                    <h3 id="occ4-title">🎄 Holidays & reunions</h3>
+                    <p id="occ4-desc">The go-to party game for long holiday evenings when the whole extended family is finally back around the same table.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="faq" class="section-card" aria-labelledby="faq-title">
+            <h2 id="faq-title">❓ Frequently asked questions</h2>
+            <div class="faq-item">
+                <h3 id="faq1-q">What is Rush'Up! and how do you play it?</h3>
+                <p id="faq1-a">Rush'Up! is a free browser-based party game where players guess words from a shared deck of cards across three rounds: free description, one-word clue, and mime. Play locally by passing one phone around the table, or remotely in a live video room.</p>
+            </div>
+            <div class="faq-item">
+                <h3 id="faq2-q">Do I need to download an app to play?</h3>
+                <p id="faq2-a">No download is required. Rush'Up! runs directly in your browser as a Progressive Web App, with the option to add it to your home screen for offline play.</p>
+            </div>
+            <div class="faq-item">
+                <h3 id="faq3-q">Is Rush'Up! really free?</h3>
+                <p id="faq3-a">Yes, 100% free with no ads and no in-app purchases. The project relies on optional donations from players who want to support it.</p>
+            </div>
+            <div class="faq-item">
+                <h3 id="faq4-q">How many players do I need?</h3>
+                <p id="faq4-a">Rush'Up! works best with 4 or more players split into two teams, though the online room mode makes it easy to include remote friends from anywhere.</p>
+            </div>
+            <div class="faq-item">
+                <h3 id="faq5-q">Is it suitable for kids?</h3>
+                <p id="faq5-a">Yes — a dedicated kids pack is available for players aged 4 and up, alongside 25+ themes for teens and adults.</p>
+            </div>
+        </section>
+
         <section id="mission" class="section-card" aria-labelledby="mission-title">
             <h2 id="mission-title">🎯 Our mission: bringing people together every day</h2>
             <p id="mission-p1">
@@ -523,7 +948,35 @@
             storyP2: "Created independently, this free web game was designed to deliver a fast, seamless, and universal party experience.",
             footerDesc: "The ultimate digital party and card guessing game. Bringing friends and families together through fun and laughter.",
             footerNavTitle: "Navigation", footerLinkPlay: "Start local game", footerLinkOnline: "Start online video room", footerLinkFeatures: "Features & themes", footerLinkMission: "Our mission", footerLinkStory: "Our story",
-            footerLinksTitle: "Editions & links", footerLinkDonate: "Support the project"
+            footerLinksTitle: "Editions & links", footerLinkDonate: "Support the project",
+            navThemes: "📚 Themes", navFaq: "❓ FAQ",
+            htpTitle: "📋 How to play Rush'Up!: complete rules",
+            htpP1: "Setting up a game of Rush'Up! takes less than a minute. Split your guests into two teams (or more, if you're hosting a big party), pick a card theme, and set the round timer — 60 seconds is the classic pace, but you can go faster for an even more chaotic party game, or slower for younger players and beginners.",
+            htpP2: "Each round reuses the exact same deck of cards, which is what makes the game so replayable and so rewarding: the words you struggled to describe in round one become easy layups by round three, once your team has already heard them mimed or clued once before. That repetition is the secret behind why this style of party game keeps tables laughing for hours instead of minutes.",
+            htpScoringTitle: "🧮 Scoring", htpScoringDesc: "Every correctly guessed card earns one point for the active team. Skipped cards go back into the deck and come up again before the timer ends, so no card is ever wasted.",
+            htpTeamsTitle: "👥 Team setup", htpTeamsDesc: "Works great from 4 players upward. Larger groups can form 3 or 4 teams and rotate turns, making it a perfect party game for big family gatherings or office events.",
+            htpTimerTitle: "⏱️ Timer & pace", htpTimerDesc: "The built-in timer is fully adjustable. Shorten it for a fast-paced, high-energy party game, or extend it for a more relaxed pace with kids or first-time players.",
+            htpRulesTitle: "🚫 House rules", htpRulesDesc: "No rhyming words, no spelling the answer out loud, and no using the title itself in Rounds 1 and 2. Rush'Up! displays the rules on-screen so nobody forgets mid-party.",
+            themesTitle: "📚 25+ card themes to guess",
+            themesSub: "Whatever your group's taste, Rush'Up! has a deck for it. Tap any category below to see examples of the kind of cards you'll be describing, cluing, and miming during your party.",
+            th1Title: "🎬 Movies & TV shows", th1Desc: "Blockbusters, cult classics, and binge-worthy series — perfect for movie buffs and casual watchers alike.",
+            th2Title: "🎤 Pop culture & celebrities", th2Desc: "Trending topics, viral moments, musicians, and public figures everyone at the table will recognize.",
+            th3Title: "🎮 Video games", th3Desc: "From retro classics to today's biggest titles — a favorite theme for gamer game nights.",
+            th4Title: "🐉 Anime & manga", th4Desc: "Iconic series, characters, and moments for anime fans of every generation.",
+            th5Title: "🌍 History & geography", th5Desc: "Landmarks, historical figures, and world capitals — a great pick for trivia lovers and family game night.",
+            th6Title: "🧸 Kids pack (ages 4+)", th6Desc: "Simple, friendly cards designed so younger players can join the fun alongside adults.",
+            occasionsTitle: "🎉 The perfect party game for every occasion",
+            occasionsSub: "Rush'Up! adapts to the moment: a loud, competitive party game for a birthday bash, or a calmer round of guessing after a family dinner. Here are a few of the most popular ways players use it.",
+            occ1Title: "🎂 Birthday parties", occ1Desc: "Break the ice the moment guests arrive with a fast-paced round everyone can jump into, no explanation needed.",
+            occ2Title: "🍽️ Family dinners", occ2Desc: "A screen-free-feeling activity after dessert — one phone, no downloads, and instant fun for three generations at once.",
+            occ3Title: "💼 Team building & remote teams", occ3Desc: "Use the online video room mode to run a quick, energizing icebreaker with colleagues scattered across different cities.",
+            occ4Title: "🎄 Holidays & reunions", occ4Desc: "The go-to party game for long holiday evenings when the whole extended family is finally back around the same table.",
+            faqTitle: "❓ Frequently asked questions",
+            faq1Q: "What is Rush'Up! and how do you play it?", faq1A: "Rush'Up! is a free browser-based party game where players guess words from a shared deck of cards across three rounds: free description, one-word clue, and mime. Play locally by passing one phone around the table, or remotely in a live video room.",
+            faq2Q: "Do I need to download an app to play?", faq2A: "No download is required. Rush'Up! runs directly in your browser as a Progressive Web App, with the option to add it to your home screen for offline play.",
+            faq3Q: "Is Rush'Up! really free?", faq3A: "Yes, 100% free with no ads and no in-app purchases. The project relies on optional donations from players who want to support it.",
+            faq4Q: "How many players do I need?", faq4A: "Rush'Up! works best with 4 or more players split into two teams, though the online room mode makes it easy to include remote friends from anywhere.",
+            faq5Q: "Is it suitable for kids?", faq5A: "Yes — a dedicated kids pack is available for players aged 4 and up, alongside 25+ themes for teens and adults."
         },
         fr: {
             title: "Rush'Up! - Le jeu d'ambiance et de devinettes gratuit en ligne",
@@ -553,7 +1006,35 @@
             storyP2: "Développée de manière indépendante, cette plateforme web gratuite offre une expérience fluide et universelle, régulièrement enrichie par les retours de la communauté.",
             footerDesc: "Le jeu de cartes et d'ambiance ultime sur navigateur. Rapprocher les proches par le rire et le jeu.",
             footerNavTitle: "Navigation", footerLinkPlay: "Partie locale", footerLinkOnline: "Salon en ligne", footerLinkFeatures: "Fonctionnalités et thèmes", footerLinkMission: "Notre mission", footerLinkStory: "Notre histoire",
-            footerLinksTitle: "Éditions et liens", footerLinkDonate: "Soutenir le projet"
+            footerLinksTitle: "Éditions et liens", footerLinkDonate: "Soutenir le projet",
+            navThemes: "📚 Thèmes", navFaq: "❓ FAQ",
+            htpTitle: "📋 Comment jouer à Rush'Up! : règles complètes",
+            htpP1: "Installer une partie de Rush'Up! prend moins d'une minute. Répartissez vos invités en deux équipes (ou plus, si vous recevez du monde), choisissez une thématique de cartes et réglez le chronomètre — 60 secondes est le rythme classique, mais vous pouvez accélérer pour un jeu d'ambiance encore plus frénétique, ou ralentir pour les plus jeunes et les débutants.",
+            htpP2: "Chaque manche réutilise exactement le même paquet de cartes, et c'est précisément ce qui rend le jeu aussi rejouable et satisfaisant : les mots que vous peiniez à décrire en manche 1 deviennent des évidences en manche 3, une fois que votre équipe les a déjà entendus mimés ou indicés une première fois. Cette répétition est le secret qui fait rire les tablées pendant des heures et non des minutes.",
+            htpScoringTitle: "🧮 Décompte des points", htpScoringDesc: "Chaque carte devinée rapporte un point à l'équipe active. Les cartes passées retournent dans le paquet et repassent avant la fin du chrono : aucune carte n'est jamais perdue.",
+            htpTeamsTitle: "👥 Composition des équipes", htpTeamsDesc: "Fonctionne parfaitement à partir de 4 joueurs. Les grands groupes peuvent former 3 ou 4 équipes et faire tourner les manches, un format idéal pour les grandes réunions de famille ou les soirées entre collègues.",
+            htpTimerTitle: "⏱️ Chronomètre et rythme", htpTimerDesc: "Le chronomètre intégré est entièrement réglable. Réduisez-le pour un jeu d'ambiance rapide et intense, ou allongez-le pour un rythme plus détendu avec des enfants ou de nouveaux joueurs.",
+            htpRulesTitle: "🚫 Règles maison", htpRulesDesc: "Pas de mots qui riment, pas d'épellation à voix haute, et interdiction d'utiliser le mot lui-même en manches 1 et 2. Rush'Up! affiche les règles à l'écran pour que personne ne les oublie en pleine partie.",
+            themesTitle: "📚 Plus de 25 thématiques de cartes",
+            themesSub: "Quels que soient les goûts de votre groupe, Rush'Up! a un paquet adapté. Touchez une catégorie ci-dessous pour voir le type de cartes que vous décrirez, indicerez et mimerez pendant votre soirée.",
+            th1Title: "🎬 Films et séries TV", th1Desc: "Blockbusters, classiques cultes et séries qu'on dévore d'une traite — parfait pour cinéphiles comme amateurs occasionnels.",
+            th2Title: "🎤 Pop culture et célébrités", th2Desc: "Sujets tendance, moments viraux, musiciens et personnalités que tout le monde autour de la table reconnaîtra.",
+            th3Title: "🎮 Jeux vidéo", th3Desc: "Des classiques rétro aux plus grands titres actuels — une thématique adorée pour les soirées entre gamers.",
+            th4Title: "🐉 Anime et manga", th4Desc: "Séries, personnages et moments iconiques pour les fans d'anime de toutes générations.",
+            th5Title: "🌍 Histoire et géographie", th5Desc: "Monuments, personnages historiques et capitales du monde — parfait pour les amateurs de culture générale.",
+            th6Title: "🧸 Pack enfants (dès 4 ans)", th6Desc: "Des cartes simples et bienveillantes conçues pour que les plus jeunes s'amusent aux côtés des adultes.",
+            occasionsTitle: "🎉 Le jeu d'ambiance parfait pour chaque occasion",
+            occasionsSub: "Rush'Up! s'adapte au moment : un jeu bruyant et compétitif pour un anniversaire, ou une manche plus calme après un repas de famille. Voici quelques-unes des façons les plus populaires d'y jouer.",
+            occ1Title: "🎂 Anniversaires", occ1Desc: "Brisez la glace dès l'arrivée des invités avec une manche rythmée où chacun peut se lancer sans explication.",
+            occ2Title: "🍽️ Repas de famille", occ2Desc: "Une activité qui fait oublier les écrans après le dessert — un seul téléphone, aucun téléchargement, et du fun instantané pour trois générations à la fois.",
+            occ3Title: "💼 Team building et équipes à distance", occ3Desc: "Utilisez le mode salon vidéo en ligne pour un icebreaker rapide et énergique avec des collègues dispersés dans plusieurs villes.",
+            occ4Title: "🎄 Fêtes et retrouvailles", occ4Desc: "Le jeu d'ambiance incontournable pour les longues soirées de fêtes quand toute la famille élargie se retrouve enfin autour de la même table.",
+            faqTitle: "❓ Questions fréquentes",
+            faq1Q: "Qu'est-ce que Rush'Up! et comment y joue-t-on ?", faq1A: "Rush'Up! est un jeu d'ambiance gratuit sur navigateur où les joueurs devinent des mots à partir d'un paquet de cartes partagé, sur trois manches : description libre, un seul mot, et mime. Jouez en local en faisant tourner un téléphone, ou à distance dans un salon vidéo en direct.",
+            faq2Q: "Faut-il télécharger une application pour jouer ?", faq2A: "Aucun téléchargement n'est nécessaire. Rush'Up! fonctionne directement dans votre navigateur en tant qu'application web progressive, avec la possibilité de l'ajouter à votre écran d'accueil pour jouer hors ligne.",
+            faq3Q: "Rush'Up! est-il vraiment gratuit ?", faq3A: "Oui, 100% gratuit, sans publicité ni achat intégré. Le projet repose uniquement sur les dons volontaires des joueurs qui souhaitent le soutenir.",
+            faq4Q: "Combien de joueurs faut-il ?", faq4A: "Rush'Up! est optimal à partir de 4 joueurs répartis en deux équipes, et le mode salon en ligne permet facilement d'inclure des amis à distance, où qu'ils soient.",
+            faq5Q: "Convient-il aux enfants ?", faq5A: "Oui — un pack dédié est disponible pour les joueurs dès 4 ans, en complément des plus de 25 thématiques pour ados et adultes."
         },
         es: {
             title: "Rush'Up! - Juego de cartas y adivinanzas gratis en línea",
@@ -583,7 +1064,35 @@
             storyP2: "Creada de forma independiente, esta plataforma web gratuita ofrece una experiencia rápida, fluida y universal impulsada por la comunidad.",
             footerDesc: "El juego de cartas y fiesta digital definitivo. Uniendo a seres queridos a través de risas y juegos.",
             footerNavTitle: "Navegación", footerLinkPlay: "Partida local", footerLinkOnline: "Sala en línea", footerLinkFeatures: "Ajustes y temas", footerLinkMission: "Nuestra misión", footerLinkStory: "Nuestra historia",
-            footerLinksTitle: "Ediciones y enlaces", footerLinkDonate: "Apoyar el proyecto"
+            footerLinksTitle: "Ediciones y enlaces", footerLinkDonate: "Apoyar el proyecto",
+            navThemes: "📚 Temáticas", navFaq: "❓ FAQ",
+            htpTitle: "📋 Cómo jugar a Rush'Up!: reglas completas",
+            htpP1: "Preparar una partida de Rush'Up! lleva menos de un minuto. Divide a tus invitados en dos equipos (o más, si organizas una fiesta grande), elige una temática de cartas y ajusta el cronómetro — 60 segundos es el ritmo clásico, pero puedes acelerar para un juego aún más frenético o ralentizarlo para jugadores más jóvenes o principiantes.",
+            htpP2: "Cada ronda reutiliza exactamente el mismo mazo de cartas, y eso es justo lo que hace el juego tan rejugable y satisfactorio: las palabras que costaba describir en la ronda 1 se vuelven fáciles en la ronda 3, una vez que tu equipo ya las ha escuchado mimadas o con pista. Esa repetición es el secreto detrás de un juego de fiesta que hace reír durante horas, no minutos.",
+            htpScoringTitle: "🧮 Puntuación", htpScoringDesc: "Cada carta adivinada correctamente suma un punto al equipo activo. Las cartas pasadas vuelven al mazo y reaparecen antes de que acabe el cronómetro, así que ninguna carta se desperdicia.",
+            htpTeamsTitle: "👥 Formación de equipos", htpTeamsDesc: "Funciona muy bien desde 4 jugadores. Los grupos grandes pueden formar 3 o 4 equipos y turnarse, ideal para grandes reuniones familiares o eventos de oficina.",
+            htpTimerTitle: "⏱️ Cronómetro y ritmo", htpTimerDesc: "El cronómetro integrado es totalmente ajustable. Redúcelo para un juego rápido y de alta energía, o amplíalo para un ritmo más relajado con niños o jugadores nuevos.",
+            htpRulesTitle: "🚫 Reglas de la casa", htpRulesDesc: "Nada de palabras que rimen, nada de deletrear la respuesta en voz alta, y no usar la palabra en sí en las rondas 1 y 2. Rush'Up! muestra las reglas en pantalla para que nadie las olvide en plena fiesta.",
+            themesTitle: "📚 Más de 25 temáticas de cartas",
+            themesSub: "Sea cual sea el gusto de tu grupo, Rush'Up! tiene un mazo para ello. Toca cualquier categoría para ver el tipo de cartas que describirás, pistarás y mimarás durante tu fiesta.",
+            th1Title: "🎬 Películas y series", th1Desc: "Grandes éxitos, clásicos de culto y series para maratonear — perfecto tanto para cinéfilos como para espectadores casuales.",
+            th2Title: "🎤 Cultura pop y famosos", th2Desc: "Temas de tendencia, momentos virales, músicos y personajes públicos que todos en la mesa reconocerán.",
+            th3Title: "🎮 Videojuegos", th3Desc: "Desde clásicos retro hasta los títulos más grandes de hoy — una temática favorita para noches de gamers.",
+            th4Title: "🐉 Anime y manga", th4Desc: "Series, personajes y momentos icónicos para fans del anime de todas las generaciones.",
+            th5Title: "🌍 Historia y geografía", th5Desc: "Monumentos, figuras históricas y capitales del mundo — ideal para los amantes de la cultura general.",
+            th6Title: "🧸 Pack infantil (desde 4 años)", th6Desc: "Cartas simples y amigables diseñadas para que los más pequeños se diviertan junto a los adultos.",
+            occasionsTitle: "🎉 El juego de fiesta perfecto para cada ocasión",
+            occasionsSub: "Rush'Up! se adapta al momento: un juego ruidoso y competitivo para una fiesta de cumpleaños, o una ronda más tranquila tras una cena familiar. Estas son algunas de las formas más populares de jugarlo.",
+            occ1Title: "🎂 Fiestas de cumpleaños", occ1Desc: "Rompe el hielo en cuanto lleguen los invitados con una ronda ágil a la que todos pueden unirse sin explicaciones.",
+            occ2Title: "🍽️ Cenas familiares", occ2Desc: "Una actividad que hace olvidar las pantallas después del postre — un solo teléfono, sin descargas, diversión instantánea para tres generaciones a la vez.",
+            occ3Title: "💼 Team building y equipos remotos", occ3Desc: "Usa el modo de sala de vídeo en línea para un icebreaker rápido y energizante con compañeros repartidos en distintas ciudades.",
+            occ4Title: "🎄 Fiestas y reencuentros", occ4Desc: "El juego de fiesta ideal para las largas noches festivas cuando toda la familia extendida por fin se reúne en la misma mesa.",
+            faqTitle: "❓ Preguntas frecuentes",
+            faq1Q: "¿Qué es Rush'Up! y cómo se juega?", faq1A: "Rush'Up! es un juego de fiesta gratuito en el navegador donde los jugadores adivinan palabras de un mazo compartido en tres rondas: descripción libre, una palabra y mímica. Juega en local pasando un teléfono, o a distancia en una sala de vídeo en vivo.",
+            faq2Q: "¿Necesito descargar una app para jugar?", faq2A: "No se necesita ninguna descarga. Rush'Up! funciona directamente en tu navegador como aplicación web progresiva, con la opción de añadirla a tu pantalla de inicio para jugar sin conexión.",
+            faq3Q: "¿Rush'Up! es realmente gratis?", faq3A: "Sí, 100% gratis, sin anuncios ni compras dentro de la app. El proyecto se sostiene solo con donaciones voluntarias de los jugadores que quieren apoyarlo.",
+            faq4Q: "¿Cuántos jugadores hacen falta?", faq4A: "Rush'Up! funciona mejor desde 4 jugadores divididos en dos equipos, y el modo de sala en línea facilita incluir a amigos a distancia desde cualquier lugar.",
+            faq5Q: "¿Es apto para niños?", faq5A: "Sí — hay un pack específico disponible para jugadores desde los 4 años, además de más de 25 temáticas para adolescentes y adultos."
         }
     };
 
@@ -665,12 +1174,51 @@
         setText('footer-links-title', t.footerLinksTitle);
         setText('footer-link-donate', t.footerLinkDonate);
 
+        setText('nav-themes', t.navThemes);
+        setText('nav-faq', t.navFaq);
+
+        setText('htp-title', t.htpTitle);
+        setText('htp-p1', t.htpP1);
+        setText('htp-p2', t.htpP2);
+        setText('htp-scoring-title', t.htpScoringTitle);
+        setText('htp-scoring-desc', t.htpScoringDesc);
+        setText('htp-teams-title', t.htpTeamsTitle);
+        setText('htp-teams-desc', t.htpTeamsDesc);
+        setText('htp-timer-title', t.htpTimerTitle);
+        setText('htp-timer-desc', t.htpTimerDesc);
+        setText('htp-rules-title', t.htpRulesTitle);
+        setText('htp-rules-desc', t.htpRulesDesc);
+
+        setText('themes-title', t.themesTitle);
+        setText('themes-sub', t.themesSub);
+        setText('th1-title', t.th1Title); setText('th1-desc', t.th1Desc);
+        setText('th2-title', t.th2Title); setText('th2-desc', t.th2Desc);
+        setText('th3-title', t.th3Title); setText('th3-desc', t.th3Desc);
+        setText('th4-title', t.th4Title); setText('th4-desc', t.th4Desc);
+        setText('th5-title', t.th5Title); setText('th5-desc', t.th5Desc);
+        setText('th6-title', t.th6Title); setText('th6-desc', t.th6Desc);
+
+        setText('occasions-title', t.occasionsTitle);
+        setText('occasions-sub', t.occasionsSub);
+        setText('occ1-title', t.occ1Title); setText('occ1-desc', t.occ1Desc);
+        setText('occ2-title', t.occ2Title); setText('occ2-desc', t.occ2Desc);
+        setText('occ3-title', t.occ3Title); setText('occ3-desc', t.occ3Desc);
+        setText('occ4-title', t.occ4Title); setText('occ4-desc', t.occ4Desc);
+
+        setText('faq-title', t.faqTitle);
+        setText('faq1-q', t.faq1Q); setText('faq1-a', t.faq1A);
+        setText('faq2-q', t.faq2Q); setText('faq2-a', t.faq2A);
+        setText('faq3-q', t.faq3Q); setText('faq3-a', t.faq3A);
+        setText('faq4-q', t.faq4Q); setText('faq4-a', t.faq4A);
+        setText('faq5-q', t.faq5Q); setText('faq5-a', t.faq5A);
+
         const langSelect = document.getElementById('lang-select');
         if (langSelect) langSelect.value = lang;
     }
 
     function switchLang(lang) {
         applyLanguage(lang);
+        try { localStorage.setItem('rushup_lang', lang); } catch (e) {}
         const newUrl = lang === 'en' ? 'https://rushupgame.github.io/' : 'https://rushupgame.github.io/?lang=' + lang;
         history.pushState({ lang: lang }, '', newUrl);
     }
@@ -682,11 +1230,18 @@
         menu.setAttribute('aria-hidden', !isOpen);
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
+    // Runs immediately since this script tag sits at the end of <body>, after every
+    // element it targets has already been parsed — no need to wait for DOMContentLoaded,
+    // which reduces the flash of default English content on first paint.
+    (function initLanguage() {
         const urlParams = new URLSearchParams(window.location.search);
-        const initialLang = urlParams.get('lang') || 'en';
+        const urlLang = urlParams.get('lang');
+        let storedLang = null;
+        try { storedLang = localStorage.getItem('rushup_lang'); } catch (e) {}
+        const initialLang = urlLang || storedLang || 'en';
         applyLanguage(initialLang);
-    });
+        try { localStorage.setItem('rushup_lang', initialLang); } catch (e) {}
+    })();
     </script>
 </body>
 </html>
