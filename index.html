@@ -155,7 +155,7 @@
         -webkit-backdrop-filter: blur(20px);
         border: 1px solid var(--card-border);
         border-radius: 50px;
-        padding: 10px 20px;
+        padding: 8px 16px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -175,7 +175,7 @@
     }
 
     .brand-logo {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         font-weight: 900;
         background: linear-gradient(270deg, #ff4757, #ffa502, #ff6b81, #eccc68);
         background-size: 300% 300%;
@@ -190,15 +190,16 @@
         transform: scale(1.05);
     }
 
-    .nav-right { display: flex; align-items: center; gap: 12px; }
-    .nav-links { display: flex; gap: 8px; list-style: none; }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
     .nav-links a { 
         color: var(--text-main); 
         text-decoration: none; 
-        font-size: 0.9rem; 
+        font-size: 0.72rem; 
         font-weight: 700; 
-        padding: 8px 14px; 
-        border-radius: 20px; 
+        padding: 6px 9px; 
+        border-radius: 14px; 
+        white-space: nowrap;
         transition: background 0.3s ease, transform 0.2s ease;
     }
     .nav-links a:hover {
@@ -213,9 +214,9 @@
         background: rgba(15, 23, 42, 0.8);
         color: var(--text-main);
         border: 1px solid var(--card-border);
-        padding: 6px 10px;
+        padding: 4px 7px;
         border-radius: 20px;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         font-weight: 700;
         cursor: pointer;
         transition: border-color 0.3s ease;
@@ -422,223 +423,9 @@
         top: 12px;
     }
 
-    /* Wallpaper texture: repeated tilted "Rush'Up!" words fading in and out */
-    .wallpaper-bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: 0;
-        pointer-events: none;
-        overflow: hidden;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-        align-content: start;
-        gap: 26px 14px;
-        padding: 24px;
-    }
-    .wallpaper-word {
-        font-weight: 900;
-        font-size: 0.95rem;
-        white-space: nowrap;
-        text-align: center;
-        color: rgba(255, 255, 255, 0.14);
-        opacity: 0.10;
-        animation: wallpaperFlicker 7s ease-in-out infinite;
-    }
-    @keyframes wallpaperFlicker {
-        0%, 100% { opacity: 0.08; }
-        50% { opacity: 0.32; }
-    }
-    .wallpaper-word:nth-child(5n+1) { transform: rotate(-11deg); }
-    .wallpaper-word:nth-child(5n+2) { transform: rotate(7deg); }
-    .wallpaper-word:nth-child(5n+3) { transform: rotate(-4deg); }
-    .wallpaper-word:nth-child(5n+4) { transform: rotate(10deg); }
-    .wallpaper-word:nth-child(5n+5) { transform: rotate(-15deg); }
-    .wallpaper-word:nth-child(2n) { animation-delay: 1.3s; }
-    .wallpaper-word:nth-child(3n) { animation-delay: 2.6s; animation-duration: 8.5s; }
-    .wallpaper-word:nth-child(4n) { animation-delay: 3.8s; }
-    .wallpaper-word:nth-child(7n) { animation-delay: 0.7s; animation-duration: 6s; }
-    .wallpaper-word:nth-child(6n+1) { color: rgba(255, 71, 87, 0.22); }
-    .wallpaper-word:nth-child(9n+2) { color: rgba(251, 191, 36, 0.22); }
-    .wallpaper-word:nth-child(11n+3) { color: rgba(147, 197, 253, 0.22); }
-
-    main, footer { position: relative; z-index: 1; }
-
-    @media (max-width: 768px) {
-        .wallpaper-bg { grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)); gap: 20px 10px; padding: 16px; }
-        .wallpaper-word { font-size: 0.8rem; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .wallpaper-word { animation: none; opacity: 0.16; }
-    }
     </style>
 </head>
 <body>
-    <div class="wallpaper-bg" aria-hidden="true">
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-                <span class="wallpaper-word">Rush'Up!</span>
-    </div>
     <a href="#play" class="skip-link">Skip to content</a>
 
     <header>
@@ -667,7 +454,7 @@
     </header>
 
     <main>
-        <section id="play" class="section-card hero-content" aria-labelledby="h1-title">
+        <section id="play" class="hero-content" aria-labelledby="h1-title">
             <h1 class="hero-title" id="h1-title">Rush'Up! - Free multiplayer party & guessing game</h1>
             <p class="slogan">Think fast, speak faster!</p>
             
@@ -675,41 +462,43 @@
                 Play around the same table or across the world! Choose your preferred game mode and guess the same deck of cards across <strong>3 intense rounds</strong>:
             </p>
 
-            <h2 style="font-size: 1.4rem; color: var(--text-main); margin-top: 10px;" id="rounds-section-title">The 3 game rounds</h2>
+            <div class="section-card hero-content" style="width: 100%;">
+                <h2 style="font-size: 1.4rem; color: var(--text-main); margin-top: 10px;" id="rounds-section-title">The 3 game rounds</h2>
 
-            <div class="rounds-intro-grid">
-                <article class="round-card">
-                    <h3 id="r1-title">💬 Round 1: free description</h3>
-                    <p id="r1-desc">Describe the card on screen speaking freely without saying the word itself. Teammates can guess as many times as they want before the timer runs out!</p>
-                </article>
-                <article class="round-card">
-                    <h3 id="r2-title">☝️ Round 2: single word clue</h3>
-                    <p id="r2-desc">The exact same deck returns! Give <strong>only one clue word</strong> per card. Be careful, your team gets only one guess per turn!</p>
-                </article>
-                <article class="round-card">
-                    <h3 id="r3-title">🎭 Round 3: mime & acting</h3>
-                    <p id="r3-desc">Absolute silence! Use body language, acting, mimes, and sound effects to help your team guess the final cards in the deck.</p>
-                </article>
-            </div>
+                <div class="rounds-intro-grid">
+                    <article class="round-card">
+                        <h3 id="r1-title">💬 Round 1: free description</h3>
+                        <p id="r1-desc">Describe the card on screen speaking freely without saying the word itself. Teammates can guess as many times as they want before the timer runs out!</p>
+                    </article>
+                    <article class="round-card">
+                        <h3 id="r2-title">☝️ Round 2: single word clue</h3>
+                        <p id="r2-desc">The exact same deck returns! Give <strong>only one clue word</strong> per card. Be careful, your team gets only one guess per turn!</p>
+                    </article>
+                    <article class="round-card">
+                        <h3 id="r3-title">🎭 Round 3: mime & acting</h3>
+                        <p id="r3-desc">Absolute silence! Use body language, acting, mimes, and sound effects to help your team guess the final cards in the deck.</p>
+                    </article>
+                </div>
 
-            <div class="mode-section">
-                <a href="https://rushupgame.github.io/localgame/" class="btn" id="cta-hero">
-                    ⚡ Play local game (100% free)
-                </a>
-                <article class="mode-card-full">
-                    <h3 id="mode-local-title">📱 Local party game (in person)</h3>
-                    <p id="mode-local-desc"><strong>One single phone for the whole room.</strong> Pass the smartphone around the table as your turn comes. Ideal for game nights, family dinners, or coffee breaks!</p>
-                </article>
-            </div>
+                <div class="mode-section">
+                    <a href="https://rushupgame.github.io/localgame/" class="btn" id="cta-hero">
+                        ⚡ Play local game (100% free)
+                    </a>
+                    <article class="mode-card-full">
+                        <h3 id="mode-local-title">📱 Local party game (in person)</h3>
+                        <p id="mode-local-desc"><strong>One single phone for the whole room.</strong> Pass the smartphone around the table as your turn comes. Ideal for game nights, family dinners, or coffee breaks!</p>
+                    </article>
+                </div>
 
-            <div class="mode-section">
-                <a href="https://rushupgame.github.io/onlinegame/" class="btn btn-secondary-action" id="cta-online">
-                    🎥 Play online video room
-                </a>
-                <article class="mode-card-full">
-                    <h3 id="mode-online-title">🎥 Online video room (remote play)</h3>
-                    <p id="mode-online-desc"><strong>Play remotely with live video.</strong> Create a private room, share the code, see everyone’s camera in real-time, and let the app handle synced timers and card decks!</p>
-                </article>
+                <div class="mode-section">
+                    <a href="https://rushupgame.github.io/onlinegame/" class="btn btn-secondary-action" id="cta-online">
+                        🎥 Play online video room
+                    </a>
+                    <article class="mode-card-full">
+                        <h3 id="mode-online-title">🎥 Online video room (remote play)</h3>
+                        <p id="mode-online-desc"><strong>Play remotely with live video.</strong> Create a private room, share the code, see everyone’s camera in real-time, and let the app handle synced timers and card decks!</p>
+                    </article>
+                </div>
             </div>
         </section>
 
