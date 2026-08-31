@@ -2498,8 +2498,24 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="https://www.paypal.com/sdk/js?client-id=Ab_-vEhX2Woi4kUQ4UWQlt-LgLnk_43miGPDSwMvV-9lYf7ANcMlXN5pR-XxahPeSggMBrdL_3Xvokak&currency=EUR&vault=true&intent=subscription"></script>
 <script>
+    // ------------------------------------------------------------------
+    // BASCULE ENVIRONNEMENT : true pour Sandbox (tests), false pour Live
+    // ------------------------------------------------------------------
+    const IS_SANDBOX = true;
+
+    const PAYPAL_CLIENT_ID = IS_SANDBOX 
+        ? "ASc59-JlaBgcQHuPlBGH72iJVuyONvZDwmuEuc-SMrRgP_LR98txizXKuuJnoXda1PdkGR0jD1gQXf1Q" 
+        : "Ab_-vEhX2Woi4kUQ4UWQlt-LgLnk_43miGPDSwMvV-9lYf7ANcMlXN5pR-XxahPeSggMBrdL_3Xvokak";
+
+    const PAYPAL_MONTHLY_PLAN_ID = IS_SANDBOX 
+        ? "P-05645804XC0005451NKKZHEI" 
+        : "P-0R229672VL7042320NKDQ7LQ";
+
+    // Chargement dynamique du SDK PayPal
+    const paypalScript = document.createElement('script');
+    paypalScript.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=EUR&vault=true&intent=subscription`;
+    document.head.appendChild(paypalScript);
     // ================================================================
     // COMPTE / VIP — même projet Supabase que Rush'Up! Live (mêmes clés,
     // mêmes offres PayPal et la même Edge Function `verify-access`), pour
@@ -3050,7 +3066,7 @@
         paypal.Buttons({
             style: { layout: 'horizontal', color: 'gold', shape: 'pill', label: 'subscribe', height: 40 },
             createSubscription: function (data, actions) {
-                return actions.subscription.create({ plan_id: 'P-0R229672VL7042320NKDQ7LQ' });
+                return actions.subscription.create({ plan_id: 'PAYPAL_MONTHLY_PLAN_ID });
             },
             onApprove: async function (data) {
                 setVipModalStatus('Activation de l\'abonnement…', 'pending');
