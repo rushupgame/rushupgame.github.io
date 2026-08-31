@@ -1748,6 +1748,30 @@
         .vip-modal-status.error { color: var(--primary); }
         .vip-modal-status.ok { color: var(--success); }
 
+        /* Overlay "paiement en cours" : pendant la vérification/activation côté serveur
+           (après la fermeture du popup PayPal), cette étape peut prendre quelques
+           secondes. Sans retour visuel fort, le joueur pense que rien ne s'est passé.
+           On recouvre toute la carte de la modale avec un spinner + message explicite,
+           qui bascule en check ✅ juste avant la fermeture/confirmation. */
+        .vip-processing-overlay {
+            position: absolute; inset: 0; z-index: 5;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            gap: 14px; text-align: center; padding: 24px;
+            background: var(--panel-90, rgba(15, 23, 42, 0.92));
+            border-radius: inherit;
+        }
+        .vip-processing-overlay.active { display: flex; }
+        .vip-processing-spinner {
+            width: 42px; height: 42px; border-radius: 50%;
+            border: 4px solid rgba(255,255,255,0.2); border-top-color: var(--primary);
+            animation: vip-spin 0.8s linear infinite;
+        }
+        .vip-processing-overlay.success .vip-processing-spinner { display: none; }
+        .vip-processing-check { display: none; font-size: 2.4rem; }
+        .vip-processing-overlay.success .vip-processing-check { display: block; }
+        .vip-processing-msg { font-size: 0.95rem; color: var(--text-main); font-weight: 600; max-width: 280px; }
+        @keyframes vip-spin { to { transform: rotate(360deg); } }
+
         /* --- Modale Connexion / Créer un compte : reprend la structure de la maquette
              fournie (titre + sous-titre alignés à gauche, sélecteur à onglets en pilule,
              champs étiquetés, gros bouton d'action pleine largeur) avec la palette de
@@ -1898,6 +1922,12 @@
 <div id="vip-modal" class="modal-overlay">
     <div class="modal-card vip-modal-card">
         <button type="button" class="vibe-modal-close" onclick="closeVipModal()" aria-label="Fermer">✕</button>
+
+        <div id="vip-processing-overlay" class="vip-processing-overlay">
+            <div class="vip-processing-spinner"></div>
+            <div class="vip-processing-check">✅</div>
+            <div class="vip-processing-msg" id="vip-processing-msg">Vérification du paiement…</div>
+        </div>
 
         <div id="vip-modal-locked-body">
             <div class="vip-modal-icon">👑</div>
@@ -2952,6 +2982,7 @@
         // renderPaypalMonthlyButton et redeemPromoCode), pas pour simplement voir les offres.
         document.getElementById('vip-modal-status').innerText = '';
         document.getElementById('vip-modal-status').className = 'vip-modal-status';
+        hideVipProcessing();
         const isVipNow = isVip();
         document.getElementById('vip-modal-locked-body').style.display = isVipNow ? 'none' : 'block';
         document.getElementById('vip-modal-already-body').style.display = isVipNow ? 'block' : 'none';
@@ -2980,6 +3011,24 @@
         const el = document.getElementById('vip-modal-status');
         el.innerText = msg;
         el.className = 'vip-modal-status' + (kind ? ' ' + kind : '');
+    }
+
+    // Overlay plein écran (dans la modale) affiché pendant la vérification/activation
+    // côté serveur, qui peut prendre plusieurs secondes : sans ça, seul le petit texte
+    // de statut change, ce qui donne l'impression que le paiement n'a pas abouti.
+    function showVipProcessing(msg) {
+        const overlay = document.getElementById('vip-processing-overlay');
+        overlay.classList.remove('success');
+        document.getElementById('vip-processing-msg').innerText = msg;
+        overlay.classList.add('active');
+    }
+    function updateVipProcessingSuccess(msg) {
+        const overlay = document.getElementById('vip-processing-overlay');
+        document.getElementById('vip-processing-msg').innerText = msg;
+        overlay.classList.add('success');
+    }
+    function hideVipProcessing() {
+        document.getElementById('vip-processing-overlay').classList.remove('active', 'success');
     }
 
     let oneTimePopup = null;
@@ -3022,6 +3071,7 @@
                 if (oneTimePopup && oneTimePopup.closed) {
                     clearInterval(oneTimePollTimer);
                     setVipModalStatus('Vérification du paiement…', 'pending');
+                    showVipProcessing('Vérification du paiement…');
                     try {
                         const capture = await supabaseClient.functions.invoke('verify-access', {
                             body: { action: 'capture-order', order_id: data.orderId, plan_type: planType }
@@ -3029,9 +3079,11 @@
                         if (capture.error || !capture.data || !capture.data.success) throw capture.error || new Error('Paiement non confirmé');
                         await checkVipStatus();
                         setVipModalStatus('✅ Paiement confirmé, VIP activé !', 'ok');
-                        setTimeout(() => openVipModal(), 900);
+                        updateVipProcessingSuccess('✅ Paiement confirmé, VIP activé !');
+                        setTimeout(() => { hideVipProcessing(); openVipModal(); }, 900);
                     } catch (e) {
                         console.error('Capture PayPal échouée :', e);
+                        hideVipProcessing();
                         setVipModalStatus("Le paiement n'a pas pu être confirmé. Réessaie ou contacte le support.", 'error');
                     }
                 }
@@ -3065,10 +3117,11 @@
         paypal.Buttons({
             style: { layout: 'horizontal', color: 'gold', shape: 'pill', label: 'subscribe', height: 40 },
             createSubscription: function (data, actions) {
-                return actions.subscription.create({ plan_id: 'PAYPAL_MONTHLY_PLAN_ID });
+                return actions.subscription.create({ plan_id: PAYPAL_MONTHLY_PLAN_ID });
             },
             onApprove: async function (data) {
                 setVipModalStatus('Activation de l\'abonnement…', 'pending');
+                showVipProcessing('Activation de l\'abonnement…');
                 try {
                     const { data: res, error } = await supabaseClient.functions.invoke('verify-access', {
                         body: { action: 'verify-subscription', subscription_id: data.subscriptionID }
@@ -3076,8 +3129,10 @@
                     if (error || !res || !res.success) throw error || new Error('Abonnement non confirmé');
                     await checkVipStatus();
                     setVipModalStatus('✅ Abonnement actif, VIP activé !', 'ok');
-                    setTimeout(() => openVipModal(), 900);
+                    updateVipProcessingSuccess('✅ Abonnement actif, VIP activé !');
+                    setTimeout(() => { hideVipProcessing(); openVipModal(); }, 900);
                 } catch (e) {
+                    hideVipProcessing();
                     setVipModalStatus("L'abonnement n'a pas pu être confirmé. Contacte le support si le prélèvement a eu lieu.", 'error');
                 }
             },
