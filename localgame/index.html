@@ -2502,7 +2502,7 @@
     // ------------------------------------------------------------------
     // BASCULE ENVIRONNEMENT : true pour Sandbox (tests), false pour Live
     // ------------------------------------------------------------------
-    const IS_SANDBOX = true;
+    const IS_SANDBOX = true; 
 
     const PAYPAL_CLIENT_ID = IS_SANDBOX 
         ? "ASc59-JlaBgcQHuPlBGH72iJVuyONvZDwmuEuc-SMrRgP_LR98txizXKuuJnoXda1PdkGR0jD1gQXf1Q" 
@@ -2512,10 +2512,9 @@
         ? "P-05645804XC0005451NKKZHEI" 
         : "P-0R229672VL7042320NKDQ7LQ";
 
-    // Chargement dynamique du SDK PayPal
-    const paypalScript = document.createElement('script');
-    paypalScript.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=EUR&vault=true&intent=subscription`;
-    document.head.appendChild(paypalScript);
+    // Chargement SYNCHRONE garanti pour éviter le bug du bouton manquant
+    document.write('<script src="https://www.paypal.com/sdk/js?client-id=' + PAYPAL_CLIENT_ID + '&currency=EUR&vault=true&intent=subscription"><\/script>');
+</script>
     // ================================================================
     // COMPTE / VIP — même projet Supabase que Rush'Up! Live (mêmes clés,
     // mêmes offres PayPal et la même Edge Function `verify-access`), pour
