@@ -1884,6 +1884,7 @@
         overflow-y: auto;
         text-align: left;
     }
+    .vip-modal-icon { font-size: 2.8rem; line-height: 1; text-align: center; }
     .vip-modal-title {
         font-size: 1.2rem; font-weight: 900; text-align: center; margin: 6px 0 2px;
         background: linear-gradient(90deg,#ffb800,#ff8c1a);
@@ -1914,6 +1915,44 @@
     .vip-modal-status.ok { color: var(--success); }
     .vip-modal-status.pending { color: var(--warning); }
     .vip-already { text-align:center; padding: 10px 0; }
+
+    /* Overlay "paiement en cours" : pendant la vérification/activation côté serveur
+       (après la fermeture du popup PayPal), cette étape peut prendre quelques
+       secondes. Sans retour visuel fort, le joueur pense que rien ne s'est passé.
+       On recouvre toute la carte de la modale avec un spinner + message explicite,
+       qui bascule en check ✅ juste avant la fermeture/confirmation. */
+    .vip-processing-overlay {
+        position: absolute; inset: 0; z-index: 5;
+        display: none; flex-direction: column; align-items: center; justify-content: center;
+        gap: 14px; text-align: center; padding: 24px;
+        background: var(--panel-90, rgba(15, 23, 42, 0.92));
+        border-radius: inherit;
+    }
+    .vip-processing-overlay.active { display: flex; }
+    .vip-processing-spinner {
+        width: 42px; height: 42px; border-radius: 50%;
+        border: 4px solid rgba(255,255,255,0.2); border-top-color: var(--primary);
+        animation: vip-spin 0.8s linear infinite;
+    }
+    .vip-processing-overlay.success .vip-processing-spinner { display: none; }
+    .vip-processing-check { display: none; font-size: 2.4rem; }
+    .vip-processing-overlay.success .vip-processing-check { display: block; }
+    .vip-processing-msg { font-size: 0.95rem; color: var(--text-main); font-weight: 600; max-width: 280px; }
+    @keyframes vip-spin { to { transform: rotate(360deg); } }
+
+    .undo-btn {
+        align-self: center;
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 4px 8px;
+        cursor: pointer;
+        text-decoration: underline;
+        display: none;
+    }
+    .undo-btn:hover, .undo-btn:active { color: var(--text-main); }
 
     .vibe-grid {
         display: grid;
@@ -2669,8 +2708,15 @@
     <div class="modal-card vip-modal-card">
         <button type="button" class="vibe-modal-close" onclick="closeVipModal()" aria-label="Fermer">✕</button>
 
+        <div id="vip-processing-overlay" class="vip-processing-overlay">
+            <div class="vip-processing-spinner"></div>
+            <div class="vip-processing-check">✅</div>
+            <div class="vip-processing-msg" id="vip-processing-msg">Vérification du paiement…</div>
+        </div>
+
         <div id="vip-modal-locked-body">
-            <div class="vip-modal-title" id="vip-modal-title">👑 VIP Pass</div>
+            <div class="vip-modal-icon">👑</div>
+            <div class="vip-modal-title" id="vip-modal-title">VIP Pass</div>
             <p class="vip-modal-sub" id="vip-modal-reason">Unlock rooms up to 24 players and all themes.</p>
 
             <div class="vip-offers">
@@ -2714,18 +2760,23 @@
         </div>
 
         <div id="vip-modal-already-body" style="display:none;">
-            <div class="vip-modal-title" id="vip-already-title">👑 You're VIP!</div>
+            <div class="vip-modal-icon">👑</div>
+            <div class="vip-modal-title" id="vip-already-title">You're VIP!</div>
             <div class="vip-already">
                 <p id="vip-already-detail">VIP access active on this account.</p>
-            </div>
-            <div class="config-group">
                 <div class="checkbox-hint" style="margin-left:0;" id="vip-already-hint">Your VIP is linked to your account <strong id="vip-account-email">—</strong>. Log in with that same account on another device to get it back automatically, no extra action needed.</div>
-                <button type="button" class="btn btn-secondary" style="margin-top:8px;" id="vip-already-signout-btn" onclick="signOutAccount()">Log out</button>
+                <!-- Action principale et sans ambiguïté juste après une activation (paiement ou
+                     code promo) : "Continuer" reprend la partie, dans le même style que les
+                     autres boutons primaires de l'app. "Se déconnecter" est volontairement
+                     relégué en second plan (lien discret) pour ne plus être le premier bouton
+                     plein rencontré par le joueur à ce moment-là. -->
+                <button type="button" class="btn btn-primary" style="margin-top:8px;" onclick="closeVipModal()" id="vip-already-continue-btn">✅ Continue</button>
+                <button type="button" class="undo-btn" style="display:block; margin: 10px auto 0;" onclick="signOutAccount()" id="vip-already-signout-btn">Log out</button>
             </div>
             <div class="vip-modal-status" id="vip-already-status"></div>
         </div>
 
-        <div class="modal-btn-row" style="margin-top:14px;">
+        <div class="modal-btn-row" style="margin-top:6px;" id="vip-modal-btn-row">
             <button type="button" class="btn btn-secondary" onclick="closeVipModal()" id="vip-modal-close-btn">Close</button>
         </div>
     </div>
@@ -3296,7 +3347,7 @@
         if (document.getElementById('auth-modal')) applyAuthModeUI();
         setText('login-footer-btn', '🔐 ' + (t.loginFooterBtn || 'Se connecter / Créer un compte'));
         // Modale VIP
-        setText('vip-modal-title', t.vipModalTitle || '👑 Passe VIP');
+        setText('vip-modal-title', t.vipModalTitle || 'Passe VIP');
         setText('vip-offer-24h-name', t.vipOffer24hName || '⏱️ Pass 24h');
         setText('vip-offer-24h-desc', t.vipOffer24hDesc);
         setText('vip-offer-24h-btn', t.vipPayPalBtn || 'Payer avec PayPal');
@@ -3308,7 +3359,8 @@
         setText('vip-promo-label', '🎟️ ' + (t.vipPromoLabel || 'Un code promo ?'));
         setText('vip-promo-btn', t.vipPromoBtn || 'Valider');
         setText('vip-modal-close-btn', t.vipModalCloseBtn || 'Fermer');
-        setText('vip-already-title', t.vipAlreadyTitle || '👑 Tu es VIP !');
+        setText('vip-already-title', t.vipAlreadyTitle || 'Tu es VIP !');
+        setText('vip-already-continue-btn', t.vipAlreadyContinueBtn || '✅ Continuer');
         setText('vip-already-signout-btn', t.vipAlreadySignoutBtn || 'Se déconnecter');
         applyVipAlreadyHint();
         // Confirmations (redémarrer / quitter le salon)
@@ -3695,6 +3747,27 @@
         el.className = 'vip-modal-status' + (kind ? ' ' + kind : '');
     }
 
+    // Overlay plein-écran (spinner -> check ✅) affiché pendant la vérification/activation
+    // côté serveur, après la fermeture du popup PayPal — cette étape peut prendre quelques
+    // secondes, sans quoi le joueur pense que rien ne s'est passé.
+    function showVipProcessing(msg) {
+        const overlay = document.getElementById('vip-processing-overlay');
+        if (!overlay) return;
+        overlay.classList.remove('success');
+        document.getElementById('vip-processing-msg').innerText = msg;
+        overlay.classList.add('active');
+    }
+    function updateVipProcessingSuccess(msg) {
+        const overlay = document.getElementById('vip-processing-overlay');
+        if (!overlay) return;
+        document.getElementById('vip-processing-msg').innerText = msg;
+        overlay.classList.add('success');
+    }
+    function hideVipProcessing() {
+        const overlay = document.getElementById('vip-processing-overlay');
+        if (overlay) overlay.classList.remove('active', 'success');
+    }
+
     // --- Achat unique (Pass 24h / Lifetime) ---------------------------------------
     // Le SDK PayPal est chargé en intent=subscription (pour le bouton mensuel), donc les
     // paiements uniques passent par l'Edge Function : elle crée la commande PayPal côté
@@ -3742,6 +3815,7 @@
                 if (oneTimePopup && oneTimePopup.closed) {
                     clearInterval(oneTimePollTimer);
                     setVipModalStatus(t.vipVerifyingPaymentMsg || 'Vérification du paiement…', 'pending');
+                    showVipProcessing(t.vipVerifyingPaymentMsg || 'Vérification du paiement…');
                     try {
                         const capture = await supabaseClient.functions.invoke('verify-access', {
                             body: { action: 'capture-order', order_id: data.orderId, plan_type: planType }
@@ -3749,9 +3823,11 @@
                         if (capture.error || !capture.data || !capture.data.success) throw capture.error || new Error('Payment not confirmed');
                         await checkVipStatus();
                         setVipModalStatus(t.vipPaymentConfirmedMsg || '✅ Paiement confirmé, VIP activé !', 'ok');
-                        setTimeout(() => openVipModal(), 900);
+                        updateVipProcessingSuccess(t.vipPaymentConfirmedMsg || '✅ Paiement confirmé, VIP activé !');
+                        setTimeout(() => { hideVipProcessing(); openVipModal(); }, 900);
                     } catch (e) {
                         console.error('Capture PayPal échouée :', e);
+                        hideVipProcessing();
                         setVipModalStatus(t.vipPaymentFailedMsg || "Le paiement n'a pas pu être confirmé. Réessaie ou contacte le support.", 'error');
                     }
                 }
@@ -3777,6 +3853,7 @@
             onApprove: async function (data) {
                 const t = translations[currentLang] || translations['en'];
                 setVipModalStatus(t.vipActivatingSubscriptionMsg || "Activation de l'abonnement…", 'pending');
+                showVipProcessing(t.vipActivatingSubscriptionMsg || "Activation de l'abonnement…");
                 try {
                     const { data: res, error } = await supabaseClient.functions.invoke('verify-access', {
                         body: { action: 'verify-subscription', subscription_id: data.subscriptionID }
@@ -3784,8 +3861,10 @@
                     if (error || !res || !res.success) throw error || new Error('Subscription not confirmed');
                     await checkVipStatus();
                     setVipModalStatus(t.vipSubscriptionActiveMsg || '✅ Abonnement actif, VIP activé !', 'ok');
-                    setTimeout(() => openVipModal(), 900);
+                    updateVipProcessingSuccess(t.vipSubscriptionActiveMsg || '✅ Abonnement actif, VIP activé !');
+                    setTimeout(() => { hideVipProcessing(); openVipModal(); }, 900);
                 } catch (e) {
+                    hideVipProcessing();
                     setVipModalStatus(t.vipSubscriptionFailedMsg || "L'abonnement n'a pas pu être confirmé. Contacte le support si le prélèvement a eu lieu.", 'error');
                 }
             },
@@ -5161,7 +5240,7 @@ const translations = {
             hmenuVipInactive: "👑 Pas encore VIP",
             vipEntryBtnActive: "👑 VIP actif",
             vipEntryBtnInactive: "👑 Passer VIP",
-            vipModalTitle: "👑 Passe VIP",
+            vipModalTitle: "Passe VIP",
             vipModalDefaultReason: "Débloque les parties à 5 joueurs ou plus (au lieu de 4 maximum en gratuit).",
             vipOffer24hName: "⏱️ Pass 24h",
             vipOffer24hDesc: "Accès VIP complet pendant 24h. Idéal pour une soirée.",
@@ -5173,7 +5252,7 @@ const translations = {
             vipPromoLabel: "Code promo :",
             vipPromoBtn: "Valider",
             vipModalCloseBtn: "Fermer",
-            vipAlreadyTitle: "👑 Tu es VIP !",
+            vipAlreadyTitle: "Tu es VIP !",
             vipAlreadyDetailUnlimited: "Formule : {plan} — accès illimité.",
             vipAlreadyDetailExpiring: "Formule : {plan} — actif jusqu'au {date}.",
             vipAlreadyHint: "Ton VIP est lié à ton compte {email}. Connecte-toi avec ce même compte sur un autre appareil pour le retrouver automatiquement.",
@@ -5564,7 +5643,7 @@ const translations = {
             hmenuVipInactive: "👑 Not VIP yet",
             vipEntryBtnActive: "👑 VIP active",
             vipEntryBtnInactive: "👑 Go VIP",
-            vipModalTitle: "👑 VIP Pass",
+            vipModalTitle: "VIP Pass",
             vipModalDefaultReason: "Unlocks games with 5 players or more (instead of a maximum of 4 in the free plan).",
             vipOffer24hName: "⏱️ 24h Pass",
             vipOffer24hDesc: "Full VIP access for 24h. Perfect for a game night.",
@@ -5576,7 +5655,7 @@ const translations = {
             vipPromoLabel: "Promo code:",
             vipPromoBtn: "Apply",
             vipModalCloseBtn: "Close",
-            vipAlreadyTitle: "👑 You're VIP!",
+            vipAlreadyTitle: "You're VIP!",
             vipAlreadyDetailUnlimited: "Plan: {plan} — unlimited access.",
             vipAlreadyDetailExpiring: "Plan: {plan} — active until {date}.",
             vipAlreadyHint: "Your VIP status is linked to your account {email}. Sign in with the same account on another device to get it back automatically.",
@@ -5967,7 +6046,7 @@ const translations = {
             hmenuVipInactive: "👑 Aún no eres VIP",
             vipEntryBtnActive: "👑 VIP activo",
             vipEntryBtnInactive: "👑 Hazte VIP",
-            vipModalTitle: "👑 Pase VIP",
+            vipModalTitle: "Pase VIP",
             vipModalDefaultReason: "Desbloquea las partidas de 5 jugadores o más (en lugar de un máximo de 4 en la versión gratuita).",
             vipOffer24hName: "⏱️ Pase 24h",
             vipOffer24hDesc: "Acceso VIP completo durante 24h. Ideal para una noche de juego.",
@@ -5979,7 +6058,7 @@ const translations = {
             vipPromoLabel: "Código promocional:",
             vipPromoBtn: "Validar",
             vipModalCloseBtn: "Cerrar",
-            vipAlreadyTitle: "👑 ¡Ya eres VIP!",
+            vipAlreadyTitle: "¡Ya eres VIP!",
             vipAlreadyDetailUnlimited: "Plan: {plan} — acceso ilimitado.",
             vipAlreadyDetailExpiring: "Plan: {plan} — activo hasta el {date}.",
             vipAlreadyHint: "Tu VIP está vinculado a tu cuenta {email}. Inicia sesión con esa misma cuenta en otro dispositivo para recuperarlo automáticamente.",
@@ -6370,7 +6449,7 @@ const translations = {
             hmenuVipInactive: "👑 尚未开通VIP",
             vipEntryBtnActive: "👑 VIP 已开通",
             vipEntryBtnInactive: "👑 开通VIP",
-            vipModalTitle: "👑 VIP 通行证",
+            vipModalTitle: "VIP 通行证",
             vipModalDefaultReason: "解锁5人及以上的游戏（免费版最多4人）。",
             vipOffer24hName: "⏱️ 24小时通行证",
             vipOffer24hDesc: "24小时完整VIP权限，非常适合游戏之夜。",
@@ -6382,7 +6461,7 @@ const translations = {
             vipPromoLabel: "优惠码：",
             vipPromoBtn: "应用",
             vipModalCloseBtn: "关闭",
-            vipAlreadyTitle: "👑 你已是VIP！",
+            vipAlreadyTitle: "你已是VIP！",
             vipAlreadyDetailUnlimited: "方案：{plan} — 无限期使用。",
             vipAlreadyDetailExpiring: "方案：{plan} — 有效期至{date}。",
             vipAlreadyHint: "你的VIP状态与账号{email}绑定。在其他设备用同一账号登录即可自动找回。",
