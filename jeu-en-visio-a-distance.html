@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- METADONNÉES SEO ULTRA-CIBLÉES : VISIO & DISTANCE -->
+    <title>Jeu de Société en Visio | Le Meilleur Jeu d'Ambiance à Distance</title>
+    <meta name="description" content="Animez vos soirées virtuelles avec le meilleur jeu à faire en visio. Devinettes, mots interdits et mimes à distance ! Salles privées, synchronisation et 100% gratuit.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="keywords" content="jeu en visio, jeu à distance entre amis, jeu d'ambiance en ligne, jeu de société en ligne visio, jeu sur zoom, faire deviner des mots en ligne, jeu multijoueur virtuel">
+    
+    <!-- CANONICAL -->
+    <link rel="canonical" href="https://www.playwhoops.com/fr/jeu-en-visio">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+
+    <!-- OPEN GRAPH -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.playwhoops.com/fr/jeu-en-visio">
+    <meta property="og:title" content="Le jeu d'ambiance ultime pour vos soirées en visio">
+    <meta property="og:description" content="Plus besoin d'être dans la même pièce pour jouer. Mimez, décrivez et faites deviner des mots à vos amis en appel vidéo !">
+    <meta property="og:image" content="https://www.playwhoops.com/og-visio-fr.jpg">
+    <meta property="og:locale" content="fr_FR">
+
+    <!-- TWITTER CARDS -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Whoops! - Jeu multijoueur à distance">
+    <meta name="twitter:description" content="Le célèbre jeu des 3 manches adapté pour vos apéros virtuels.">
+
+    <!-- SCHEMA.ORG : SOFTWARE APPLICATION -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Whoops! Mode Visio",
+      "operatingSystem": "Navigateur Web (Zoom, Meet, Teams compatibles)",
+      "applicationCategory": "GameApplication",
+      "genre": "Jeu à distance, Jeu en ligne multijoueur",
+      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "EUR" },
+      "description": "Plateforme permettant de jouer à un jeu d'ambiance (devinettes et mime) à distance via des salles virtuelles privées synchronisées."
+    }
+    </script>
+
+    <!-- SCHEMA.ORG : FAQ PAGE -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quel jeu faire en visio avec ses amis ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le jeu des devinettes en 3 manches (souvent appelé jeu du chapeau) est parfait en visio. L'application Whoops! vous permet de créer une salle synchronisée où vous pourrez voir vos amis mimer et décrire des mots en temps réel."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Faut-il télécharger un logiciel pour jouer à distance ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Non, Whoops! se joue directement sur votre navigateur web. Il suffit de partager le lien de votre salon virtuel à vos amis pour qu'ils rejoignent la partie depuis leur smartphone ou PC."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <style>
+    :root {
+        --bg-color: #f4f5f7;
+        --title-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+        --card-bg: rgba(255, 255, 255, 0.85);
+        --card-border: rgba(0, 0, 0, 0.06);
+        --primary: #ff4757;
+        --primary-hover: #ff6b81;
+        --secondary: #3b82f6; 
+        --warning: #f59e0b;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        --radius-lg: 32px;
+        --radius-md: 24px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+
+    body { background: var(--bg-color); color: var(--text-main); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 12px; overflow-x: hidden; }
+
+    .gradient-text { background: var(--title-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: #1e1b4b; }
+
+    /* SEO Utilities */
+    .seo-link { color: var(--secondary); font-weight: 600; text-decoration: none; border-bottom: 1px dotted var(--secondary); transition: all 0.2s;}
+    .seo-link:hover { color: var(--primary); border-bottom-color: var(--primary); }
+
+    header { position: sticky; top: 12px; width: 100%; max-width: 960px; z-index: 1000; margin-bottom: 28px; }
+
+    .nav-bar { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--card-border); border-radius: 50px; padding: 8px 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); }
+
+    @keyframes colorShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.3); } 70% { box-shadow: 0 0 0 14px rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } }
+
+    .brand-logo { font-size: 1.3rem; font-weight: 900; background: linear-gradient(270deg, #ff4757, #ffa502, #ff6b81, #eccc68); background-size: 300% 300%; animation: colorShift 6s ease infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; transition: transform 0.3s ease; }
+    .brand-logo:hover { transform: scale(1.05); }
+
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
+    .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.72rem; font-weight: 700; padding: 6px 9px; border-radius: 14px; white-space: nowrap; transition: background 0.3s ease, transform 0.2s ease; }
+    .nav-links a:hover { background: rgba(0, 0, 0, 0.05); transform: translateY(-2px); }
+    .nav-links a:focus-visible, .btn:focus-visible, select:focus-visible { outline: 2px solid var(--warning); outline-offset: 2px; }
+
+    .mobile-burger-btn { display: none; background: transparent; border: none; color: var(--text-main); font-size: 1.5rem; cursor: pointer; padding: 4px; }
+    .lang-select { background: rgba(0, 0, 0, 0.05); color: var(--text-main); border: 1px solid var(--card-border); padding: 4px 7px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: border-color 0.3s ease; }
+    .lang-select:hover { border-color: var(--primary); }
+
+    main { width: 100%; max-width: 960px; display: flex; flex-direction: column; gap: 48px; }
+
+    .section-card { background: var(--card-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 40px 32px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03); transition: transform 0.3s ease, border-color 0.3s ease; }
+    .hero-content { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .hero-title { font-size: 2.5rem; font-weight: 900; }
+    .slogan { background: rgba(15, 23, 42, 0.05); color: var(--text-main); border: 1px solid rgba(0, 0, 0, 0.05); padding: 8px 22px; border-radius: 20px; font-weight: 700; transition: transform 0.3s ease, background 0.3s ease; }
+    .slogan:hover { transform: scale(1.05); background: rgba(15, 23, 42, 0.08); }
+    .hero-description { color: var(--text-muted); font-size: 1.05rem; max-width: 720px; line-height: 1.6; }
+
+    .apple-features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; width: 100%; margin-top: 32px; }
+    .apple-feature-item { background: rgba(255, 255, 255, 0.6); border-radius: 24px; padding: 32px 24px; border: 1px solid var(--card-border); text-align: center; transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03); }
+    .apple-feature-item:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.9); border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08); }
+    .apple-feature-icon { font-size: 2.2rem; margin-bottom: 16px; }
+    .apple-feature-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 10px; }
+
+    .rounds-intro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; width: 100%; margin-top: 8px; text-align: left; }
+    .round-card { background: rgba(255, 255, 255, 0.6); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 24px; transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03); }
+    .round-card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.9); border-color: var(--secondary); box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08); }
+    .round-card h4 { font-size: 1.15rem; font-weight: 800; margin-bottom: 8px; }
+
+    /* Bouton Bleu (Visio) mis en avant */
+    .btn { background: var(--secondary); color: #ffffff; padding: 16px 28px; font-size: 1.1rem; font-weight: 800; border-radius: 50px; text-decoration: none; display: inline-flex; justify-content: center; width: 100%; max-width: 320px; transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease; border: none; cursor:pointer;}
+    .btn.primary-pulse { animation: pulseGlow 2.5s infinite; }
+    .btn:hover { background-color: #2563eb; transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); }
+
+    .btn-secondary-action { background: rgba(255, 71, 87, 0.1); color: var(--primary); border: 1px solid rgba(255, 71, 87, 0.3); animation: none; }
+    .btn-secondary-action:hover { background: rgba(255, 71, 87, 0.2); border-color: var(--primary); box-shadow: 0 10px 25px rgba(255, 71, 87, 0.15); }
+
+    .section-header-wrap { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; text-align: center;}
+    h2 { font-size: 1.8rem; font-weight: 800; }
+    h3.footer-heading { font-size: 1.05rem; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+    p { color: var(--text-muted); font-size: 1.02rem; line-height: 1.7; margin-bottom: 14px; }
+
+    .grid-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px; }
+    .grid-card { background: rgba(255, 255, 255, 0.6); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 24px; transition: transform 0.3s ease, border-color 0.3s ease; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03); }
+    .grid-card:hover { transform: translateY(-4px); background: rgba(255, 255, 255, 0.9); border-color: rgba(0,0,0,0.1); box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08); }
+
+    .seo-concept-block { background: rgba(255, 255, 255, 0.6); border-left: 4px solid var(--secondary); padding: 20px; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-top: 24px; transition: background 0.3s ease; }
+
+    footer { width: 100%; max-width: 960px; background: rgba(255, 255, 255, 0.85); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 40px 32px 24px; margin-top: 60px; }
+    .footer-top { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }
+    .footer-col { display: flex; flex-direction: column; gap: 12px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s ease, padding-left 0.2s ease; }
+    .footer-col a:hover { color: var(--text-main); text-decoration: underline; padding-left: 4px; }
+    .footer-bottom { border-top: 1px solid var(--card-border); padding-top: 20px; display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); margin-top: 20px; }
+
+    @media (max-width: 768px) {
+        .hero-title { font-size: 1.9rem; }
+        .mobile-burger-btn { display: block; }
+        .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(255, 255, 255, 0.95); padding: 16px; flex-direction: column; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .nav-links.open { display: flex; }
+        .grid-2x2 { grid-template-columns: 1fr; }
+        .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .brand-logo, .hero-title, .btn, .round-card, .grid-card, .slogan, .apple-feature-item {
+            animation: none !important; transition: none !important;
+        }
+    }
+
+    .faq-item { border-bottom: 1px solid var(--card-border); padding: 16px 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-item h3 { font-size: 1.05rem; margin-bottom: 6px; }
+
+    .skip-link { position: absolute; left: -999px; top: auto; background: var(--secondary); color: #fff; padding: 10px 18px; border-radius: 8px; z-index: 2000; font-weight: 700; text-decoration: none; }
+    .skip-link:focus { left: 12px; top: 12px; }
+    </style>
+</head>
+<body>
+    <a href="#play" class="skip-link">Aller au contenu</a>
+
+    <header>
+        <nav class="nav-bar" aria-label="Navigation Principale">
+            <a href="https://www.playwhoops.com/fr/" class="brand-logo" aria-label="Accueil Whoops!">Whoops!</a>
+            <div class="nav-right">
+                <ul class="nav-links" id="nav-menu" aria-hidden="false">
+                    <li><a href="https://www.playwhoops.com/fr/">🏠 Accueil</a></li>
+                    <li><a href="https://www.playwhoops.com/onlinegame/">🎥 Créer Salle Visio</a></li>
+                    <li><a href="#rules">📜 Règles à distance</a></li>
+                    <li><a href="#faq">❓ FAQ</a></li>
+                </ul>
+                
+                <select class="lang-select" aria-label="Changer de langue" onchange="window.location.href=this.value">
+                    <option value="/fr/jeu-en-visio">🇫🇷 FR</option>
+                    <option value="/en/remote-play">🇬🇧 EN</option>
+                </select>
+                
+                <button class="mobile-burger-btn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-menu" onclick="toggleMobileMenu(this)">☰</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO SECTION : 100% FOCUS DISTANCE / VISIO -->
+        <section id="play" class="hero-content" aria-labelledby="h1-title">
+            <h1 class="hero-title gradient-text" id="h1-title">Le meilleur jeu de société à faire en visio</h1>
+            <p class="slogan">Faites deviner et mimez... même à des centaines de kilomètres !</p>
+            
+            <p class="hero-description">
+                Vous en avez assez des appels vidéo monotones où tout le monde se regarde en silence ? Transformez votre prochaine session sur webcam en une compétition hilarante. Créez un salon privé, invitez vos amis, et affrontez-vous sur un <strong>jeu d'ambiance en ligne</strong> pensé spécifiquement pour être joué à distance, sans aucun téléchargement.
+            </p>
+
+            <div style="display:flex; flex-wrap:wrap; gap:16px; justify-content:center; margin-top:16px;">
+                <a href="https://www.playwhoops.com/onlinegame/" class="btn primary-pulse" style="font-size: 1.1rem; padding: 18px 36px;">🎥 Créer une salle vidéo (Gratuit)</a>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: -8px;">Aucune inscription requise. Jouable sur PC, Mac et Smartphones.</p>
+        </section>
+
+        <!-- ARGUMENTS UNIQUES POUR LE JEU VIRTUEL -->
+        <section id="features" class="section-card" style="border: none; box-shadow: none;">
+            <div class="section-header-wrap">
+                <span style="font-size: 2rem;">🌐</span>
+                <h2 class="gradient-text">La solution tout-en-un pour vos apéros virtuels</h2>
+            </div>
+            <p style="text-align: center; max-width: 760px; margin: 0 auto 32px;">
+                Organiser un <strong>jeu de devinettes à distance</strong> tourne souvent au cauchemar technique. Avec Whoops!, la technologie s'efface pour laisser place aux fous rires : notre plateforme synchronise tout automatiquement entre les écrans de chaque joueur.
+            </p>
+            
+            <div class="apple-features-grid">
+                <article class="apple-feature-item">
+                    <div class="apple-feature-icon">📹</div>
+                    <h3 class="apple-feature-title gradient-text">Webcam et Audio intégrés</h3>
+                    <p style="margin-bottom: 0;">Inutile de superposer Zoom, Teams ou Discord et une page web. Whoops! vous permet d'activer votre caméra directement dans la salle de jeu.</p>
+                </article>
+                <article class="apple-feature-item">
+                    <div class="apple-feature-icon">⏱️</div>
+                    <h3 class="apple-feature-title gradient-text">Chronomètre Synchronisé</h3>
+                    <p style="margin-bottom: 0;">Le sablier virtuel s'affiche en temps réel chez tout le monde, au dixième de seconde près. Fini les triches et les décalages !</p>
+                </article>
+                <article class="apple-feature-item">
+                    <div class="apple-feature-icon">🔗</div>
+                    <h3 class="apple-feature-title gradient-text">Invitation par lien simple</h3>
+                    <p style="margin-bottom: 0;">L'hôte crée la partie et partage un code à 4 chiffres ou un lien. Vos amis cliquent, entrent leur pseudo, et la partie multijoueur commence.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- ADAPTATION DES RÈGLES AU FORMAT WEBCAM -->
+        <section id="rules" class="section-card hero-content" style="width: 100%;">
+            <h2 class="gradient-text" style="font-size: 1.6rem;">Comment se déroule une partie virtuelle en 3 manches ?</h2>
+            
+            <article class="seo-concept-block" style="margin-top: 0; margin-bottom: 24px; text-align: left; width: 100%;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                    <span style="font-size: 1.3rem;">💡</span>
+                    <h3 class="gradient-text" style="font-size: 1.15rem; margin-bottom: 0;">Un classique de l'animation repensé pour Internet</h3>
+                </div>
+                <p style="margin-bottom: 0;">
+                    Le concept reprend la célèbre mécanique du <em>jeu des célébrités</em> (ou jeu du chapeau). Les mêmes cartes vont revenir à chaque phase pour faire travailler la mémoire de votre équipe, malgré la distance. Préparez vos cordes vocales et dégagez l'espace devant votre ordinateur !
+                </p>
+            </article>
+
+            <div class="rounds-intro-grid">
+                <article class="round-card">
+                    <div style="font-size: 2rem; margin-bottom: 12px;">🎙️</div>
+                    <h4 class="gradient-text">1. Parlez dans le micro</h4>
+                    <p style="margin-bottom: 0;">L'application affiche un mot sur votre écran. Décrivez-le librement à votre équipe connectée. Vos amis doivent crier leurs réponses dans le chat vocal avant la fin du temps imparti.</p>
+                </article>
+                <article class="round-card">
+                    <div style="font-size: 2rem; margin-bottom: 12px;">🎯</div>
+                    <h4 class="gradient-text">2. Le mot-clé percutant</h4>
+                    <p style="margin-bottom: 0;">Le logiciel remélange virtuellement les mêmes cartes. Cette fois, donnez <strong>un seul mot indice</strong> par micro. La mémoire collective fera le reste de l'autre côté de l'écran.</p>
+                </article>
+                <article class="round-card">
+                    <div style="font-size: 2rem; margin-bottom: 12px;">🎭</div>
+                    <h4 class="gradient-text">3. Mimez face caméra</h4>
+                    <p style="margin-bottom: 0;">Reculez votre chaise et allumez votre caméra ! Coupez votre micro et mimez les cartes. C'est le moment où le jeu de société en ligne prend tout son sens visuel.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- CAS D'USAGE SEO (POUR QUI ?) -->
+        <section id="use-cases" class="section-card">
+            <div class="section-header-wrap">
+                <span style="font-size: 1.8rem;">🌍</span>
+                <h2 class="gradient-text">Fédérer malgré l'éloignement géographique</h2>
+            </div>
+            <p>
+                L'organisation d'événements virtuels demande des outils fiables. Ce mode en ligne est massivement utilisé par notre communauté pour ces occasions précises :
+            </p>
+            <div class="grid-2x2">
+                <article class="grid-card">
+                    <div style="font-size: 1.8rem; margin-bottom: 10px;">🍻</div>
+                    <h3 class="gradient-text">Groupes d'amis éloignés</h3>
+                    <p style="margin-bottom: 0;">Vous avez déménagé loin de votre cercle historique ? Maintenez la tradition de la soirée jeux du vendredi soir en quelques clics, comme si vous étiez dans le même salon.</p>
+                </article>
+                <article class="grid-card">
+                    <div style="font-size: 1.8rem; margin-bottom: 10px;">💼</div>
+                    <h3 class="gradient-text">Icebreaker d'Entreprise</h3>
+                    <p style="margin-bottom: 0;">Idéal pour les équipes en télétravail (Remote). Lancez une partie rapide de 15 minutes à la fin d'une réunion Teams pour ressouder vos collaborateurs grâce à ce <a href="https://www.playwhoops.com/" class="seo-link">team building en ligne gratuit</a>.</p>
+                </article>
+                <article class="grid-card">
+                    <div style="font-size: 1.8rem; margin-bottom: 10px;">🎄</div>
+                    <h3 class="gradient-text">Familles expatriées</h3>
+                    <p style="margin-bottom: 0;">Réunissez les cousins, les oncles et les grands-parents qui habitent dans d'autres pays. Le pack de cartes "Enfants" permet d'intégrer toutes les générations au même appel vidéo.</p>
+                </article>
+                <article class="grid-card">
+                    <div style="font-size: 1.8rem; margin-bottom: 10px;">☔</div>
+                    <h3 class="gradient-text">Soirées pluvieuses</h3>
+                    <p style="margin-bottom: 0;">Une tempête empêche vos invités de venir chez vous ? Ne repoussez pas votre apéritif : transformez-le en session de mime sur webcam.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- FAQ SPÉCIFIQUE AU JEU MULTIJOUEUR EN LIGNE -->
+        <section id="faq" class="section-card">
+            <div class="section-header-wrap">
+                <span style="font-size: 1.8rem;">❓</span>
+                <h2 class="gradient-text">Questions fréquentes sur le jeu à distance</h2>
+            </div>
+            <div class="faq-item">
+                <h3 class="gradient-text">Peut-on utiliser le jeu sur Zoom, Skype ou Google Meet ?</h3>
+                <p style="margin-bottom: 0;">Oui, c'est tout à fait possible ! Vous pouvez soit utiliser notre système de vidéo intégré à la salle de jeu, soit lancer un appel Zoom classique à côté et utiliser Whoops! uniquement pour gérer les cartes, les règles et le chronomètre de votre partie.</p>
+            </div>
+            <div class="faq-item">
+                <h3 class="gradient-text">Que se passe-t-il si un joueur a une mauvaise connexion internet ?</h3>
+                <p style="margin-bottom: 0;">Le jeu a été conçu pour être très léger. Si la vidéo d'un joueur fige, le chronomètre et l'affichage des mots restent prioritaires et synchronisés. Vous pourrez toujours l'entendre donner ses indices lors des manches 1 et 2.</p>
+            </div>
+            <div class="faq-item">
+                <h3 class="gradient-text">Y a-t-il une limite de joueurs dans le salon virtuel ?</h3>
+                <p style="margin-bottom: 0;">Pour garantir la meilleure expérience de jeu d'ambiance et éviter la cacophonie vocale, nous recommandons de jouer entre 4 et 12 joueurs (répartis en 2 ou 3 équipes équilibrées).</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-top">
+            <div class="footer-col">
+                <h3 class="footer-heading">Whoops! Game</h3>
+                <p style="font-size: 0.88rem; margin-bottom: 0;">Le party game numérique pour abolir les distances. Mimez, riez et partagez des moments inoubliables avec vos proches, où qu'ils soient.</p>
+            </div>
+            <div class="footer-col">
+                <h3 class="footer-heading">Navigation Rapide</h3>
+                <ul>
+                    <li><a href="https://www.playwhoops.com/onlinegame/">Lancer un Salon Visio</a></li>
+                    <li><a href="https://www.playwhoops.com/localgame/">Mode Local (Présentiel)</a></li>
+                    <li><a href="https://www.playwhoops.com/fr/">Accueil & Thèmes de cartes</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3 class="footer-heading">Projet & Communauté</h3>
+                <ul>
+                    <li><a href="https://www.paypal.com/donate?hosted_button_id=2NGJSLT76DX2G" target="_blank" rel="noopener noreferrer">☕ Payer un café au développeur</a></li>
+                    <li><a href="https://www.playwhoops.com/fr/#legal">Mentions Légales & CGU</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>© 2026 <strong>Whoops!</strong> - Page d'informations : Jeu en Visio.</div>
+            <div>Hébergement vert propulsé par <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a></div>
+        </div>
+    </footer>
+
+    <script>
+    function toggleMobileMenu(btn) {
+        const menu = document.getElementById('nav-menu');
+        const isOpen = menu.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen);
+        menu.setAttribute('aria-hidden', !isOpen);
+    }
+    </script>
+</body>
+</html>
