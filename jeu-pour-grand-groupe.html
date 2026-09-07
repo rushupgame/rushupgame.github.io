@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- METADONNÉES SEO : GRAND GROUPE & MULTIJOUEUR MASSIF -->
+    <title>Jeu pour Grand Groupe | Le Jeu d'Ambiance pour 8, 10 ou 15 personnes</title>
+    <meta name="description" content="Vous êtes nombreux ? Découvrez le meilleur jeu pour grand groupe ! Un jeu d'ambiance gratuit jouable de 6 à 20 personnes sans aucun matériel. Fous rires garantis.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="keywords" content="jeu pour grand groupe, jeu de société 10 personnes, jeu grand groupe adulte, jeu de groupe sans matériel, animation grand comité, jeu multijoueur équipe, jeu de soirée 8 joueurs">
+    
+    <!-- CANONICAL -->
+    <link rel="canonical" href="https://www.playwhoops.com/fr/jeu-pour-grand-groupe">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+
+    <!-- OPEN GRAPH -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.playwhoops.com/fr/jeu-pour-grand-groupe">
+    <meta property="og:title" content="L'animation parfaite quand vous êtes très nombreux">
+    <meta property="og:description" content="Impossible de trouver un jeu pour 12 personnes ? Formez des équipes et affrontez-vous sur ce jeu de devinettes gratuit avec un seul téléphone.">
+    <meta property="og:image" content="https://www.playwhoops.com/og-grand-groupe-fr.jpg">
+    <meta property="og:locale" content="fr_FR">
+
+    <!-- SCHEMA.ORG : SOFTWARE APPLICATION (Focus Grand Groupe) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Whoops! Jeu en Équipe",
+      "operatingSystem": "Navigateur Web, iOS, Android",
+      "applicationCategory": "GameApplication",
+      "genre": "Jeu de Groupe, Jeu d'équipe, Multijoueur",
+      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "EUR" },
+      "description": "Whoops! est un jeu de société en ligne gratuit conçu pour les grands groupes. Jouable de 4 à 20 joueurs, il permet de former plusieurs équipes pour deviner et mimer des mots."
+    }
+    </script>
+
+    <!-- SCHEMA.ORG : FAQ PAGE (Requêtes "Jeu 10 personnes") -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quel jeu de société faire à 10 personnes ou plus ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Les jeux de devinettes et de mime en équipe sont les meilleurs pour les grands groupes. Avec Whoops!, vous pouvez faire jouer jusqu'à 20 personnes en créant 2, 3 ou 4 équipes qui s'affrontent avec un seul téléphone."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment animer une soirée avec beaucoup d'invités sans matériel ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Utilisez le jeu gratuit Whoops! sur votre smartphone. Il gère les mots, le chronomètre et les scores. Vous n'avez besoin d'aucune boîte de jeu, ce qui est idéal pour les grands comités."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <style>
+    :root {
+        --bg-color: #f4f5f7;
+        --title-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+        --card-bg: rgba(255, 255, 255, 0.85);
+        --card-border: rgba(0, 0, 0, 0.06);
+        --primary: #ff4757;
+        --primary-hover: #ff6b81;
+        --secondary: #3b82f6; 
+        --warning: #f59e0b;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        --radius-lg: 32px;
+        --radius-md: 24px;
+    }
+
+    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--bg-color); color: var(--text-main); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 12px; overflow-x: hidden; }
+
+    .gradient-text { background: var(--title-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: #1e1b4b; }
+    
+    .seo-link { color: var(--primary); font-weight: 600; text-decoration: none; border-bottom: 1px dotted var(--primary); transition: all 0.2s;}
+    .seo-link:hover { color: var(--primary-hover); border-bottom-color: var(--primary-hover); }
+
+    header { position: sticky; top: 12px; width: 100%; max-width: 960px; z-index: 1000; margin-bottom: 28px; }
+    .nav-bar { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--card-border); border-radius: 50px; padding: 8px 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); }
+
+    @keyframes colorShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.3); } 70% { box-shadow: 0 0 0 14px rgba(255, 71, 87, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); } }
+
+    .brand-logo { font-size: 1.3rem; font-weight: 900; background: linear-gradient(270deg, #ff4757, #ffa502, #ff6b81, #eccc68); background-size: 300% 300%; animation: colorShift 6s ease infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; transition: transform 0.3s ease; }
+    .brand-logo:hover { transform: scale(1.05); }
+
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
+    .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.72rem; font-weight: 700; padding: 6px 9px; border-radius: 14px; white-space: nowrap; transition: background 0.3s ease, transform 0.2s ease; }
+    .nav-links a:hover { background: rgba(0, 0, 0, 0.05); transform: translateY(-2px); }
+    
+    .mobile-burger-btn { display: none; background: transparent; border: none; color: var(--text-main); font-size: 1.5rem; cursor: pointer; padding: 4px; }
+    .lang-select { background: rgba(0, 0, 0, 0.05); color: var(--text-main); border: 1px solid var(--card-border); padding: 4px 7px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: border-color 0.3s ease; }
+
+    main { width: 100%; max-width: 960px; display: flex; flex-direction: column; gap: 48px; }
+
+    .section-card { background: var(--card-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 40px 32px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03); transition: transform 0.3s ease, border-color 0.3s ease; }
+    
+    .hero-content { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .hero-title { font-size: 2.5rem; font-weight: 900; }
+    .slogan { background: rgba(15, 23, 42, 0.05); color: var(--text-main); border: 1px solid rgba(0, 0, 0, 0.05); padding: 8px 22px; border-radius: 20px; font-weight: 700; transition: transform 0.3s ease, background 0.3s ease; }
+    .hero-description { color: var(--text-muted); font-size: 1.05rem; max-width: 720px; line-height: 1.6; }
+
+    .apple-features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; width: 100%; margin-top: 32px; }
+    .apple-feature-item { background: rgba(255, 255, 255, 0.6); border-radius: 24px; padding: 32px 24px; border: 1px solid var(--card-border); text-align: center; transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03); }
+    .apple-feature-item:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.9); border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08); }
+    .apple-feature-icon { font-size: 2.2rem; margin-bottom: 16px; }
+    .apple-feature-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 10px; }
+
+    .rounds-intro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; width: 100%; margin-top: 8px; text-align: left; }
+    .round-card { background: rgba(255, 255, 255, 0.6); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 24px; transition: transform 0.3s ease, border-color 0.3s ease; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03); }
+    .round-card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.9); border-color: var(--primary); box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08); }
+    .round-card h4 { font-size: 1.15rem; font-weight: 800; margin-bottom: 8px; }
+
+    .btn { background: var(--primary); color: #ffffff; padding: 16px 28px; font-size: 1.1rem; font-weight: 800; border-radius: 50px; text-decoration: none; display: inline-flex; justify-content: center; width: 100%; max-width: 320px; transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease; border: none; cursor:pointer;}
+    .btn.primary-pulse { animation: pulseGlow 2.5s infinite; }
+    .btn:hover { background-color: var(--primary-hover); transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 25px rgba(255, 71, 87, 0.3); }
+
+    .section-header-wrap { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; text-align: center;}
+    h2 { font-size: 1.8rem; font-weight: 800; }
+    h3.footer-heading { font-size: 1.05rem; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+    p { color: var(--text-muted); font-size: 1.02rem; line-height: 1.7; margin-bottom: 14px; }
+
+    .grid-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px; }
+    .grid-card { background: rgba(255, 255, 255, 0.6); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 24px; transition: transform 0.3s ease, border-color 0.3s ease; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03); }
+    .grid-card:hover { transform: translateY(-4px); background: rgba(255, 255, 255, 0.9); border-color: rgba(0,0,0,0.1); box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08); }
+
+    .seo-concept-block { background: rgba(255, 255, 255, 0.6); border-left: 4px solid var(--primary); padding: 20px; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-top: 24px; transition: background 0.3s ease; }
+
+    footer { width: 100%; max-width: 960px; background: rgba(255, 255, 255, 0.85); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 40px 32px 24px; margin-top: 60px; }
+    .footer-top { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }
+    .footer-col { display: flex; flex-direction: column; gap: 12px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s ease, padding-left 0.2s ease; }
+    .footer-col a:hover { color: var(--text-main); text-decoration: underline; padding-left: 4px; }
+    .footer-bottom { border-top: 1px solid var(--card-border); padding-top: 20px; display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); margin-top: 20px; }
+
+    @media (max-width: 768px) {
+        .hero-title { font-size: 1.9rem; }
+        .mobile-burger-btn { display: block; }
+        .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(255, 255, 255, 0.95); padding: 16px; flex-direction: column; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .nav-links.open { display: flex; }
+        .grid-2x2 { grid-template-columns: 1fr; }
+        .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
+    }
+    .faq-item { border-bottom: 1px solid var(--card-border); padding: 16px 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .skip-link { position: absolute; left: -999px; top: auto; background: var(--primary); color: #fff; padding: 10px 18px; border-radius: 8px; z-index: 2000; font-weight: 700; text-decoration: none; }
+    .skip-link:focus { left: 12px; top: 12px; }
+    </style>
+</head>
+<body>
+    <a href="#play" class="skip-link">Aller au contenu</a>
+
+    <header>
+        <nav class="nav-bar" aria-label="Navigation Principale">
+            <a href="https://www.playwhoops.com/fr/" class="brand-logo" aria-label="Accueil Whoops!">Whoops!</a>
+            <div class="nav-right">
+                <ul class="nav-links" id="nav-menu" aria-hidden="false">
+                    <li><a href="https://www.playwhoops.com/fr/">🏠 Accueil</a></li>
+                    <li><a href="https://www.playwhoops.com/localgame/">👥 Jouer en Équipe</a></li>
+                    <li><a href="#rules">📜 Règles Grand Comité</a></li>
+                    <li><a href="#faq">❓ FAQ Équipes</a></li>
+                </ul>
+                
+                <select class="lang-select" aria-label="Changer de langue" onchange="window.location.href=this.value">
+                    <option value="/fr/jeu-pour-grand-groupe">🇫🇷 FR</option>
+                    <option value="/en/large-group-game">🇬🇧 EN</option>
+                </select>
+                
+                <button class="mobile-burger-btn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-menu" onclick="toggleMobileMenu(this)">☰</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO SECTION : 100% FOCUS GRAND GROUPE / 10+ JOUEURS -->
+        <section id="play" class="hero-content" aria-labelledby="h1-title">
+            <h1 class="hero-title gradient-text" id="h1-title">Le meilleur jeu pour grand groupe (8 à 20 personnes)</h1>
+            <p class="slogan">Vous êtes nombreux ? Oubliez les boîtes de jeu classiques !</p>
+            
+            <p class="hero-description">
+                Organiser une activité quand on est 10, 12 ou 15 invités relève souvent du défi. La plupart des jeux s'arrêtent à 6 joueurs. Avec Whoops!, tout le monde participe ! Formez des équipes, désignez un orateur, et affrontez-vous dans un <strong>jeu de devinettes multijoueur massif</strong>, le tout avec un seul téléphone au centre du salon.
+            </p>
+
+            <div style="display:flex; flex-wrap:wrap; gap:16px; justify-content:center; margin-top:16px;">
+                <a href="https://www.playwhoops.com/localgame/" class="btn primary-pulse" style="font-size: 1.1rem; padding: 18px 36px;">👥 Lancer une partie en équipe</a>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: -8px;">Idéal pour les grandes familles et les gros apéros. 100% gratuit.</p>
+        </section>
+
+        <!-- POURQUOI C'EST L'IDÉAL POUR LES GROUPES -->
+        <section id="features" class="section-card" style="border: none; box-shadow: none;">
+            <div class="section-header-wrap">
+                <span style="font-size: 2rem;">📣</span>
+                <h2 class="gradient-text">Comment faire jouer 15 personnes ensemble ?</h2>
+            </div>
+            <p style="text-align: center; max-width: 760px; margin: 0 auto 32px;">
+                Le problème des grands comités, c'est le temps d'attente entre les tours. Notre <a href="https://www.playwhoops.com/fr/" class="seo-link">jeu par équipe sans matériel</a> est pensé pour que personne ne s'ennuie jamais, même quand ce n'est pas à vous de jouer.
+            </p>
+            
+            <div class="apple-features-grid">
+                <article class="apple-feature-item">
+                    <div class="apple-feature-icon">🤝</div>
+                    <h3 class="apple-feature-title gradient-text">Intelligence Collective</h3>
+                    <p style="margin-bottom: 0;">Un joueur décrit ou mime, les 4 ou 5 autres membres de son équipe crient les réponses en même temps. Le chaos parfait pour briser la glace.</p>
+                </article>
+                <article class="apple-feature-item">
+                    <div class="apple-feature-icon">📊</div>
+                    <h3 class="apple-feature-title gradient-text">Gestion Multi-équipes</h3>
+                    <p style="margin-bottom: 0;">L'application peut gérer jusqu'à 4 équipes distinctes. Elle vous dit exactement à qui c'est le tour et compte les points sans erreur.</p>
+                </article>
+                <article class="apple-feature-item">
+                    <div class="apple-feature-icon">📱</div>
+                    <h3 class="apple-feature-title gradient-text">Un seul écran suffit</h3>
+                    <p style="margin-bottom: 0;">Inutile de créer 15 comptes. Un seul smartphone circule de main en main dans la pièce. L'installation prend littéralement 20 secondes.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- MÉCANIQUE POUR LES GRANDS GROUPES -->
+        <section id="rules" class="section-card hero-content" style="width: 100%;">
+            <h2 class="gradient-text" style="font-size: 1.6rem;">Le déroulement d'une partie géante en 3 manches</h2>
+            
+            <article class="seo-concept-block" style="margin-top: 0; margin-bottom: 24px; text-align: left; width: 100%;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                    <span style="font-size: 1.3rem;">💡</span>
+                    <h3 class="gradient-text" style="font-size: 1.15rem; margin-bottom: 0;">Le secret ? Tout le monde écoute !</h3>
+                </div>
+                <p style="margin-bottom: 0;">
+                    Dans ce jeu, l'équipe qui ne joue pas doit être tout aussi attentive que l'équipe active. Pourquoi ? Parce que les mots non trouvés vont revenir dans le paquet ! Une grande assemblée qui écoute religieusement avant d'éclater de rire : c'est la promesse de Whoops!.
+                </p>
+            </article>
+
+            <div class="rounds-intro-grid">
+                <article class="round-card">
+                    <div style="font-size: 2rem; margin-bottom: 12px;">🗣️</div>
+                    <h4 class="gradient-text">1. Parlez tous en même temps</h4>
+                    <p style="margin-bottom: 0;">L'orateur décrit sa carte. Son équipe de 3, 4 ou 5 personnes lance toutes les idées qui lui passent par la tête. Le bruit et l'excitation sont à leur comble.</p>
+                </article>
+                <article class="round-card">
+                    <div style="font-size: 2rem; margin-bottom: 12px;">🤫</div>
+                    <h4 class="gradient-text">2. Un mot, une chance</h4>
+                    <p style="margin-bottom: 0;">L'orateur ne donne qu'un seul mot indice. Toute l'équipe doit se taire, se concerter du regard, et donner LA bonne réponse. La tension redescend, la tactique s'installe.</p>
+                </article>
+                <article class="round-card">
+                    <div style="font-size: 2rem; margin-bottom: 12px;">🎭</div>
+                    <h4 class="gradient-text">3. Le mime devant 15 personnes</h4>
+                    <p style="margin-bottom: 0;">Levez-vous, mettez-vous au centre de la pièce et mimez. Faire le clown devant un grand groupe est le meilleur moyen de créer des souvenirs mémorables pour la soirée.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- CAS D'USAGE (FÊTES XXL) -->
+        <section id="use-cases" class="section-card">
+            <div class="section-header-wrap">
+                <span style="font-size: 1.8rem;">🎪</span>
+                <h2 class="gradient-text">L'animation des grands événements</h2>
+            </div>
+            <p>
+                Gérer une grosse foule d'invités demande les bonnes activités. Ce format d'<strong>animation pour grand comité</strong> est plébiscité lors de ces occasions :
+            </p>
+            <div class="grid-2x2">
+                <article class="grid-card">
+                    <div style="font-size: 1.8rem; margin-bottom: 10px;">🎂</div>
+                    <h3 class="gradient-text">Les gros Anniversaires</h3>
+                    <p style="margin-bottom: 0;">Quand on fête ses 30 ou 40 ans, on mélange souvent les amis d'enfance, du travail et de l'université. Ce jeu en équipe force les groupes à se mélanger !</p>
+                </article>
+                <article class="grid-card">
+                    <div style="font-size: 1.8rem; margin-bottom: 10px;">🏠</div>
+                    <h3 class="gradient-text">Cousinades et Nouvel An</h3>
+                    <p style="margin-bottom: 0;">20 personnes dans un grand gîte rural ? Aucun problème. Divisez la salle en 4 équipes (Les Rouges, Les Bleus, etc.) et lancez le tournoi intergénérationnel.</p>
+                </article>
+                <article class="grid-card">
+                    <div style="font-size: 1.8rem; margin-bottom: 10px;">🎓</div>
+                    <h3 class="gradient-text">Soirées d'Intégration (BDE)</h3>
+                    <p style="margin-bottom: 0;">Un excellent moyen de briser la glace lors d'une rentrée étudiante avec des dizaines de personnes qui ne se connaissent pas encore.</p>
+                </article>
+                <article class="grid-card">
+                    <div style="font-size: 1.8rem; margin-bottom: 10px;">🏢</div>
+                    <h3 class="gradient-text">Séminaires d'Entreprise</h3>
+                    <p style="margin-bottom: 0;">L'activité de fin de journée par excellence après une longue plénière. Jouez même sur un grand écran de salle de réunion si besoin.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- FAQ GRAND GROUPE -->
+        <section id="faq" class="section-card">
+            <div class="section-header-wrap">
+                <span style="font-size: 1.8rem;">❓</span>
+                <h2 class="gradient-text">Questions fréquentes (Multijoueur)</h2>
+            </div>
+            <div class="faq-item">
+                <h3 class="gradient-text">Y a-t-il une limite stricte de joueurs ?</h3>
+                <p style="margin-bottom: 0;">Techniquement, l'application n'impose aucune limite[cite: 1]. Cependant, pour que chaque joueur puisse prendre le téléphone au moins une fois pour mimer ou décrire, nous recommandons de ne pas dépasser 20 à 25 personnes (ex: 4 équipes de 5 joueurs). Au-delà, l'attention diminue.</p>
+            </div>
+            <div class="faq-item">
+                <h3 class="gradient-text">Comment gérer le temps avec autant de monde ?</h3>
+                <p style="margin-bottom: 0;">Lorsqu'il y a beaucoup d'équipes, la partie peut s'allonger. Nous vous conseillons de réduire le chronomètre de l'application à 45 ou 30 secondes par tour au lieu des 60 secondes classiques. Le jeu sera plus dynamique et les tours s'enchaîneront plus vite !</p>
+            </div>
+            <div class="faq-item">
+                <h3 class="gradient-text">Peut-on projeter le jeu sur une télévision ?</h3>
+                <p style="margin-bottom: 0;">Oui ! Bien que le format classique consiste à se passer le téléphone[cite: 1], vous pouvez tout à fait partager l'écran de votre smartphone sur une Apple TV, un Chromecast ou ouvrir l'application web directement sur l'écran interactif d'une salle des fêtes.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-top">
+            <div class="footer-col">
+                <h3 class="footer-heading">Whoops! Groupes</h3>
+                <p style="font-size: 0.88rem; margin-bottom: 0;">La solution gratuite pour faire jouer 10, 15 ou 20 personnes ensemble[cite: 1]. Finies les soirées où la moitié des invités regarde les autres s'amuser.</p>
+            </div>
+            <div class="footer-col">
+                <h3 class="footer-heading">Naviguer</h3>
+                <ul>
+                    <li><a href="https://www.playwhoops.com/localgame/">Lancer le mode multijoueur</a></li>
+                    <li><a href="https://www.playwhoops.com/onlinegame/">Tester aussi à distance</a></li>
+                    <li><a href="https://www.playwhoops.com/fr/">Page d'accueil Whoops!</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3 class="footer-heading">Infos Légales</h3>
+                <ul>
+                    <li><a href="https://www.paypal.com/donate?hosted_button_id=2NGJSLT76DX2G" target="_blank" rel="noopener noreferrer">🎉 Faire un don au créateur</a></li>
+                    <li><a href="https://www.playwhoops.com/fr/#legal">CGU & Mentions Légales</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>© 2026 <strong>Whoops!</strong> - Landing Page : Jeux pour grands groupes.</div>
+            <div>Hébergé gracieusement sur <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a></div>
+        </div>
+    </footer>
+
+    <script>
+    function toggleMobileMenu(btn) {
+        const menu = document.getElementById('nav-menu');
+        const isOpen = menu.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen);
+        menu.setAttribute('aria-hidden', !isOpen);
+    }
+    </script>
+</body>
+</html>
