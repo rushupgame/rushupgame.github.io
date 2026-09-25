@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>La Nuit des Loups - Édition Définitive</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blood: #b91c1c;
+  --blood-light: #e11d48;
+  --gold: #d97706;
+  --gold-light: #fbbf24;
+  --dark-bg: #0f172a;
+  --light-bg: #f8fafc;
+  --text-dark: #0f172a;
+  --text-light: #f8fafc;
+  
+  --radius: 16px;
+  --radius-sm: 10px;
+  --font-title: 'Cinzel', serif;
+  --font-text: 'Nunito', sans-serif;
+
+  /* THEME NUIT */
+  --bg: var(--dark-bg);
+  --surface: rgba(30, 41, 59, 0.85);
+  --border: rgba(225, 29, 72, 0.3);
+  --text: var(--text-light);
+  --text-muted: #94a3b8;
+  --accent: var(--blood-light);
+  --highlight: var(--gold-light);
+  --input-bg: rgba(15, 23, 42, 0.6);
+}
+
+body.theme-day {
+  /* THEME JOUR */
+  --bg: var(--light-bg);
+  --surface: rgba(255, 255, 255, 0.95);
+  --border: rgba(217, 119, 6, 0.4);
+  --text: var(--text-dark);
+  --text-muted: #475569;
+  --accent: var(--blood);
+  --highlight: var(--gold);
+  --input-bg: rgba(248, 250, 252, 0.8);
+}
+
+*{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+body { margin:0; min-height:100dvh; color:var(--text); font-family:var(--font-text); display:flex; flex-direction:column; align-items:center; padding:max(20px,env(safe-area-inset-top)) 16px max(40px,env(safe-area-inset-bottom)); -webkit-user-select:none; user-select:none; overflow-x:hidden; transition: color 0.8s ease; }
+
+body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -2; background: radial-gradient(circle at top, #1e293b, #020617); transition: opacity 1.5s ease; }
+body::after { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -3; background: linear-gradient(135deg, #e0f2fe 0%, #fef9c3 100%); }
+body.theme-day::before { opacity: 0; }
+input { -webkit-user-select:text; user-select:text; font-family:var(--font-text); }
+
+.header-top { display:flex; justify-content:space-between; align-items:center; width:100%; max-width:520px; margin-bottom:15px; }
+h1 { font-family:var(--font-title); font-size:1.8rem; font-weight:800; color:var(--highlight); margin:0; text-align:center; text-transform:uppercase; letter-spacing:2px; text-shadow: 0 0 15px rgba(217,119,6,0.3); line-height:1.2;}
+h2 { font-family:var(--font-title); margin:0 0 16px; font-size:1.5rem; text-align:center; color:var(--accent); letter-spacing:1px; transition: color 0.8s;}
+h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var(--highlight); text-align:center }
+
+.icon-btn { background:var(--surface); border:1px solid var(--border); color:var(--text); border-radius:var(--radius-sm); width:45px; height:45px; font-size:1.4rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
+.icon-btn:active { transform:scale(0.9); }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px; width:100%; max-width:520px; margin-bottom:20px; backdrop-filter:blur(12px); box-shadow:0 10px 30px rgba(0,0,0,0.3); transition: all 0.8s ease; }
+.config-group { display:flex; flex-direction:column; gap:12px; margin-bottom:16px }
+.config-group input { background:var(--input-bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; color:var(--text); font-size:1.1rem; width:100%; text-align:center; transition:all 0.3s; }
+.config-group input:focus { outline:none; border-color:var(--highlight); box-shadow:0 0 10px rgba(217,119,6,0.3) }
+
+.btn { display:flex; justify-content:center; align-items:center; gap:10px; width:100%; padding:18px 16px; border-radius:var(--radius-sm); border:none; font-weight:900; font-size:1.15rem; cursor:pointer; margin-top:10px; color:#fff; background:linear-gradient(135deg, var(--blood-light), var(--blood)); box-shadow:0 6px 15px rgba(225,29,72,0.3); transition:all 0.2s; text-transform:uppercase; letter-spacing:1px; font-family:var(--font-title) }
+.btn:active { transform:translateY(3px); box-shadow:0 2px 5px rgba(225,29,72,0.3) }
+.btn-secondary { background:transparent; color:var(--text); border:2px solid var(--text-muted); box-shadow:none }
+.btn-highlight { background:linear-gradient(135deg, var(--gold-light), var(--gold)); color:#000; box-shadow:0 6px 15px rgba(217,119,6,0.3) }
+.btn:disabled { opacity:.5; cursor:not-allowed; box-shadow:none; background:#475569; color:#94a3b8; border:none; }
+
+.screen { display:none; width:100%; max-width:520px; flex-direction:column; align-items:center }
+.screen.active { display:flex; animation:fadeIn 0.4s ease-out }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.info-box { background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.3); padding:16px; border-radius:var(--radius-sm); margin-bottom:20px; font-size:1.05rem; line-height:1.6; color:var(--text); }
+.alert-box { background:rgba(217,119,6,0.1); border:1px solid rgba(217,119,6,0.4); padding:16px; border-radius:var(--radius-sm); margin-bottom:20px; font-size:1rem; line-height:1.6; color:var(--text); text-align:center; }
+.story-box { background:var(--input-bg); border-left:4px solid var(--accent); padding:20px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin-bottom:24px; font-style:italic; line-height:1.6; font-size:1.1rem; }
+
+.targets { display:flex; flex-direction:column; gap:10px; margin:16px 0; width:100% }
+.tgt { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-radius:var(--radius-sm); border:1px solid rgba(150,150,150,0.3); background:var(--input-bg); color:var(--text); font-weight:700; font-size:1.15rem; cursor:pointer; transition:all 0.2s }
+.tgt.sel { background:var(--accent); border-color:var(--accent); color:#fff; box-shadow:0 0 15px rgba(225,29,72,0.4) }
+.tgt button { background:transparent; color:var(--accent); border:1px solid var(--accent); border-radius:8px; padding:10px 16px; cursor:pointer; font-weight:bold; font-size:1rem; }
+
+.timer { font-family:var(--font-title); font-size:4.5rem; font-weight:800; text-align:center; color:var(--highlight); margin:20px 0; font-variant-numeric:tabular-nums; text-shadow:0 0 20px rgba(217,119,6,0.4); }
+
+.role-toggle { display:flex; align-items:center; gap:16px; margin-bottom:12px; padding:16px; background:var(--input-bg); border:1px solid rgba(150,150,150,0.2); border-radius:12px; cursor:pointer; transition:all 0.2s; }
+.role-toggle input[type="radio"], .role-toggle input[type="checkbox"] { width:26px; height:26px; accent-color:var(--accent); cursor:pointer; flex-shrink:0; }
+.role-desc { display:flex; flex-direction:column; }
+.role-name { font-weight:800; font-size:1.1rem; margin-bottom:4px; color:var(--text); }
+.role-txt { font-size:0.95rem; color:var(--text-muted); line-height:1.4; }
+
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; display:none; align-items:center; justify-content:center; padding:16px; backdrop-filter:blur(5px); }
+.modal-overlay.open { display:flex; animation:fadeIn 0.2s ease; }
+.modal-box { background:var(--dark-bg); border:1px solid var(--border); border-radius:var(--radius); padding:24px; width:100%; max-width:480px; max-height:85vh; overflow-y:auto; box-shadow:0 20px 50px rgba(0,0,0,0.8); color:var(--text-light); }
+#custom-alert-box { text-align:center; max-width:400px; }
+#custom-alert-text { font-size:1.2rem; line-height:1.6; margin-bottom:25px; white-space:pre-line; color:var(--text-light); }
+</style>
+</head>
+<body class="theme-night">
+
+<div class="header-top">
+  <div style="width:45px"></div>
+  <h1>🐺 La Nuit des Loups <br><span style="font-size:0.7rem; letter-spacing:1px; color:var(--text-muted); font-family:var(--font-text);">ÉDITION DÉFINITIVE</span></h1>
+  <button class="icon-btn" onclick="toggleRules()" aria-label="Règles">📜</button>
+</div>
+
+<!-- MODAL DES RÈGLES -->
+<div class="modal-overlay" id="rules-modal">
+  <div class="modal-box">
+    <h2 style="color:var(--accent);margin-bottom:5px">Le Grimoire</h2>
+    <h4 style="color:var(--highlight); margin-top:20px; font-size:1.1rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">📱 Comment jouer ?</h4>
+    <p style="font-size:1rem;">L'application adapte le jeu selon le maître du jeu choisi.</p>
+    <ul style="font-size:1rem; padding-left:20px;">
+      <li style="margin-bottom:10px"><b>Mode AUTO :</b> Le téléphone est au centre. TOUT LE MONDE JOUE. La voix gère le jeu. Fermez les yeux, et prenez l'appareil en main <b>uniquement</b> quand votre rôle est appelé.</li>
+      <li style="margin-bottom:10px"><b>Mode HUMAIN :</b> L'un de vous garde le téléphone, anime la partie, et saisit les actions des autres joueurs en silence.</li>
+    </ul>
+
+    <h4 style="color:var(--highlight); margin-top:20px; font-size:1.1rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">🎭 Les Rôles</h4>
+    <p style="font-size:1rem;">🐺 <b>Loups-Garous :</b> Dévorent un villageois chaque nuit.<br>
+    🧑‍🌾 <b>Villageois :</b> Aucun pouvoir, trouvent les loups le jour.<br>
+    🔮 <b>Voyante :</b> Lit l'esprit d'un joueur par nuit.<br>
+    🧙‍♀️ <b>Sorcière :</b> 1 potion de vie (sauve la victime) et 1 potion de mort.<br>
+    🏹 <b>Chasseur :</b> S'il meurt, il abat quelqu'un de son choix.<br>
+    👧 <b>Petite Fille :</b> Espionne secrètement les loups la nuit.<br>
+    💘 <b>Cupidon :</b> (1ère nuit) Lie 2 amoureux. Si l'un meurt, l'autre aussi.<br>
+    🃏 <b>Voleur :</b> (1ère nuit) Peut échanger sa carte avec le centre.</p>
+    
+    <button class="btn btn-highlight" style="margin-top:20px" onclick="toggleRules()">Fermer le Grimoire</button>
+  </div>
+</div>
+
+<!-- CUSTOM ALERT -->
+<div class="modal-overlay" id="custom-alert">
+  <div class="modal-box" id="custom-alert-box">
+    <div id="custom-alert-text"></div>
+    <button class="btn btn-highlight" id="custom-alert-btn">J'ai compris</button>
+  </div>
+</div>
+
+<!-- ==============================================
+     1. ECRAN D'ACCUEIL / SETUP 
+     ============================================== -->
+<div id="setup-screen" class="screen active">
+  
+  <div class="story-box" style="border-left:none; border-bottom:4px solid var(--accent); border-radius:var(--radius-sm); text-align:center;">
+    <span style="font-family:var(--font-title); font-size:1.6rem; color:var(--accent); display:block; margin-bottom:10px;">La Nuit approche...</span>
+    <span style="font-size:1.05rem;">
+      Des bêtes féroces se sont infiltrées parmi vous. <br><br>
+      <b>Le but de la partie :</b><br>
+      Si vous êtes un <b>Villageois</b>, démasquez et éliminez tous les loups au bûcher pour survivre. <br>
+      Si vous êtes un <b>Loup</b>, dévorez le village chaque nuit sans vous faire pendre le jour.<br><br>
+      L'application gère tout. Distribuez les rôles, posez l'appareil au centre, et laissez-vous guider jusqu'au dernier souffle.
+    </span>
+  </div>
+
+  <div class="card">
+    <h2>1. Qui est le Maître du Jeu ?</h2>
+    <label class="role-toggle">
+      <input type="radio" name="gm-mode" id="mode-auto" checked>
+      <div class="role-desc">
+        <span class="role-name">🤖 Téléphone au centre (Auto)</span>
+        <span class="role-txt">La voix parle et anime avec bruitages. TOUT LE MONDE JOUE.</span>
+      </div>
+    </label>
+    <label class="role-toggle">
+      <input type="radio" name="gm-mode" id="mode-manual">
+      <div class="role-desc">
+        <span class="role-name">🗣️ Un Humain anime (Manuel)</span>
+        <span class="role-txt">Vous gardez le téléphone, lisez les textes et saisissez les actions (vous ne jouez pas).</span>
+      </div>
+    </label>
+  </div>
+
+  <div class="card">
+    <h2>2. Inscription (<span id="p-count">0</span> Joueurs)</h2>
+    <form id="add-player-form" style="width:100%">
+      <div class="config-group">
+        <input id="p-name" maxlength="20" placeholder="Prénom (ex: Thomas)..." autocomplete="off">
+      </div>
+      <button type="submit" class="btn btn-secondary">➕ Ajouter au village</button>
+    </form>
+    <div id="p-list" class="targets"></div>
+  </div>
+  
+  <div class="card">
+    <h2>3. Configuration des Rôles</h2>
+    <div id="advice-box" class="alert-box">Ajoutez 4 joueurs minimum pour équilibrer la partie.</div>
+    
+    <div id="deck-recap" style="display:flex; justify-content:space-around; padding:15px; background:var(--input-bg); border-radius:12px; margin-bottom:20px; text-align:center;">
+      <div><div style="font-size:1.8rem;font-weight:900;color:var(--accent)" id="d-wolves">0</div><div style="font-size:0.8rem;color:var(--text-muted);font-weight:bold">LOUPS</div></div>
+      <div><div style="font-size:1.8rem;font-weight:900;color:var(--highlight)" id="d-special">0</div><div style="font-size:0.8rem;color:var(--text-muted);font-weight:bold">SPÉCIAUX</div></div>
+      <div><div style="font-size:1.8rem;font-weight:900;color:var(--text)" id="d-villagers">0</div><div style="font-size:0.8rem;color:var(--text-muted);font-weight:bold">SIMPLES</div></div>
+    </div>
+    
+    <label class="role-toggle">
+      <input type="checkbox" id="opt-voyante" checked onchange="checkConfig()">
+      <div class="role-desc"><span class="role-name">🔮 Voyante</span></div>
+    </label>
+    <label class="role-toggle">
+      <input type="checkbox" id="opt-sorciere" onchange="checkConfig()">
+      <div class="role-desc"><span class="role-name">🧙‍♀️ Sorcière</span></div>
+    </label>
+    <label class="role-toggle">
+      <input type="checkbox" id="opt-chasseur" onchange="checkConfig()">
+      <div class="role-desc"><span class="role-name">🏹 Chasseur</span></div>
+    </label>
+    <label class="role-toggle">
+      <input type="checkbox" id="opt-petite" onchange="checkConfig()">
+      <div class="role-desc"><span class="role-name">👧 Petite Fille</span></div>
+    </label>
+    <label class="role-toggle">
+      <input type="checkbox" id="opt-cupidon" onchange="checkConfig()">
+      <div class="role-desc"><span class="role-name">💘 Cupidon</span></div>
+    </label>
+    <label class="role-toggle">
+      <input type="checkbox" id="opt-voleur" onchange="checkConfig()">
+      <div class="role-desc"><span class="role-name">🃏 Voleur</span></div>
+    </label>
+    
+    <div id="error-box" style="display:none;color:#fff;text-align:center;font-weight:bold;margin-top:10px;padding:15px;background:var(--accent);border-radius:8px"></div>
+    
+    <button class="btn" id="start-btn" disabled onclick="initGame()">🚀 Démarrer la Partie</button>
+  </div>
+</div>
+
+<!-- ==============================================
+     2. ECRAN DISTRIBUTION 
+     ============================================== -->
+<div id="distrib-screen" class="screen">
+  <div class="card" style="text-align:center">
+    <div class="info-box" style="border-color:var(--highlight);background:rgba(217,119,6,0.1);color:var(--highlight)">
+      👉 <b>Passez secrètement l'appareil</b> à la personne affichée ci-dessous.
+    </div>
+    <h2 style="font-size:3rem;color:var(--text);margin:30px 0" id="distrib-who"></h2>
+    
+    <button class="btn btn-highlight" id="distrib-btn" onclick="revealRole()">👁️ Découvrir ma nature</button>
+    
+    <div id="distrib-role" style="display:none;margin-top:20px">
+      <div id="distrib-role-info" style="padding:25px;border-radius:12px;background:var(--input-bg);border:1px solid var(--accent);margin-bottom:20px;"></div>
+      <button class="btn btn-secondary" onclick="nextDistrib()">🔒 Cacher et passer au suivant</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==============================================
+     3. LA NUIT
+     ============================================== -->
+<div id="night-auto-screen" class="screen">
+  <div class="card" style="border-color:var(--accent);box-shadow: 0 0 30px rgba(225,29,72,0.1)">
+    <h2 style="color:var(--accent);font-size:2.5rem;text-shadow:0 0 15px var(--accent)">🌙 La Nuit</h2>
+    
+    <div id="night-instruction" class="info-box" style="border-color:rgba(255,255,255,0.2);background:var(--input-bg);"></div>
+    
+    <div id="night-status" style="font-size:1.8rem;text-align:center;margin:30px 0;font-weight:900;color:var(--highlight);font-family:var(--font-title);line-height:1.4;">Le village s'endort...</div>
+    
+    <div id="night-action-trigger" style="display:none;text-align:center">
+      <button class="btn btn-highlight" id="night-action-btn" onclick="openRoleAction()"></button>
+      <div class="timer" id="night-timer">15</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==============================================
+     4. ACTION SECRÈTE DU ROLE
+     ============================================== -->
+<div id="role-action-screen" class="screen">
+  <div class="card" id="role-action-content"></div>
+</div>
+
+<!-- ==============================================
+     5. LE JOUR
+     ============================================== -->
+<div id="day-screen" class="screen">
+  <div class="card" id="day-content"></div>
+</div>
+
+<!-- ==============================================
+     6. VOTE
+     ============================================== -->
+<div id="vote-screen" class="screen">
+  <div class="card" id="vote-content"></div>
+</div>
+
+<!-- ==============================================
+     7. FIN
+     ============================================== -->
+<div id="end-screen" class="screen">
+  <div class="card" id="end-content"></div>
+</div>
+
+
+<script>
+// --- DONNEES & CONFIG ---
+const R = {
+  loup:['🐺','Loup-garou','Objectif : Éliminer tous les innocents.'],
+  villageois:['🧑‍🌾','Simple Villageois','Objectif : Trouver et tuer les loups le jour.'],
+  voyante:['🔮','Voyante','Objectif : Démasquer les loups grâce à vos visions.'],
+  sorciere:['🧙‍♀️','Sorcière','Objectif : Utiliser vos potions au moment crucial.'],
+  chasseur:['🏹','Chasseur','Objectif : Si vous mourez, tirez sur un joueur !'],
+  petite:['👧','Petite Fille','Objectif : Espionner physiquement les loups.'],
+  cupidon:['💘','Cupidon','Objectif : Lier deux âmes pour l\'éternité.'],
+  voleur:['🃏','Voleur','Objectif : Voler un rôle caché au centre.']
+};
+
+let pNames = [];
+let players = []; 
+let extraCards = [];
+let state = {};
+let distribIdx = 0;
+let currentResolve = null;
+let timerInterval = null;
+let activeRolesConfig = []; 
+let isAuto = true;
+
+// --- GESTION AUDIO (Bruitages procéduraux immersifs sans MP3) ---
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let currentAmbienceLoops = [];
+
+function startNightAmbience() {
+    stopAmbience();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    
+    let bufferSize = audioCtx.sampleRate * 2;
+    let buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    let data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+    
+    let noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+    noise.loop = true;
+    
+    let filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 220; 
+    
+    let gain = audioCtx.createGain();
+    gain.gain.value = 0.2; 
+    
+    noise.connect(filter).connect(gain).connect(audioCtx.destination);
+    noise.start();
+    currentAmbienceLoops.push({source: noise, gain: gain});
+    
+    let wolfInterval = setInterval(() => {
+        if(Math.random() > 0.4) {
+            let osc = audioCtx.createOscillator();
+            let wGain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.connect(wGain);
+            wGain.connect(audioCtx.destination);
+            
+            let now = audioCtx.currentTime;
+            osc.frequency.setValueAtTime(320, now);
+            osc.frequency.linearRampToValueAtTime(450, now + 1.5);
+            osc.frequency.setValueAtTime(450, now + 2.5);
+            osc.frequency.linearRampToValueAtTime(250, now + 4);
+            
+            wGain.gain.setValueAtTime(0, now);
+            wGain.gain.linearRampToValueAtTime(0.015, now + 1.5);
+            wGain.gain.setValueAtTime(0.015, now + 2.5);
+            wGain.gain.linearRampToValueAtTime(0, now + 4);
+            
+            osc.start(now);
+            osc.stop(now + 4);
+        }
+    }, 14000); 
+    currentAmbienceLoops.push({interval: wolfInterval});
+}
+
+function startDayAmbience() {
+    stopAmbience();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    
+    let bufferSize = audioCtx.sampleRate * 2;
+    let buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    let data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+    
+    let noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+    noise.loop = true;
+    let filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 500;
+    let gain = audioCtx.createGain();
+    gain.gain.value = 0.04; 
+    
+    noise.connect(filter).connect(gain).connect(audioCtx.destination);
+    noise.start();
+    currentAmbienceLoops.push({source: noise, gain: gain});
+
+    let birdInterval = setInterval(() => {
+        let osc = audioCtx.createOscillator();
+        let bGain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.connect(bGain);
+        bGain.connect(audioCtx.destination);
+        
+        let now = audioCtx.currentTime;
+        osc.frequency.setValueAtTime(3000 + Math.random()*1500, now);
+        osc.frequency.exponentialRampToValueAtTime(4000 + Math.random()*1500, now + 0.1);
+        osc.frequency.exponentialRampToValueAtTime(3000, now + 0.2);
+        
+        bGain.gain.setValueAtTime(0, now);
+        bGain.gain.linearRampToValueAtTime(0.03, now + 0.05);
+        bGain.gain.linearRampToValueAtTime(0, now + 0.2);
+        
+        osc.start(now);
+        osc.stop(now + 0.25);
+    }, 2500 + Math.random()*3500);
+    currentAmbienceLoops.push({interval: birdInterval});
+}
+
+function stopAmbience() {
+    currentAmbienceLoops.forEach(item => {
+        if(item.source) {
+            item.gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
+            setTimeout(() => item.source.stop(), 1000);
+        }
+        if(item.interval) clearInterval(item.interval);
+    });
+    currentAmbienceLoops = [];
+}
+
+window.currentUtterance = null; 
+
+// Force le contexte audio sur les boutons pour éviter le mute mobile
+function ensureAudioContext() {
+    try { if(audioCtx.state === 'suspended') audioCtx.resume(); } catch(e){}
+}
+
+function speak(texte) {
+  return new Promise(resolve => {
+    if (!isAuto) {
+      resolve(); 
+      return;
+    }
+    ensureAudioContext();
+    let u = new SpeechSynthesisUtterance(texte);
+    u.lang = 'fr-FR';
+    
+    let voices = window.speechSynthesis.getVoices();
+    let frVoices = voices.filter(v => v.lang.startsWith('fr'));
+    let bestVoice = frVoices.find(v => v.name.includes('Premium') || v.name.includes('Google') || v.name.includes('Enhanced') || v.name.includes('Thomas') || v.name.includes('Aurélie'));
+    if(bestVoice) u.voice = bestVoice;
+    else if(frVoices.length > 0) u.voice = frVoices[0];
+
+    u.rate = 0.95;
+    u.pitch = 0.95;
+    
+    window.currentUtterance = u;
+    u.onend = resolve;
+    u.onerror = resolve; 
+    window.speechSynthesis.speak(u);
+  });
+}
+
+function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+document.body.addEventListener('click', () => {
+    ensureAudioContext();
+    let msg = new SpeechSynthesisUtterance(' ');
+    msg.volume = 0;
+    window.speechSynthesis.speak(msg);
+}, {once:true});
+
+
+// --- UTILITAIRES ---
+function $(id) { return document.getElementById(id); }
+function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); $(id).classList.add('active'); }
+function toggleRules() { $('rules-modal').classList.toggle('open'); }
+
+function customAlert(msg, callback) {
+  ensureAudioContext();
+  $('custom-alert-text').innerHTML = msg;
+  $('custom-alert').style.display = 'flex';
+  $('custom-alert-btn').onclick = () => {$('custom-alert').style.display = 'none';
+    if(callback) callback();
+  };
+}
+
+// --- AJOUT ROBUSTE DES JOUEURS ---
+$('add-player-form').addEventListener('submit', function(e) {
+  e.preventDefault(); 
+  let v = $('p-name').value.trim();
+  if(v !== '') {
+    if(pNames.includes(v)) {
+      customAlert(`Le nom <b>${v}</b> est déjà dans le village !`);
+    } else {
+      pNames.push(v);
+      $('p-name').value = '';
+      renderPList();
+      checkConfig();
+    }
+  }
+});
+
+function renderPList() {
+  $('p-count').textContent = pNames.length;
+  $('p-list').innerHTML = pNames.map((n,i) => `<div class="tgt"><span>👤 ${n}</span><button type="button" onclick="pNames.splice(${i},1);renderPList();checkConfig()">Retirer</button></div>`).join('');
+}
+
+function checkConfig() {
+  let n = pNames.length;
+  let btn = $('start-btn');
+  let err = $('error-box');
+  let adv = $('advice-box');
+  
+  if (n < 4) {
+    adv.innerHTML = "Il faut 4 joueurs minimum pour former un village.";
+    $('d-wolves').textContent = '0';
+    $('d-villagers').textContent = '0';$('d-special').textContent = '0';
+    btn.disabled = true;
+    err.style.display = 'none';
+    return;
+  }
+  
+  let wolves = Math.max(1, Math.floor(n/4));
+  let specialCount = 0;
+  if($('opt-voyante').checked) specialCount++;
+  if($('opt-sorciere').checked) specialCount++;
+  if($('opt-chasseur').checked) specialCount++;
+  if($('opt-petite').checked) specialCount++;
+  if($('opt-cupidon').checked) specialCount++;
+  if($('opt-voleur').checked) specialCount++; 
+  
+  let villagers = n - wolves - specialCount;
+
+  $('d-wolves').textContent = wolves;
+  $('d-special').textContent = specialCount;
+  $('d-villagers').textContent = villagers >= 0 ? villagers : 0;
+  
+  if (villagers < 0) {
+      err.innerHTML = `⚠️ Trop de rôles spéciaux pour ${n} joueurs.<br>Décochez-en quelques uns.`;
+      err.style.display = 'block';
+      adv.style.display = 'none';
+      btn.disabled = true;
+  } else {
+      err.style.display = 'none';
+      adv.style.display = 'block';
+      btn.disabled = false;
+      
+      if (villagers === 0) adv.innerHTML = `⚠️ <b>Attention :</b> Aucun Simple Villageois. Le jeu sera très tactique !`;
+      else adv.innerHTML = `✅ <b>Composition parfaite.</b>`;
+  }
+}
+
+function initGame() {
+  ensureAudioContext();
+  isAuto = $('mode-auto').checked;
+  
+  let n = pNames.length;
+  let w = Math.max(1, Math.floor(n/4));
+  let deck = Array(w).fill('loup');
+  
+  if($('opt-voyante').checked) deck.push('voyante');
+  if($('opt-sorciere').checked) deck.push('sorciere');
+  if($('opt-chasseur').checked) deck.push('chasseur');
+  if($('opt-petite').checked) deck.push('petite');
+  if($('opt-cupidon').checked) deck.push('cupidon');
+  if($('opt-voleur').checked) deck.push('voleur');
+  
+  while(deck.length < n) deck.push('villageois');
+  deck.sort(() => Math.random() - 0.5);
+  
+  players = pNames.map((name, i) => ({ id: i.toString(), name: name, role: deck[i], alive: true }));
+  
+  if($('opt-voleur').checked) {
+      const pool = ['villageois', 'villageois', 'loup'];
+      extraCards = [pool[Math.floor(Math.random()*pool.length)], pool[Math.floor(Math.random()*pool.length)]];
+  } else { extraCards = []; }
+  
+  activeRolesConfig = [...new Set([...deck, ...extraCards])];
+  
+  state = { day: 1, lovers: [], victim: null, pz: null, heal: 1, poison: 1, hq: [], deadThisTurn: [], thiefDone: false };
+  distribIdx = 0;
+  
+  document.body.className = 'theme-night';
+  showDistrib();
+}
+
+// --- DISTRIBUTION ---
+function showDistrib() {
+  if (distribIdx >= players.length) { runNightEngine(); return; }
+  showScreen('distrib-screen');
+  let p = players[distribIdx];
+  $('distrib-who').textContent = p.name;
+  $('distrib-role').style.display = 'none';$('distrib-btn').style.display = 'block';
+}
+
+function revealRole() {
+  $('distrib-role').style.display = 'block';$('distrib-btn').style.display = 'none';
+  let p = players[distribIdx];
+  let r = R[p.role];
+  let h = `<h3 style="font-size:2.4rem;color:var(--highlight);margin:0 0 10px 0;text-shadow:0 0 10px rgba(217,119,6,0.5)">${r[0]} ${r[1]}</h3><p style="font-size:1.1rem;line-height:1.6;color:var(--text);margin:0"><i>${r[2]}</i></p>`;
+  
+  if(p.role === 'loup') {
+      let mates = players.filter(x => x.role === 'loup' && x.id !== p.id).map(x => x.name);
+      if(mates.length) h += `<div style="margin-top:20px;padding:15px;background:rgba(225,29,72,0.15);border-radius:8px;border:1px solid var(--accent);color:var(--text)">🐺 La meute : <br><b style="font-size:1.3rem;color:var(--accent)">${mates.join(', ')}</b></div>`;
+      else h += `<div style="margin-top:20px;padding:15px;background:rgba(225,29,72,0.15);border-radius:8px;border:1px solid var(--accent);color:var(--text)">🐺 Tu es le <b>seul Loup-Garou</b>. Sois rusé !</div>`;
+  }
+  $('distrib-role-info').innerHTML = h;
+}
+function nextDistrib() { distribIdx++; showDistrib(); }
+
+// --- MOTEUR DE LA NUIT ---
+async function runNightEngine() {
+  ensureAudioContext();
+  document.body.className = 'theme-night';
+  startNightAmbience(); // Vent et loups pour Auto ET Manuel
+
+  state.seq = [];
+  
+  if(state.day === 1) {
+      if(activeRolesConfig.includes('voleur')) state.seq.push({id:'thief', name:'Le Voleur', time: 15, vocal1: "Le Voleur, réveillez-vous.", vocal2: "Ouvrez les yeux."});
+      if(activeRolesConfig.includes('cupidon')) state.seq.push({id:'cupid', name:'Cupidon', time: 15, vocal1: "Cupidon, réveillez-vous.", vocal2: "Il est temps de lier deux cœurs."});
+  }
+  
+  state.seq.push({id:'wolves', name:'Les Loups-Garous', time: 25, vocal1: "Les Loups-Garous, réveillez-vous.", vocal2: "Ouvrez les yeux, et reconnaissez-vous."});
+  
+  if(activeRolesConfig.includes('voyante')) state.seq.push({id:'seer', name:'La Voyante', time: 15, vocal1: "La Voyante, réveillez-vous.", vocal2: "Ouvrez les yeux."});
+  if(activeRolesConfig.includes('sorciere')) state.seq.push({id:'witch', name:'La Sorcière', time: 15, vocal1: "La Sorcière, réveillez-vous.", vocal2: "Ouvrez les yeux."});
+
+  let petiteFilleInGame = activeRolesConfig.includes('petite');
+  state.victim = null;
+  state.pz = null;
+  state.currentRole = null;
+
+  showScreen('night-auto-screen');
+  $('night-action-trigger').style.display = 'none';
+  
+  if(isAuto) {
+      $('night-instruction').innerHTML = `📱 <b>Posez le téléphone au centre et fermez les yeux.</b><br><br>Écoutez la voix. Prenez l'appareil UNIQUEMENT quand c'est votre tour.`;
+      $('night-status').textContent = "Le village s'endort...";
+      
+      if(state.day === 1) {
+          await speak("Bienvenue dans la Nuit des Loups.");
+          await wait(1000);
+          await speak("Le but des villageois est d'éliminer tous les loups au bûcher.");
+          await wait(1000);
+          await speak("Les loups, eux, doivent dévorer le village dans l'ombre.");
+          await wait(1000);
+          await speak("La nuit, tout le monde ferme les yeux. Ne touchez le téléphone que si j'appelle votre rôle.");
+          await wait(2000);
+      }
+      
+      await speak("La nuit tombe sur le village.");
+      await wait(1500);
+      await speak("Tout le monde ferme les yeux, et se tait.");
+      await wait(4000); 
+  } else {
+      $('night-instruction').innerHTML = `🗣️ <b>Maître du Jeu :</b><br>Lisez les textes à haute voix, puis demandez au rôle de pointer son choix du doigt pour que vous le saisissiez sur l'écran.`;
+  }
+
+  for(let step of state.seq) {
+      state.currentRole = step;
+      
+      if(isAuto) {
+          $('night-status').textContent = step.name;
+          if(step.id === 'wolves' && petiteFilleInGame) {
+              await speak("Si la Petite Fille est en vie...");
+              await wait(1000);
+              await speak("Elle peut entrouvrir les yeux discrètement.");
+              await wait(2500);
+          }
+          await speak(step.vocal1);
+          await wait(1500);
+          await speak(step.vocal2);
+
+          $('night-action-btn').textContent = "✋ C'est moi, je prends l'appareil";
+          $('night-timer').style.display = 'block';
+      } else {
+          let extra = (step.id === 'wolves' && petiteFilleInGame) ? "<br><br><i>(Si la Petite Fille est en vie, elle peut entrouvrir les yeux discrètement.)</i>" : "";
+          $('night-status').innerHTML = `« ${step.vocal1} ${step.vocal2} »${extra}`;
+          $('night-action-btn').textContent = "👁️ Saisir l'action pour ce rôle (MJ)";
+          $('night-timer').style.display = 'none';
+      }
+      
+      $('night-action-trigger').style.display = 'block';
+      
+      let roleCompleted = new Promise(resolve => { currentResolve = resolve; });
+      
+      if(isAuto) {
+          let time = step.time;
+          $('night-timer').textContent = time;
+          timerInterval = setInterval(() => {
+              time--;
+              $('night-timer').textContent = time;
+              if(time <= 0) {
+                  clearInterval(timerInterval);
+                  currentResolve(); 
+              }
+          }, 1000);
+      }
+
+      await roleCompleted; 
+      
+      if(isAuto) clearInterval(timerInterval);
+      $('night-action-trigger').style.display = 'none';
+      showScreen('night-auto-screen'); 
+      
+      if(isAuto) {
+          $('night-status').textContent = step.name + " se rendort.";
+          await speak(step.name + ", rendormez-vous.");
+          await wait(1000);
+          await speak("Fermez les yeux.");
+          await wait(3000); 
+      } else {
+          await new Promise(resolve => customAlert(`🗣️ Dites à haute voix :<br><br><b>« ${step.name}, rendormez-vous... et fermez les yeux. »</b>`, resolve));
+      }
+  }
+
+  if(isAuto) {
+      stopAmbience();
+      startDayAmbience(); 
+      $('night-status').textContent = "L'aube approche...";
+      await speak("Le soleil se lève sur le village.");
+      await wait(1500);
+      await speak("Tout le monde se réveille, et ouvre les yeux.");
+  } else {
+      stopAmbience();
+      startDayAmbience();
+      await new Promise(resolve => customAlert(`🗣️ Dites à haute voix :<br><br><b>« Le soleil se lève. Tout le village se réveille et ouvre les yeux ! »</b>`, resolve));
+  }
+  
+  dawn();
+}
+
+// --- ACTIONS SECRÈTES ---
+function openRoleAction() {
+  ensureAudioContext();
+  if(isAuto) clearInterval(timerInterval); 
+  showScreen('role-action-screen');
+  let roleId = state.currentRole.id;
+  
+  let h = `<h2 style="font-size:2.2rem;color:var(--accent)">${state.currentRole.name}</h2>`;
+  
+  let roleKey = roleId === 'wolves' ? 'loup' : (roleId === 'thief' ? 'voleur' : (roleId === 'seer' ? 'voyante' : (roleId === 'witch' ? 'sorciere' : 'cupidon')));
+  let roleAlives = players.filter(p => p.role === roleKey && p.alive);
+  
+  if(roleAlives.length === 0) {
+      if(isAuto) {
+          h += `<div class="info-box" style="border-color:var(--accent);color:var(--text)"><b>Vous êtes mort(e).</b><br><br>Bravo pour le bluff. Feignez de manipuler l'écran pendant quelques secondes pour maintenir l'illusion auprès des autres, puis validez.</div>`;
+          h += `<button class="btn btn-secondary" style="border-color:var(--accent);color:var(--accent)" onclick="closeRoleAction()">J'ai fini mon illusion</button>`;
+      } else {
+          h += `<div class="info-box" style="border-color:var(--accent);color:var(--text)">Ce rôle n'est plus en vie. Patientez 5 secondes en silence pour brouiller les pistes auprès des autres.</div>`;
+          h += `<button class="btn btn-secondary" style="border-color:var(--accent);color:var(--accent)" onclick="closeRoleAction()">Continuer</button>`;
+      }
+      $('role-action-content').innerHTML = h;
+      return;
+  }
+
+  if(roleId === 'thief') h += renderThief();
+  if(roleId === 'cupid') h += renderCupid();
+  if(roleId === 'wolves') h += renderWolves();
+  if(roleId === 'seer') h += renderSeer();
+  if(roleId === 'witch') h += renderWitch();
+  
+  $('role-action-content').innerHTML = h;
+}
+
+function closeRoleAction() {
+  seerSeen = null; witchMode = '';
+  currentResolve(); 
+}
+
+let seerSeen = null;
+let wolfSel = null;
+let cupidSel = [];
+let witchMode = '';
+
+function renderThief() {
+  if(state.thiefDone) return `<p style="text-align:center">Action déjà effectuée.</p><button class="btn btn-secondary" onclick="closeRoleAction()">Retour</button>`;
+  
+  let forced = (extraCards[0] === 'loup' && extraCards[1] === 'loup');
+  let h = `<div class="story-box">Voulez-vous échanger votre identité avec l'une de ces cartes ?</div><div class="targets">`;
+  h += `<button class="tgt" onclick="thiefPick(0)">${R[extraCards[0]][0]} ${R[extraCards[0]][1]}</button>`;
+  h += `<button class="tgt" onclick="thiefPick(1)">${R[extraCards[1]][0]} ${R[extraCards[1]][1]}</button></div>`;
+  
+  if(!forced) {
+      h += `<button class="btn btn-secondary" style="margin-top:20px" onclick="thiefPick(-1)">Ne rien faire (Rester Voleur)</button>`;
+  } else {
+      h += `<div class="info-box" style="margin-top:20px; border-color:var(--blood); color:var(--blood); font-weight:bold;">⚠️ Les deux cartes sont des Loups. L'échange est obligatoire.</div>`;
+  }
+  return h;
+}
+function thiefPick(idx) {
+  if(idx >= 0) {
+      let t = players.find(p => p.role === 'voleur');
+      t.role = extraCards[idx];
+      customAlert(`Identité volée : <b>${R[t.role][1]}</b>`, () => {
+        state.thiefDone = true;
+        closeRoleAction();
+      });
+  } else {
+      state.thiefDone = true;
+      closeRoleAction();
+  }
+}
+
+function renderCupid() {
+  if(state.lovers.length > 0) return `<p style="text-align:center">Flèches déjà décochées.</p><button class="btn btn-secondary" onclick="closeRoleAction()">Retour</button>`;
+  let h = `<div class="story-box">Liez deux âmes à tout jamais (vous pouvez vous inclure).</div><div class="targets">`;
+  players.forEach(p => { h += `<button class="tgt ${cupidSel.includes(p.id)?'sel':''}" onclick="cupidToggle('${p.id}')">${p.name}</button>`; });
+  h += `</div>`;
+  if(cupidSel.length === 2) h += `<button class="btn" onclick="cupidConfirm()">💘 Lier ces deux joueurs</button>`;
+  return h;
+}
+function cupidToggle(id) {
+  if(cupidSel.includes(id)) cupidSel = cupidSel.filter(x=>x!==id);
+  else { cupidSel.push(id); if(cupidSel.length > 2) cupidSel.shift(); }
+  openRoleAction(); 
+}
+function cupidConfirm() {
+  state.lovers = [...cupidSel];
+  customAlert("Touchez l'épaule des deux élus pour qu'ils se reconnaissent. Puis validez.", () => {
+      closeRoleAction();
+  });
+}
+
+function renderWolves() {
+  let h = `<div class="story-box">Mettez-vous d'accord en silence. Choisissez qui vous allez dévorer cette nuit.</div><div class="targets">`;
+  players.filter(p => p.alive && p.role !== 'loup').forEach(p => { h += `<button class="tgt ${wolfSel===p.id?'sel':''}" onclick="wolfToggle('${p.id}')">${p.name}</button>`; });
+  h += `</div>`;
+  if(wolfSel) h += `<button class="btn" onclick="wolfConfirm()">🩸 Dévorer cette proie</button>`;
+  return h;
+}
+function wolfToggle(id) { wolfSel = id; openRoleAction(); }
+function wolfConfirm() { state.victim = wolfSel; wolfSel = null; closeRoleAction(); }
+
+function renderSeer() {
+  if(seerSeen) return `<div class="info-box" style="text-align:center;border-color:var(--highlight);"><span style="font-size:3rem">${R[seerSeen.role][0]}</span><br><br>${seerSeen.name} est...<br><br><b style="font-size:1.6rem;color:var(--highlight)">${R[seerSeen.role][1]}</b></div><button class="btn btn-secondary" onclick="closeRoleAction()">Fermer les yeux</button>`;
+  let h = `<div class="story-box">Choisissez un joueur pour percer son identité secrète à jour.</div><div class="targets">`;
+  players.filter(p => p.alive && p.role !== 'voyante').forEach(p => { h += `<button class="tgt" onclick="seerSond('${p.id}')">🔮 Sonder ${p.name}</button>`; });
+  return h + `</div>`;
+}
+function seerSond(id) { seerSeen = players.find(x => x.id === id); openRoleAction(); }
+
+function renderWitch() {
+  if(witchMode === 'pz') {
+      let h = `<h3 style="color:#a21caf;text-align:center">☠️ Qui voulez-vous empoisonner ?</h3><div class="targets">`;
+      players.filter(p => p.alive).forEach(p => { h += `<button class="tgt" onclick="witchPzAction('${p.id}')">Empoisonner ${p.name}</button>`; });
+      return h + `</div><button class="btn btn-secondary" onclick="witchMode='';openRoleAction()">Annuler</button>`;
+  }
+  let vName = state.victim ? players.find(x=>x.id===state.victim).name : "Personne (ou protégé)";
+  let h = `<div class="story-box" style="text-align:center;border-color:#a21caf;">La victime des loups cette nuit est :<br><b style="font-size:1.8rem;color:var(--accent);display:block;margin-top:10px">${vName}</b></div>`;
+  
+  if(state.heal && state.victim) h += `<button class="btn" style="background:#059669;box-shadow:0 6px 15px rgba(5,150,105,0.3)" onclick="witchHeal()">💚 Potion de Vie (Sauver)</button>`;
+  else if (!state.heal) h += `<p style="text-align:center;color:#059669;font-weight:bold"><i>Potion de Vie déjà utilisée.</i></p>`;
+  
+  if(state.poison) h += `<button class="btn" style="background:#701a75;box-shadow:0 6px 15px rgba(112,26,117,0.3)" onclick="witchMode='pz';openRoleAction()">☠️ Potion de Mort (Tuer)</button>`;
+  else if (!state.poison) h += `<p style="text-align:center;color:#701a75;font-weight:bold"><i>Potion de Mort déjà utilisée.</i></p>`;
+  
+  h += `<button class="btn btn-secondary" style="margin-top:20px" onclick="closeRoleAction()">Ne rien faire</button>`;
+  return h;
+}
+function witchHeal() { state.heal = 0; state.victim = null; closeRoleAction(); }
+function witchPzAction(id) { state.poison = 0; state.pz = id; witchMode=''; closeRoleAction(); }
+
+// --- RESOLUTION DU JOUR ---
+function killPlayer(id) {
+  let p = players.find(x => x.id === id);
+  if(!p || !p.alive) return;
+  p.alive = false;
+  state.deadThisTurn.push(p);
+  if(p.role === 'chasseur') state.hq.push(id);
+  
+  if(state.lovers.includes(id)) {
+      let otherId = state.lovers.find(x => x !== id);
+      if(players.find(x => x.id === otherId && x.alive)) killPlayer(otherId);
+  }
+}
+
+function dawn() {
+  document.body.className = 'theme-day'; 
+  
+  state.deadThisTurn = [];
+  if(state.victim) killPlayer(state.victim);
+  if(state.pz && state.pz !== state.victim) killPlayer(state.pz);
+  resolveDeaths(() => { showDay(); });
+}
+
+function resolveDeaths(next) {
+  if(state.hq.length > 0) hunterRevenge(state.hq.shift(), next);
+  else {
+      if(checkWin()) return;
+      next();
+  }
+}
+
+function showDay() {
+  showScreen('day-screen');
+  
+  let h = `<h2 style="color:var(--accent)">☀️ Jour ${state.day}</h2>`;
+  if(state.deadThisTurn.length === 0) {
+      h += `<div class="story-box" style="text-align:center;border-color:var(--success);color:var(--text);background:rgba(16,185,129,0.1)">Miracle ! Personne n'est mort cette nuit. Le village se réveille soulagé.</div>`;
+  } else {
+      h += `<div class="story-box" style="text-align:center;border-color:var(--accent);color:var(--text);background:rgba(225,29,72,0.1)">`;
+      h += `<p style="margin-top:0;font-family:var(--font-title);font-size:1.3rem;color:var(--accent);font-weight:bold">Tragédie ! Le village pleure la mort de :</p>`;
+      state.deadThisTurn.forEach(p => {
+          let love = state.lovers.includes(p.id) ? '<br><small style="color:var(--accent);font-weight:bold">💔 Suicidé(e) par chagrin</small>' : '';
+          h += `<div style="font-size:1.3rem;margin:15px 0">💀 <b>${p.name}</b> <br><span style="color:var(--text-muted);font-size:1rem">était ${R[p.role][0]} ${R[p.role][1]}</span>${love}</div>`;
+      });
+      h += `</div>`;
+  }
+  
+  h += `<div class="info-box" style="text-align:left;border-color:var(--highlight);background:rgba(217,119,6,0.1)">
+        <b>Débat de Jour :</b><br><br>
+        <b>1. Échangez (3 min) :</b> Discutez librement. Qui vous semble suspect ? Qui parle trop ou pas assez ?<br>
+        <b>2. Votez :</b> Au compte de 3, tout le monde pointe du doigt son accusé.
+        </div>`;
+  
+  h += `<button class="btn btn-highlight" onclick="startVote()">⚖️ Ouvrir le Tribunal (Bûcher)</button>`;
+  
+  $('day-content').innerHTML = h;
+}
+
+// --- LE TRIBUNAL (VOTE) ---
+function startVote() {
+  showScreen('vote-screen');
+  let h = `<h2 style="color:var(--accent)">🔥 Le Bûcher</h2>`;
+  h += `<div class="info-box">Validez le choix de la majorité ci-dessous. Le téléphone exécutera la sentence.</div>`;
+  h += `<div class="targets">`;
+  players.filter(p => p.alive).forEach(p => {
+      h += `<button class="tgt" onclick="executeVote('${p.id}')">🔥 Brûler ${p.name}</button>`;
+  });
+  h += `</div><button class="btn btn-secondary" onclick="executeVote(null)">⚖️ Égalité (Aucun mort)</button>`;
+  $('vote-content').innerHTML = h;
+}
+
+function executeVote(id) {
+  state.deadThisTurn = [];
+  if(id) {
+      killPlayer(id);
+      let p = players.find(x=>x.id===id);
+      customAlert(`Le couperet tombe sur <b>${p.name}</b> ! \n\nLe village découvre qu'il/elle était...\n<br><span style="font-size:1.8rem;color:var(--accent);display:block;margin-top:10px">${R[p.role][0]} ${R[p.role][1]}</span>`, () => {
+          resolveDeaths(() => {
+              state.day++;
+              runNightEngine();
+          });
+      });
+  } else {
+      customAlert(`La confusion règne dans l'assemblée. Personne n'est exécuté aujourd'hui.`, () => {
+          resolveDeaths(() => {
+              state.day++;
+              runNightEngine();
+          });
+      });
+  }
+}
+
+// --- CHASSEUR ---
+function hunterRevenge(hId, nextCallback) {
+  showScreen('vote-screen');
+  let p = players.find(x => x.id === hId);
+  let h = `<h2 style="color:var(--highlight)">🏹 Dernier Souffle</h2>`;
+  h += `<div class="story-box" style="border-color:var(--highlight)"><b>${p.name}</b>, vous êtes mort. Mais dans un dernier élan, vous armez votre fusil. <br><br>Choisissez qui vous emportez avec vous :</div>`;
+  h += `<div class="targets">`;
+  players.filter(x => x.alive).forEach(x => { h += `<button class="tgt" onclick="executeHunter('${x.id}')">🎯 Abattre ${x.name}</button>`; });
+  h += `</div>`;
+  $('vote-content').innerHTML = h;
+  state.hunterNext = nextCallback;
+}
+function executeHunter(id) {
+  killPlayer(id);
+  let t = players.find(x=>x.id===id);
+  customAlert(`<b>PAN !</b>\nLa balle foudroie <b>${t.name}</b>.\n\nIl/Elle était :\n<br><span style="font-size:1.8rem;color:var(--accent);display:block;margin-top:10px">${R[t.role][0]} ${R[t.role][1]}</span>`, () => {
+      resolveDeaths(state.hunterNext);
+  });
+}
+
+// --- FIN DE PARTIE ---
+function checkWin() {
+  let alivePlayers = players.filter(p => p.alive);
+  let wolvesCount = alivePlayers.filter(p => p.role === 'loup').length;
+  let villagersCount = alivePlayers.length - wolvesCount;
+
+  if(state.lovers.length > 0 && alivePlayers.length === 2) {
+      if(alivePlayers.every(p => state.lovers.includes(p.id))) {
+          let cross = alivePlayers.some(p => p.role === 'loup') && alivePlayers.some(p => p.role !== 'loup');
+          if(cross) { showWin('amoureux'); return true; }
+      }
+  }
+  
+  if(wolvesCount === 0) { showWin('village'); return true; }
+  if(wolvesCount >= villagersCount) { showWin('loups'); return true; }
+  return false;
+}
+
+function showWin(team) {
+  stopAmbience();
+  if (team === 'village') document.body.className = 'theme-day';
+  else document.body.className = 'theme-night';
+
+  showScreen('end-screen');
+  
+  let msg = team === 'amoureux' ? '💘 L\'Amour Triomphe' : (team === 'village' ? '🏡 Le Village Survit' : '🐺 Le Règne des Loups');
+  let color = team === 'amoureux' ? '#db2777' : (team === 'village' ? 'var(--success)' : 'var(--accent)');
+  let sub = team === 'amoureux' ? 'Seuls contre tous, l\'amour a vaincu.' : (team === 'village' ? 'La paix est revenue sur le village.' : 'Le dernier cri résonne dans la nuit...');
+  
+  let h = `<h2 style="font-size:2.5rem;color:${color};margin-bottom:5px;text-shadow:0 0 25px ${color};text-transform:uppercase">${msg}</h2>`;
+  h += `<p style="text-align:center;color:var(--text);font-style:italic;margin-bottom:25px;font-size:1.2rem">${sub}</p>`;
+  h += `<div style="text-align:left;width:100%;background:var(--input-bg);padding:20px;border-radius:12px;border:1px solid rgba(150,150,150,0.2)">`;
+  h += `<h3 style="color:var(--text);text-align:center;margin-bottom:15px;font-size:1.2rem">Le Livre des Âmes</h3>`;
+  
+  players.forEach(p => {
+      let status = p.alive ? '❤️' : '💀';
+      let love = state.lovers.includes(p.id) ? ' 💘' : '';
+      let opacity = p.alive ? '1' : '0.5';
+      h += `<div style="margin-bottom:12px;opacity:${opacity};font-size:1.15rem;display:flex;justify-content:space-between;border-bottom:1px solid rgba(150,150,150,0.1);padding-bottom:5px">
+              <span style="color:var(--text)">${status} <b>${p.name}</b>${love}</span>
+              <span style="color:var(--highlight);font-weight:bold">${R[p.role][0]} ${R[p.role][1]}</span>
+            </div>`;
+  });
+  
+  h += `</div><button class="btn" style="margin-top:30px" onclick="location.reload()">🔄 Rejouer une Partie</button>`;
+  $('end-content').innerHTML = h;
+}
+</script>
+</body>
+</html>
