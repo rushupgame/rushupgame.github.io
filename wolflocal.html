@@ -11,29 +11,34 @@
   --blood-light: #e11d48;
   --gold: #d97706;
   --gold-light: #fbbf24;
-  --dark-bg: #0f172a;
+  --dark-bg: #02040a;
   --light-bg: #f8fafc;
   --text-dark: #0f172a;
   --text-light: #f8fafc;
+  --success: #10b981;
   
   --radius: 16px;
   --radius-sm: 10px;
   --font-title: 'Cinzel', serif;
   --font-text: 'Nunito', sans-serif;
 
+  /* COULEURS DES BOUTONS SECONDAIRES (Annuler, etc) */
+  --btn-sec-bg: #334155;
+  --btn-sec-text: #ffffff;
+
   /* THEME NUIT */
   --bg: var(--dark-bg);
-  --surface: rgba(30, 41, 59, 0.85);
+  --surface: rgba(15, 23, 42, 0.85);
   --border: rgba(225, 29, 72, 0.3);
   --text: var(--text-light);
   --text-muted: #94a3b8;
   --accent: var(--blood-light);
   --highlight: var(--gold-light);
-  --input-bg: rgba(15, 23, 42, 0.6);
+  --input-bg: rgba(5, 10, 15, 0.8);
 }
 
 body.theme-day {
-  /* THEME JOUR */
+  /* THEME JOUR STANDARD */
   --bg: var(--light-bg);
   --surface: rgba(255, 255, 255, 0.95);
   --border: rgba(217, 119, 6, 0.4);
@@ -42,96 +47,244 @@ body.theme-day {
   --accent: var(--blood);
   --highlight: var(--gold);
   --input-bg: rgba(248, 250, 252, 0.8);
+  
+  --btn-sec-bg: #e2e8f0;
+  --btn-sec-text: #0f172a;
 }
 
-/* THEME FAMILY */
+/* THEME FAMILY (Nuit) */
 body.theme-family {
   --accent: #d946ef; 
   --blood: #a21caf;
   --blood-light: #d946ef;
   --border: rgba(217, 70, 239, 0.4);
+  
+  --btn-sec-bg: rgba(255,255,255,0.15);
+  --btn-sec-text: #ffffff;
+}
+
+/* THEME FAMILY (Jour) - Adaptation des textes et bordures */
+body.theme-family.theme-day {
+  --accent: #a21caf; 
+  --border: rgba(162, 28, 175, 0.3);
+  --btn-sec-bg: #e2e8f0;
+  --btn-sec-text: #0f172a;
 }
 
 *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
-body { margin:0; min-height:100dvh; color:var(--text); font-family:var(--font-text); display:flex; flex-direction:column; align-items:center; padding:max(20px,env(safe-area-inset-top)) 16px max(40px,env(safe-area-inset-bottom)); -webkit-user-select:none; user-select:none; overflow-x:hidden; transition: color 0.8s ease; }
+body { margin:0; min-height:100dvh; color:var(--text); font-family:var(--font-text); display:flex; flex-direction:column; align-items:center; padding:calc(74px + env(safe-area-inset-top)) 16px calc(140px + env(safe-area-inset-bottom)); -webkit-user-select:none; user-select:none; overflow-x:hidden; transition: color 0.8s ease; background-color: #000; }
 
-body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -2; background: radial-gradient(circle at top, #1e293b, #020617); transition: opacity 1.5s ease; }
-body::after { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -3; background: linear-gradient(135deg, #e0f2fe 0%, #fef9c3 100%); }
-body.theme-day::before { opacity: 0; }
-body.theme-family::before { background: radial-gradient(circle at top, #2e1065, #0f172a); } 
+/* 
+  ================================================
+  DECOR IMMERSIF (CIEL, FEU, BRAISES/LUCIOLES, BRUME)
+  ================================================
+*/
+#immersive-bg { position: fixed; inset: 0; z-index: -10; pointer-events: none; overflow: hidden; }
+
+/* 1. Le Ciel */
+.bg-sky { position: absolute; inset: 0; transition: background 1.5s ease; background: radial-gradient(circle at top, #080c17, #000000); }
+body.theme-day .bg-sky { background: linear-gradient(135deg, #e0f2fe 0%, #fef9c3 100%); }
+body.theme-family .bg-sky { background: radial-gradient(circle at top, #2e1065, #0f172a); }
+body.theme-family.theme-day .bg-sky { background: linear-gradient(135deg, #fef08a 0%, #86efac 50%, #4ade80 100%); } /* Matin Famille : Jaune et Vert Lumineux */
+
+/* 2. Lueur de Feu Pulsante */
+.fire-glow { position: absolute; bottom: 0; left: -20%; right: -20%; height: 55vh; background: radial-gradient(ellipse at bottom, rgba(225, 29, 72, 0.5) 0%, rgba(217, 119, 6, 0.25) 40%, transparent 70%); animation: pulseFire 4s ease-in-out infinite alternate; transition: opacity 1.5s; mix-blend-mode: screen; }
+body.theme-day .fire-glow { opacity: 0; }
+body.theme-family .fire-glow { background: radial-gradient(ellipse at bottom, rgba(217, 70, 239, 0.4) 0%, rgba(162, 28, 175, 0.15) 40%, transparent 70%); }
+@keyframes pulseFire { 0% { opacity: 0.7; transform: scaleY(0.9); } 100% { opacity: 1; transform: scaleY(1.15); } }
+
+/* 3. Braises / Lucioles qui s'envolent */
+.sparks-wrap { position: absolute; inset: 0; }
+.spark { 
+  position: absolute; bottom: -20px; width: 6px; height: 6px; border-radius: 50%; 
+  background: #fcd34d; box-shadow: 0 0 10px #ef4444, 0 0 15px #ef4444; 
+  animation-name: flyUp, sparkWobble, glowPulse;
+  animation-timing-function: linear, ease-in-out, ease-in-out;
+  animation-iteration-count: infinite, infinite, infinite;
+  animation-direction: normal, alternate, alternate;
+  animation-duration: var(--dur), var(--wob), calc(var(--wob) * 0.8);
+  animation-delay: var(--del), calc(var(--del) * -1), var(--del);
+  opacity: 0; 
+}
+
+.s1 { left: 5%; --dur: 6s; --wob: 2s; --del: 0.1s; --dir: 1.2; --s: 0.8; }
+.s2 { left: 15%; --dur: 8s; --wob: 2.5s; --del: 1.5s; --dir: -0.8; --s: 1.1; }
+.s3 { left: 25%; --dur: 5s; --wob: 1.8s; --del: 3s; --dir: 1.5; --s: 0.6; }
+.s4 { left: 35%; --dur: 7s; --wob: 2.2s; --del: 0.8s; --dir: -1.2; --s: 1.3; }
+.s5 { left: 45%; --dur: 6.5s; --wob: 2.1s; --del: 2.2s; --dir: 0.8; --s: 0.9; }
+.s6 { left: 55%; --dur: 9s; --wob: 2.8s; --del: 4.5s; --dir: -1.5; --s: 1.2; }
+.s7 { left: 65%; --dur: 5.5s; --wob: 1.9s; --del: 1.2s; --dir: 1.1; --s: 0.7; }
+.s8 { left: 75%; --dur: 8.5s; --wob: 2.6s; --del: 3.5s; --dir: -0.9; --s: 1.4; }
+.s9 { left: 85%; --dur: 6.2s; --wob: 2s; --del: 0.5s; --dir: 1.4; --s: 0.8; }
+.s10{ left: 95%; --dur: 7.8s; --wob: 2.4s; --del: 2.7s; --dir: -1.1; --s: 1.1; }
+.s11{ left: 10%; --dur: 5.8s; --wob: 1.7s; --del: 1.1s; --dir: 0.5; --s: 0.5; }
+.s12{ left: 20%; --dur: 8.2s; --wob: 2.7s; --del: 0.2s; --dir: -1.3; --s: 1.5; }
+.s13{ left: 30%; --dur: 6.1s; --wob: 2.1s; --del: 2.9s; --dir: 1.6; --s: 0.7; }
+.s14{ left: 40%; --dur: 7.5s; --wob: 2.3s; --del: 4.1s; --dir: -0.6; --s: 1.2; }
+.s15{ left: 50%; --dur: 5.3s; --wob: 1.6s; --del: 0.7s; --dir: 0.9; --s: 0.9; }
+.s16{ left: 60%; --dur: 8.8s; --wob: 2.9s; --del: 3.2s; --dir: -1.4; --s: 1.3; }
+.s17{ left: 70%; --dur: 6.7s; --wob: 2.2s; --del: 1.8s; --dir: 1.3; --s: 0.6; }
+.s18{ left: 80%; --dur: 7.4s; --wob: 2.5s; --del: 0.4s; --dir: -0.7; --s: 1.1; }
+.s19{ left: 90%; --dur: 5.9s; --wob: 1.8s; --del: 2.5s; --dir: 1.7; --s: 0.8; }
+.s20{ left: 22%; --dur: 8.1s; --wob: 2.6s; --del: 1.9s; --dir: -1.0; --s: 1.4; }
+.s21{ left: 42%; --dur: 6.4s; --wob: 2s; --del: 0.9s; --dir: 1.1; --s: 0.7; }
+.s22{ left: 62%; --dur: 7.9s; --wob: 2.4s; --del: 4.8s; --dir: -1.6; --s: 1.2; }
+.s23{ left: 82%; --dur: 5.6s; --wob: 1.7s; --del: 2.1s; --dir: 0.6; --s: 0.5; }
+.s24{ left: 12%; --dur: 8.4s; --wob: 2.8s; --del: 3.7s; --dir: -0.5; --s: 1.5; }
+.s25{ left: 52%; --dur: 6.9s; --wob: 2.1s; --del: 1.4s; --dir: 1.4; --s: 0.9; }
+
+@keyframes flyUp { 
+  0% { transform: translateY(0) scale(var(--s)); opacity: 0; } 
+  10% { opacity: 1; } 
+  80% { opacity: 1; } 
+  100% { transform: translateY(-110vh) scale(calc(var(--s) * 0.2)); opacity: 0; } 
+}
+@keyframes sparkWobble {
+  0% { margin-left: calc(-25px * var(--s)); }
+  100% { margin-left: calc(25px * var(--s)); }
+}
+@keyframes glowPulse {
+  0% { filter: blur(1px) brightness(0.7); }
+  100% { filter: blur(2px) brightness(1.6); }
+}
+
+body.theme-day .spark { background:#fff; box-shadow:0 0 10px #fbbf24, 0 0 15px #fbbf24; opacity: 0.6; }
+body.theme-family .spark { background: #f5d0fe; box-shadow: 0 0 10px #d946ef, 0 0 20px #d946ef; }
+
+/* 4. Brouillard Épais Multicolore */
+.mist-wrap { position:absolute; inset:0; overflow:hidden; opacity: 0.25; transition:opacity 1.5s ease; }
+body.theme-day .mist-wrap { opacity: 0.65; }
+body.theme-family .mist-wrap { opacity: 0.8; }
+
+.mist-blob { position:absolute; left:-45%; width:190%; height:550px; top:-5%; border-radius:50%; background:radial-gradient(ellipse at center, rgba(255,255,255,0.85) 0%, rgba(150,150,150,0.6) 35%, rgba(225,29,72,0.3) 65%, rgba(251,191,36,0.1) 85%, transparent 100%); filter:blur(24px); animation: mistDrift 7s ease-in-out infinite alternate, mistBob 4s ease-in-out infinite alternate; will-change:transform, opacity; }
+.mist-blob.b2 { top:25%; height:480px; left:-35%; animation-duration:9s, 5.5s; animation-delay:-2s, -1s; opacity:0.9; background:radial-gradient(ellipse at center, rgba(150,150,150,0.85) 0%, rgba(255,255,255,0.6) 35%, rgba(251,191,36,0.3) 65%, rgba(225,29,72,0.1) 85%, transparent 100%); }
+.mist-blob.b3 { top:55%; height:600px; left:-55%; animation-duration:11s, 6.5s; animation-delay:-4s, -3s; opacity:0.85; background:radial-gradient(ellipse at center, rgba(225,29,72,0.7) 0%, rgba(251,191,36,0.5) 35%, rgba(255,255,255,0.3) 65%, rgba(150,150,150,0.1) 85%, transparent 100%); }
+.mist-blob.b4 { top:78%; height:500px; left:-40%; animation-duration:8s, 4.5s; animation-delay:-5s, -2s; opacity:0.95; background:radial-gradient(ellipse at center, rgba(251,191,36,0.7) 0%, rgba(150,150,150,0.5) 35%, rgba(225,29,72,0.3) 65%, rgba(255,255,255,0.1) 85%, transparent 100%); }
+body.theme-family .mist-blob { background:radial-gradient(ellipse at center, rgba(245,208,254,0.95) 0%, rgba(232,180,255,0.7) 40%, rgba(232,180,255,0.3) 65%, rgba(232,180,255,0) 85%, transparent 100%); }
+body.theme-family.theme-day .mist-blob { background:radial-gradient(ellipse at center, rgba(255,255,255,0.95) 0%, rgba(254,240,138,0.7) 40%, rgba(134,239,172,0.3) 65%, transparent 100%); }
+
+@keyframes mistDrift { from { transform: translateX(-30%) scaleX(0.8) scaleY(0.7) rotate(-4deg); opacity: 0.4; } to { transform: translateX(60%) scaleX(1.6) scaleY(1.3) rotate(4deg); opacity: 1; } }
+@keyframes mistBob { from { margin-top: -90px; } to { margin-top: 90px; } }
+@media (prefers-reduced-motion: reduce) { .mist-blob, .spark, .fire-glow { animation: none; } }
+
+/* ================================================ */
 
 input { -webkit-user-select:text; user-select:text; font-family:var(--font-text); }
 
-.header-top { display:flex; justify-content:space-between; align-items:center; width:100%; max-width:520px; margin-bottom:15px; }
-h1 { font-family:var(--font-title); font-size:1.8rem; font-weight:800; color:var(--highlight); margin:0; text-align:center; text-transform:uppercase; letter-spacing:2px; text-shadow: 0 0 15px rgba(217,119,6,0.3); line-height:1.2;}
+.app-header { position:fixed; top:0; left:0; right:0; z-index:200; background:var(--bg); border-bottom:1px solid var(--border); padding-top:env(safe-area-inset-top,0px); transition: background 0.8s ease, border-color 0.8s ease; }
+body.no-header .app-header { display:none; }
+body.no-header { padding-top:max(20px, env(safe-area-inset-top)) !important; }
+.app-header-inner { max-width:520px; margin:0 auto; display:flex; align-items:center; gap:10px; padding:12px 16px; }
+.app-logo { font-size:1.5rem; line-height:1; flex-shrink:0; }
+.app-name { font-family:var(--font-title); font-weight:800; font-size:1.05rem; color:var(--highlight); letter-spacing:0.5px; flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.grimoire-link { display:flex; align-items:center; gap:5px; background:var(--surface); border:1px solid var(--border); color:var(--text); border-radius:var(--radius-sm); padding:8px 12px; font-size:0.85rem; font-weight:700; font-family:var(--font-text); cursor:pointer; flex-shrink:0; transition:all 0.2s; }
+.grimoire-link:active { transform:scale(0.94); }
+h1 { font-family:var(--font-title); font-size:1.8rem; font-weight:800; color:var(--highlight); margin:0; text-align:center; text-transform:uppercase; letter-spacing:2px; line-height:1.2;}
 h2 { font-family:var(--font-title); margin:0 0 16px; font-size:1.5rem; text-align:center; color:var(--accent); letter-spacing:1px; transition: color 0.8s;}
 h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var(--highlight); text-align:center }
 
 .icon-btn { background:var(--surface); border:1px solid var(--border); color:var(--text); border-radius:var(--radius-sm); width:45px; height:45px; font-size:1.4rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
 .icon-btn:active { transform:scale(0.9); }
 
-.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px; width:100%; max-width:520px; margin-bottom:20px; backdrop-filter:blur(12px); box-shadow:0 10px 30px rgba(0,0,0,0.3); transition: all 0.8s ease; }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px; width:100%; max-width:520px; margin-bottom:20px; backdrop-filter:blur(16px); box-shadow:0 10px 30px rgba(0,0,0,0.5); transition: all 0.8s ease; }
+.stage { width:100%; max-width:520px; padding:4px 2px; margin-bottom:20px; position:relative; z-index:10; }
+
+.sticky-cta { position:fixed; left:50%; transform:translateX(-50%); bottom:0; width:100%; max-width:520px; z-index:150; background:transparent; padding:18px 16px calc(14px + env(safe-area-inset-bottom)); box-sizing:border-box; display:flex; flex-direction:column; gap:8px; }
+.sticky-cta .btn { margin-top:0; }
+
 .config-group { display:flex; flex-direction:column; gap:12px; margin-bottom:16px }
 .config-group input { background:var(--input-bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; color:var(--text); font-size:1.1rem; width:100%; text-align:center; transition:all 0.3s; }
 .config-group input:focus { outline:none; border-color:var(--highlight); box-shadow:0 0 10px rgba(217,119,6,0.3) }
 
-.btn { display:flex; justify-content:center; align-items:center; gap:10px; width:100%; padding:18px 16px; border-radius:var(--radius-sm); border:none; font-weight:900; font-size:1.15rem; cursor:pointer; margin-top:10px; color:#fff; background:linear-gradient(135deg, var(--accent), var(--blood)); box-shadow:0 6px 15px rgba(0,0,0,0.3); transition:all 0.2s; text-transform:uppercase; letter-spacing:1px; font-family:var(--font-title) }
-.btn:active { transform:translateY(3px); box-shadow:0 2px 5px rgba(0,0,0,0.3) }
-.btn-secondary { background:transparent; color:var(--text); border:2px solid var(--text-muted); box-shadow:none }
-.btn-highlight { background:linear-gradient(135deg, var(--gold-light), var(--gold)); color:#000; box-shadow:0 6px 15px rgba(217,119,6,0.3) }
-.btn:disabled { opacity:.5; cursor:not-allowed; box-shadow:none; background:#475569; color:#94a3b8; border:none; }
+.btn { display:flex; justify-content:center; align-items:center; gap:10px; width:100%; padding:18px 16px; border-radius:var(--radius-sm); border:none; font-weight:900; font-size:1.15rem; cursor:pointer; margin-top:10px; color:#ffffff !important; background:linear-gradient(135deg, var(--accent), var(--blood)); box-shadow:0 6px 15px rgba(0,0,0,0.4); transition:all 0.2s; text-transform:uppercase; letter-spacing:1px; font-family:var(--font-title); }
+.btn:active { transform:translateY(3px); box-shadow:0 2px 5px rgba(0,0,0,0.4) }
 
-.screen { display:none; width:100%; max-width:520px; flex-direction:column; align-items:center }
+/* Boutons secondaires toujours bien contrastés et visibles */
+.btn-secondary { background: var(--btn-sec-bg) !important; color: var(--btn-sec-text) !important; border: 2px solid transparent !important; box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important; font-weight: 800; backdrop-filter: none !important; }
+.btn-highlight { background:linear-gradient(135deg, var(--gold-light), var(--gold)); color:#000 !important; box-shadow:0 6px 15px rgba(217,119,6,0.5) }
+.btn:disabled { opacity:.5; cursor:not-allowed; box-shadow:none; background:#475569; color:#94a3b8 !important; border:none; }
+
+.screen { display:none; width:100%; max-width:520px; flex-direction:column; align-items:center; position:relative; z-index:10; }
 .screen.active { display:flex; animation:fadeIn 0.4s ease-out }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.info-box { background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.3); padding:16px; border-radius:var(--radius-sm); margin-bottom:20px; font-size:1.05rem; line-height:1.6; color:var(--text); }
-.alert-box { background:rgba(217,119,6,0.1); border:1px solid rgba(217,119,6,0.4); padding:16px; border-radius:var(--radius-sm); margin-bottom:20px; font-size:1rem; line-height:1.6; color:var(--text); text-align:center; }
-.story-box { background:var(--input-bg); border-left:4px solid var(--accent); padding:20px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin-bottom:24px; font-style:italic; line-height:1.6; font-size:1.1rem; }
+.info-box { background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.3); padding:16px; border-radius:var(--radius-sm); margin-bottom:20px; font-size:1.05rem; line-height:1.6; color:var(--text); backdrop-filter:blur(8px); }
+.alert-box { background:rgba(217,119,6,0.1); border:1px solid rgba(217,119,6,0.4); padding:16px; border-radius:var(--radius-sm); margin-bottom:20px; font-size:1rem; line-height:1.6; color:var(--text); text-align:center; backdrop-filter:blur(8px); }
+.story-box { background:rgba(15, 23, 42, 0.7); border-left:4px solid var(--accent); padding:20px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin-bottom:24px; font-style:italic; line-height:1.6; font-size:1.1rem; backdrop-filter:blur(8px); }
 
+/* Fond des boutons cibles (vote, etc) adaptatif pour ne plus jamais être foncé sur foncé */
 .targets { display:flex; flex-direction:column; gap:10px; margin:16px 0; width:100% }
-.tgt { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-radius:var(--radius-sm); border:1px solid rgba(150,150,150,0.3); background:var(--input-bg); color:var(--text); font-weight:700; font-size:1.15rem; cursor:pointer; transition:all 0.2s }
-.tgt.sel { background:var(--accent); border-color:var(--accent); color:#fff; box-shadow:0 0 15px rgba(225,29,72,0.4) }
+.tgt { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-radius:var(--radius-sm); border:1px solid rgba(150,150,150,0.3); background:var(--surface); color:var(--text); font-weight:700; font-size:1.15rem; cursor:pointer; transition:all 0.2s; backdrop-filter:blur(8px); }
+.tgt.sel { background:var(--accent); border-color:var(--accent); color:#fff; box-shadow:0 0 15px rgba(225,29,72,0.6) }
 .tgt button { background:transparent; color:var(--accent); border:1px solid var(--accent); border-radius:8px; padding:10px 16px; cursor:pointer; font-weight:bold; font-size:1rem; }
 
-.timer { font-family:var(--font-title); font-size:4.5rem; font-weight:800; text-align:center; color:var(--highlight); margin:20px 0; font-variant-numeric:tabular-nums; text-shadow:0 0 20px rgba(217,119,6,0.4); }
+.timer { font-family:var(--font-title); font-size:4.5rem; font-weight:800; text-align:center; color:var(--highlight); margin:20px 0; font-variant-numeric:tabular-nums; text-shadow:0 2px 4px rgba(0,0,0,0.5); }
 
 .role-toggle { display:flex; align-items:center; gap:16px; margin-bottom:12px; padding:16px; background:var(--input-bg); border:1px solid rgba(150,150,150,0.2); border-radius:12px; cursor:pointer; transition:all 0.2s; }
 .role-toggle input[type="radio"], .role-toggle input[type="checkbox"] { width:26px; height:26px; accent-color:var(--accent); cursor:pointer; flex-shrink:0; }
 .role-desc { display:flex; flex-direction:column; }
-.role-name { font-weight:800; font-size:1.1rem; margin-bottom:4px; color:var(--text); }
-.role-txt { font-size:0.95rem; color:var(--text-muted); line-height:1.4; }
+.role-name { font-weight:800; font-size:1.1rem; margin-bottom:6px; color:var(--text); }
+.role-txt { font-size:0.95rem; color:var(--text-muted); line-height:1.5; }
 
-.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; display:none; align-items:center; justify-content:center; padding:16px; backdrop-filter:blur(5px); }
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; display:none; align-items:center; justify-content:center; padding:16px; backdrop-filter:blur(10px); }
 .modal-overlay.open { display:flex; animation:fadeIn 0.2s ease; }
-.modal-box { background:var(--dark-bg); border:1px solid var(--border); border-radius:var(--radius); padding:24px; width:100%; max-width:480px; max-height:85vh; overflow-y:auto; box-shadow:0 20px 50px rgba(0,0,0,0.8); color:var(--text-light); }
+.modal-box { background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); padding:24px; width:100%; max-width:480px; max-height:85vh; overflow-y:auto; box-shadow:0 20px 50px rgba(0,0,0,0.8); color:var(--text); }
 #custom-alert-box { text-align:center; max-width:400px; }
-#custom-alert-text { font-size:1.2rem; line-height:1.6; margin-bottom:25px; white-space:pre-line; color:var(--text-light); }
+#custom-alert-text { font-size:1.2rem; line-height:1.6; margin-bottom:25px; white-space:pre-line; color:var(--text); }
+#subtitle-bar { position:fixed; left:0; right:0; bottom:max(14px,env(safe-area-inset-bottom)); display:none; justify-content:center; padding:0 16px; z-index:500; pointer-events:none; }
+#subtitle-text { background:rgba(0,0,0,0.78); color:#fff; padding:10px 18px; border-radius:12px; font-size:0.98rem; text-align:center; max-width:520px; line-height:1.4; box-shadow:0 6px 20px rgba(0,0,0,0.4); }
 </style>
 </head>
-<body class="theme-night">
+<body class="theme-night no-header">
 
-<div class="header-top">
-  <div style="width:45px"></div>
-  <h1>🐺 La Nuit des Loups <br><span id="app-subtitle" style="font-size:0.7rem; letter-spacing:1px; color:var(--text-muted); font-family:var(--font-text);">ÉDITION DÉFINITIVE</span></h1>
-  <button class="icon-btn" onclick="toggleRules()" aria-label="Règles">📜</button>
+<!-- DÉCOR IMMERSIF (Derrière tout le reste) -->
+<div id="immersive-bg">
+  <div class="bg-sky"></div>
+  <div class="fire-glow"></div>
+  <div class="sparks-wrap">
+    <div class="spark s1"></div><div class="spark s2"></div><div class="spark s3"></div>
+    <div class="spark s4"></div><div class="spark s5"></div><div class="spark s6"></div>
+    <div class="spark s7"></div><div class="spark s8"></div><div class="spark s9"></div>
+    <div class="spark s10"></div><div class="spark s11"></div><div class="spark s12"></div>
+    <div class="spark s13"></div><div class="spark s14"></div><div class="spark s15"></div>
+    <div class="spark s16"></div><div class="spark s17"></div><div class="spark s18"></div>
+    <div class="spark s19"></div><div class="spark s20"></div><div class="spark s21"></div>
+    <div class="spark s22"></div><div class="spark s23"></div><div class="spark s24"></div>
+    <div class="spark s25"></div>
+  </div>
+  <div class="mist-wrap">
+    <div class="mist-blob"></div><div class="mist-blob b2"></div><div class="mist-blob b3"></div><div class="mist-blob b4"></div>
+  </div>
 </div>
+
+<div id="subtitle-bar"><div id="subtitle-text"></div></div>
+
+<header class="app-header">
+  <div class="app-header-inner">
+    <span class="app-logo">🐺</span>
+    <span class="app-name" id="app-title-text">La Nuit des Loups</span>
+    <button class="grimoire-link" onclick="toggleRules()" aria-label="Ouvrir le Grimoire">📜 Grimoire</button>
+  </div>
+</header>
 
 <!-- MODAL DES RÈGLES -->
 <div class="modal-overlay" id="rules-modal">
   <div class="modal-box">
     <h2 style="color:var(--accent);margin-bottom:5px">Le Grimoire</h2>
-    
-    <h4 style="color:var(--highlight); margin-top:20px; font-size:1.1rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">🤖 L'Intelligence des Bots</h4>
+
+    <h4 style="color:var(--highlight); margin-top:20px; font-size:1.1rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">📖 Les Règles du Jeu</h4>
+    <div id="rules-general-list"></div>
+
+    <h4 style="color:var(--highlight); margin-top:24px; font-size:1.1rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">🎭 Les Rôles de la Partie</h4>
+    <div id="rules-roles-list"></div>
+
+    <h4 style="color:var(--highlight); margin-top:24px; font-size:1.1rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">🤖 L'Intelligence des Bots</h4>
     <p style="font-size:1rem;">Vous êtes moins de 4 joueurs ? Aucun problème.</p>
     <ul style="font-size:1rem; padding-left:20px;">
-      <li style="margin-bottom:10px">L'application ajoutera des Bots intelligents pour compléter le village.</li>
+      <li style="margin-bottom:10px">L'application ajoutera des Bots intelligents pour compléter le jeu.</li>
       <li style="margin-bottom:10px"><b>La Nuit :</b> Les Bots jouent tous seuls en silence. L'écran ne vous demandera de prendre le téléphone <b>que</b> si c'est votre tour à vous.</li>
-      <li style="margin-bottom:10px"><b>Le Jour :</b> Vous pouvez cliquer sur "🤖 Avis des Bots" pour savoir qui chaque Bot accuse (attention, les Bots Loups mentent pour vous piéger !).</li>
+      <li style="margin-bottom:10px"><b>Le Jour :</b> Vous pouvez cliquer sur "🤖 Avis des Bots" pour savoir qui chaque Bot accuse (attention, les Bots Loups mentent pour vous piéger, et ils se souviennent de leurs soupçons d'un jour à l'autre !).</li>
     </ul>
-
-    <h4 style="color:var(--highlight); margin-top:20px; font-size:1.1rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">🎭 Les Rôles de cette Partie</h4>
-    <div id="rules-roles-list"></div>
     
     <button class="btn btn-highlight" style="margin-top:20px" onclick="toggleRules()">Fermer le Grimoire</button>
   </div>
@@ -145,10 +298,58 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
   </div>
 </div>
 
+<!-- CONFIRMATION (actions irréversibles) -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="modal-box" id="confirm-modal-box" style="text-align:center;max-width:400px;">
+    <div id="confirm-modal-text" style="font-size:1.15rem;line-height:1.6;margin-bottom:25px;color:var(--text);"></div>
+    <button class="btn" id="confirm-yes-btn">✅ Confirmer</button>
+    <button class="btn btn-secondary" id="confirm-no-btn">Annuler</button>
+  </div>
+</div>
+
 <!-- ==============================================
-     1. ECRAN D'ACCUEIL / SETUP 
+     0. ECRAN D'ACCUEIL
      ============================================== -->
-<div id="setup-screen" class="screen active">
+<div id="welcome-screen" class="screen active">
+  <div id="welcome-resume-banner" class="card" style="display:none; text-align:center; border-color:var(--highlight); background:rgba(217,119,6,0.12);">
+    <p style="margin:0 0 6px;font-weight:900;color:var(--highlight);font-family:var(--font-title);font-size:1.2rem;">🔄 Une partie est en cours</p>
+    <p id="welcome-resume-info" style="margin:0 0 16px;color:var(--text-muted);font-size:0.9rem;"></p>
+    <button class="btn btn-highlight" onclick="resumeGame()">▶️ Reprendre la partie</button>
+    <button class="btn btn-secondary" style="margin-top:10px;" onclick="discardSave()">🗑️ Abandonner et recommencer</button>
+  </div>
+
+  <div class="stage" style="text-align:center;">
+    <div style="font-size:4rem; margin-bottom:10px; filter:grayscale(1); opacity:0.75;">🐺</div>
+    <h2 style="margin-bottom:4px; text-shadow:0 2px 4px rgba(0,0,0,0.6);">La Nuit des Loups</h2>
+  </div>
+
+  <div class="card">
+    <h2>Choisis ton ambiance</h2>
+    <label class="role-toggle">
+      <input type="radio" name="ambiance-mode" id="mode-std" checked onchange="updateTheme()">
+      <div class="role-desc">
+        <span class="role-name">🐺 Version Standard (Sombre)</span>
+        <span class="role-txt">Trahison, meurtres, et bûcher. Le jeu classique.</span>
+      </div>
+    </label>
+    <label class="role-toggle">
+      <input type="radio" name="ambiance-mode" id="mode-fam" onchange="updateTheme()">
+      <div class="role-desc">
+        <span class="role-name">🧸 Version Famille (3 ans+)</span>
+        <span class="role-txt">Doux et mignon. Les Loups Malins cachent les doudous, on s'endort, et on va au coin !</span>
+      </div>
+    </label>
+  </div>
+
+  <div class="sticky-cta">
+    <button class="btn" onclick="showScreen('setup-screen')">▶️ Je joue</button>
+  </div>
+</div>
+
+<!-- ==============================================
+     1. ECRAN DE CONFIGURATION
+     ============================================== -->
+<div id="setup-screen" class="screen">
   <div class="story-box" style="border-left:none; border-bottom:4px solid var(--accent); border-radius:var(--radius-sm); text-align:center;">
     <span style="font-family:var(--font-title); font-size:1.6rem; color:var(--accent); display:block; margin-bottom:10px;">La Nuit approche...</span>
     <span style="font-size:1.05rem;" id="intro-desc">
@@ -161,34 +362,21 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
   </div>
 
   <div class="card">
-    <h2>1. Ambiance de l'Histoire</h2>
+    <h2>1. Animation du Jeu</h2>
     <label class="role-toggle">
-      <input type="radio" name="ambiance-mode" id="mode-std" checked onchange="updateTheme()">
-      <div class="role-desc">
-        <span class="role-name">🐺 Version Standard (Sombre)</span>
-        <span class="role-txt">Trahison, meurtres, et bûcher. Le jeu classique.</span>
-      </div>
-    </label>
-    <label class="role-toggle">
-      <input type="radio" name="ambiance-mode" id="mode-fam" onchange="updateTheme()">
-      <div class="role-desc">
-        <span class="role-name">🧸 Version Famille (3 ans+)</span>
-        <span class="role-txt">Doux et mignon. Les Loups Coquins cachent les doudous, on s'endort, et on va au coin !</span>
-      </div>
-    </label>
-  </div>
-
-  <div class="card">
-    <h2>2. Animation du Jeu</h2>
-    <label class="role-toggle">
-      <input type="radio" name="gm-mode" id="mode-auto" checked>
+      <input type="radio" name="gm-mode" id="mode-auto" checked onchange="updateGMMode()">
       <div class="role-desc">
         <span class="role-name">🤖 Téléphone au centre (Auto)</span>
         <span class="role-txt">La voix parle et anime avec bruitages. TOUT LE MONDE JOUE.</span>
       </div>
     </label>
+    <div id="voice-inline" style="display:flex; align-items:center; gap:8px; margin:-6px 0 14px 62px;">
+      <span style="font-size:0.78rem; color:var(--text-muted); flex-shrink:0;">🔊 Voix :</span>
+      <select id="voice-select" style="flex:1; min-width:0; background:transparent; border:none; border-bottom:1px solid var(--border); padding:4px 2px; color:var(--text-muted); font-size:0.82rem;"></select>
+      <button type="button" onclick="testVoice()" style="background:transparent; border:1px solid var(--border); border-radius:6px; color:var(--text-muted); padding:4px 8px; cursor:pointer; font-size:0.75rem; flex-shrink:0; white-space:nowrap;">▶️ Écouter</button>
+    </div>
     <label class="role-toggle">
-      <input type="radio" name="gm-mode" id="mode-manual">
+      <input type="radio" name="gm-mode" id="mode-manual" onchange="updateGMMode()">
       <div class="role-desc">
         <span class="role-name">🗣️ Un Humain anime (Manuel)</span>
         <span class="role-txt">VOUS lisez les textes et cliquez pour les autres (vous ne jouez pas).</span>
@@ -197,7 +385,7 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
   </div>
 
   <div class="card">
-    <h2>3. Les Vrais Joueurs (<span id="p-count">0</span>)</h2>
+    <h2>2. Les Vrais Joueurs (<span id="p-count">0</span>)</h2>
     <form id="add-player-form" style="width:100%">
       <div class="config-group">
         <input id="p-name" maxlength="20" placeholder="Prénom..." autocomplete="off">
@@ -205,10 +393,22 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
       <button type="submit" class="btn btn-secondary">➕ Ajouter un humain</button>
     </form>
     <div id="p-list" class="targets"></div>
+
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:16px; padding:14px 16px; background:var(--input-bg); border-radius:12px; border:1px solid rgba(150,150,150,0.2);">
+      <div>
+        <div style="font-weight:800; color:var(--text);">🤖 Bots additionnels</div>
+        <div style="font-size:0.82rem; color:var(--text-muted);" id="bot-count-hint"></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
+        <button type="button" onclick="adjustBotCount(-1)" aria-label="Moins de bots" style="width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:1.3rem;font-weight:bold;cursor:pointer;">−</button>
+        <span id="bot-count-display" style="font-size:1.4rem;font-weight:900;min-width:22px;text-align:center;color:var(--highlight);">0</span>
+        <button type="button" onclick="adjustBotCount(1)" aria-label="Plus de bots" style="width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:1.3rem;font-weight:bold;cursor:pointer;">+</button>
+      </div>
+    </div>
   </div>
   
   <div class="card">
-    <h2>4. Rôles et Bots</h2>
+    <h2>3. Rôles et Bots</h2>
     <div id="advice-box" class="alert-box">Ajoutez 1 joueur minimum. Des Bots s'ajouteront automatiquement.</div>
     
     <div id="deck-recap" style="display:flex; justify-content:space-around; padding:15px; background:var(--input-bg); border-radius:12px; margin-bottom:20px; text-align:center;">
@@ -217,14 +417,24 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
       <div><div style="font-size:1.8rem;font-weight:900;color:var(--text)" id="d-villagers">0</div><div style="font-size:0.8rem;color:var(--text-muted);font-weight:bold" id="lbl-villagers">SIMPLES</div></div>
     </div>
     
-    <label class="role-toggle"><input type="checkbox" id="opt-voyante" checked onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-voyante">🔮 Voyante</span></div></label>
-    <label class="role-toggle"><input type="checkbox" id="opt-sorciere" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-sorciere">🧙‍♀️ Sorcière</span></div></label>
-    <label class="role-toggle"><input type="checkbox" id="opt-chasseur" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-chasseur">🏹 Chasseur</span></div></label>
-    <label class="role-toggle"><input type="checkbox" id="opt-petite" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-petite">👧 Petite Fille</span></div></label>
-    <label class="role-toggle"><input type="checkbox" id="opt-cupidon" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-cupidon">💘 Cupidon</span></div></label>
-    <label class="role-toggle"><input type="checkbox" id="opt-voleur" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-voleur">🃏 Voleur</span></div></label>
+    <label class="role-toggle"><input type="checkbox" id="opt-voyante" checked onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-voyante">🔮 Voyante</span><span class="role-txt" id="rt-voyante"></span></div></label>
+    <label class="role-toggle"><input type="checkbox" id="opt-sorciere" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-sorciere">🧙‍♀️ Sorcière</span><span class="role-txt" id="rt-sorciere"></span></div></label>
+    <label class="role-toggle"><input type="checkbox" id="opt-chasseur" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-chasseur">🏹 Chasseur</span><span class="role-txt" id="rt-chasseur"></span></div></label>
+    <label class="role-toggle"><input type="checkbox" id="opt-petite" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-petite">👧 Petite Fille</span><span class="role-txt" id="rt-petite"></span></div></label>
+    <label class="role-toggle"><input type="checkbox" id="opt-cupidon" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-cupidon">💘 Cupidon</span><span class="role-txt" id="rt-cupidon"></span></div></label>
+    <label class="role-toggle"><input type="checkbox" id="opt-voleur" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-voleur">🃏 Voleur</span><span class="role-txt" id="rt-voleur"></span></div></label>
+    <label class="role-toggle"><input type="checkbox" id="opt-ancien" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-ancien">👴 Ancien</span><span class="role-txt" id="rt-ancien"></span></div></label>
+    <label class="role-toggle"><input type="checkbox" id="opt-boucemissaire" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-boucemissaire">🐐 Bouc Émissaire</span><span class="role-txt" id="rt-boucemissaire"></span></div></label>
     
     <div id="error-box" style="display:none;color:#fff;text-align:center;font-weight:bold;margin-top:10px;padding:15px;background:var(--accent);border-radius:8px"></div>
+  </div>
+
+  <details class="card" style="padding:20px 24px;">
+    <summary style="cursor:pointer; font-family:var(--font-title); font-size:1.2rem; color:var(--highlight); letter-spacing:1px; outline:none;">📖 Résumé de tous les rôles</summary>
+    <div id="setup-roles-summary" style="margin-top:14px;"></div>
+  </details>
+
+  <div class="sticky-cta">
     <button class="btn" id="start-btn" disabled onclick="initGame()">🚀 Lancer l'Histoire</button>
   </div>
 </div>
@@ -233,17 +443,22 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
      2. ECRAN DISTRIBUTION 
      ============================================== -->
 <div id="distrib-screen" class="screen">
-  <div class="card" style="text-align:center">
+  <div class="stage" style="text-align:center">
     <div class="info-box" style="border-color:var(--highlight);background:rgba(217,119,6,0.1);color:var(--highlight)">
       👉 <b>Passez secrètement l'appareil</b> à la personne affichée ci-dessous.
     </div>
-    <h2 style="font-size:3rem;color:var(--text);margin:30px 0" id="distrib-who"></h2>
-    <button class="btn btn-highlight" id="distrib-btn" onclick="revealRole()">👁️ Découvrir mon rôle</button>
+    <h2 style="font-size:3rem;color:var(--text);margin:30px 0; text-shadow:0 2px 4px rgba(0,0,0,0.6);" id="distrib-who"></h2>
     
-    <div id="distrib-role" style="display:none;margin-top:20px">
+    <div id="distrib-role" style="display:none;margin-top:20px;text-align:left">
       <div id="distrib-role-info" style="padding:15px;border-radius:12px;background:var(--input-bg);border:1px solid var(--accent);margin-bottom:20px;"></div>
-      <button class="btn btn-secondary" onclick="nextDistrib()">🔒 Cacher et passer au suivant</button>
     </div>
+  </div>
+
+  <div class="sticky-cta" id="distrib-cta-pre">
+    <button class="btn btn-highlight" id="distrib-btn" onclick="revealRole()">👁️ Découvrir mon rôle</button>
+  </div>
+  <div class="sticky-cta" id="distrib-cta-post" style="display:none;">
+    <button class="btn btn-secondary" onclick="nextDistrib()">🔒 Cacher et passer au suivant</button>
   </div>
 </div>
 
@@ -251,15 +466,16 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
      3. LA NUIT (AUTO) 
      ============================================== -->
 <div id="night-auto-screen" class="screen">
-  <div class="card pulse" style="border-color:var(--accent);box-shadow: 0 0 30px rgba(225,29,72,0.1)">
-    <h2 style="color:var(--accent);font-size:2.5rem;text-shadow:0 0 15px var(--accent)" id="ui-night-title">🌙 La Nuit</h2>
+  <div class="stage" style="text-align:center;">
+    <h2 style="color:var(--accent);font-size:2.5rem;text-shadow:0 2px 4px rgba(0,0,0,0.5);" id="ui-night-title">🌙 La Nuit</h2>
     <div id="night-instruction" class="info-box" style="border-color:rgba(255,255,255,0.2);background:var(--input-bg);"></div>
-    <div id="night-status" style="font-size:1.8rem;text-align:center;margin:30px 0;font-weight:900;color:var(--highlight);font-family:var(--font-title);line-height:1.4;">Attente...</div>
-    <div id="night-action-trigger" style="display:none;text-align:center">
-      <button class="btn btn-highlight" id="night-action-btn" onclick="openRoleAction()"></button>
-      <div class="timer" id="night-timer">15</div>
-      <p id="night-bot-text" style="font-size:0.95rem;color:var(--text-muted);font-style:italic"></p>
-    </div>
+    <div id="night-status" style="font-size:1.8rem;text-align:center;margin:30px 0;font-weight:900;color:var(--highlight);font-family:var(--font-title);line-height:1.4; text-shadow:0 2px 4px rgba(0,0,0,0.5);">Attente...</div>
+  </div>
+
+  <div id="night-action-trigger" class="sticky-cta" style="display:none;text-align:center;">
+    <div class="timer" id="night-timer" style="margin:0 0 4px;">15</div>
+    <p id="night-bot-text" style="font-size:0.95rem;color:var(--text);font-style:italic;margin:0 0 4px;"></p>
+    <button class="btn btn-highlight" id="night-action-btn" onclick="openRoleAction()"></button>
   </div>
 </div>
 
@@ -267,55 +483,67 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
      4. ACTION DU ROLE 
      ============================================== -->
 <div id="role-action-screen" class="screen">
-  <div class="card" id="role-action-content"></div>
+  <div class="stage" id="role-action-content"></div>
 </div>
 
 <!-- ==============================================
      5. LE JOUR 
      ============================================== -->
 <div id="day-screen" class="screen">
-  <div class="story-box" id="day-story" style="border-color:var(--highlight);background:var(--surface);color:var(--text)"></div>
-  <div class="info-box" id="day-tips" style="background:rgba(16,185,129,0.1); border-color:rgba(16,185,129,0.4); font-size:0.95rem;"></div>
-  <div class="card" id="day-content"></div>
+  <div class="stage" id="day-content"></div>
+  <div class="sticky-cta" id="day-cta" style="display:none;">
+    <button class="btn btn-secondary" onclick="botVotes()" id="day-bots-btn">🤖 Avis des Bots</button>
+    <button class="btn btn-highlight" onclick="startVote()" id="day-vote-btn">⚖️ Vote</button>
+  </div>
 </div>
 
 <!-- ==============================================
      6. VOTE 
      ============================================== -->
 <div id="vote-screen" class="screen">
-  <div class="card" id="vote-content"></div>
+  <div class="stage" id="vote-content"></div>
+  <div class="sticky-cta" id="vote-cta" style="display:none;">
+    <button class="btn btn-secondary" onclick="executeVote(null)" id="vote-tie-btn">⚖️ Égalité</button>
+  </div>
 </div>
 
 <!-- ==============================================
      7. FIN 
      ============================================== -->
 <div id="end-screen" class="screen">
-  <div class="card" id="end-content"></div>
+  <div class="stage" id="end-content"></div>
+  <div class="sticky-cta" id="end-cta" style="display:none;">
+    <button class="btn" onclick="location.reload()">🔄 Rejouer une Partie</button>
+  </div>
 </div>
 
 <script>
 // --- DICTIONNAIRES DES ROLES & TEXTES ---
 
 const R_STD = {
-  loup:['🐺','Loup-garou','Éliminer tous les innocents.', 'Chaque nuit, dévorez une proie. Le jour, mentez pour survivre !'],
-  villageois:['🧑‍🌾','Simple Villageois','Trouver et tuer les loups.', 'Aucun pouvoir la nuit. Le jour, débattez et utilisez votre vote.'],
-  voyante:['🔮','Voyante','Démasquer les loups.', 'Chaque nuit, découvrez la véritable nature d\'un joueur.'],
-  sorciere:['🧙‍♀️','Sorcière','Sauver ou détruire.', 'Vous avez une Potion de Vie (sauver) et une Potion de Mort (tuer).'],
-  chasseur:['🏹','Chasseur','Emporter un joueur avec vous.', 'Si vous êtes tué, vous tirez sur quelqu\'un avant de mourir.'],
-  petite:['👧','Petite Fille','Espionner les loups.', 'Entrouvrez physiquement les yeux pendant le tour des loups. Ne vous faites pas prendre !'],
-  cupidon:['💘','Cupidon','Lier deux âmes.', 'Désignez deux Amoureux (1ère nuit). Si l\'un meurt, l\'autre se suicide.'],
-  voleur:['🃏','Voleur','Voler un rôle.', 'Échangez votre rôle avec l\'une des 2 cartes au centre (1ère nuit).']
+  loup:['🐺','Loup-garou','Le but du Loup-garou est de gagner en éliminant tous les innocents.', 'Chaque nuit, dévorez une proie. Le jour, mentez pour survivre !'],
+  villageois:['🧑‍🌾','Simple Villageois','Le but du Villageois est de gagner avec le camp des villageois en éliminant tous les loups-garous.', 'Aucun pouvoir la nuit. Le jour, débattez et utilisez votre vote.'],
+  voyante:['🔮','Voyante','Le but de la Voyante est de gagner avec le camp des villageois en démasquant les loups-garous.', 'Chaque nuit, découvrez la véritable nature d\'un joueur.'],
+  sorciere:['🧙‍♀️','Sorcière','Le but de la sorcière dans le jeu du Loup-Garou est de gagner avec le camp des villageois en éliminant tous les loups-garous.', 'Vous avez une Potion de Vie (sauver) et une Potion de Mort (tuer).'],
+  chasseur:['🏹','Chasseur','Le but du Chasseur est de gagner avec le camp des villageois en éliminant les loups-garous.', 'Si vous êtes tué, vous tirez sur quelqu\'un avant de mourir.'],
+  petite:['👧','Petite Fille','Le but de la Petite Fille est de gagner avec les villageois en espionnant les loups-garous.', 'Entrouvrez physiquement les yeux pendant le tour des loups. Ne vous faites pas prendre !'],
+  cupidon:['💘','Cupidon','Le but de Cupidon est de lier deux joueurs, puis de gagner avec son camp (ou seul si Villageois + Loup).', 'Désignez deux Amoureux (1ère nuit). Si l\'un meurt, l\'autre se suicide.'],
+  voleur:['🃏','Voleur','Le but du Voleur est de gagner avec le camp de son nouveau rôle.', 'Échangez votre rôle avec l\'une des 2 cartes au centre (1ère nuit).'],
+  ancien:['👴','Ancien','Le but de l\'Ancien est de gagner avec les villageois en résistant aux loups-garous.', 'Vous survivez à la première attaque des loups (pas au vote, ni à la sorcière).'],
+  boucemissaire:['🐐','Bouc Émissaire','Le but du Bouc Émissaire est de gagner avec les villageois sans se faire accuser.', 'En cas d\'égalité au vote, c\'est vous qui êtes brûlé(e) à la place du village.']
 };
 
 const R_FAM = {
-  loup:['🐺','Loup Coquin','Faire des farces à tous les copains.', 'La nuit, tu caches le doudou d\'un ami. Le jour, fais semblant de rien !'],
-  villageois:['🧑‍🌾','Petit Copain','Trouver les Loups Coquins.', 'Tu dors la nuit. Le jour, aide tes amis à trouver qui fait des farces.'],
-  voyante:['🧚‍♀️','Fée Magique','Aider les copains avec ta magie.', 'Chaque nuit, tu regardes le secret d\'un ami avec ta baguette magique.'],
-  sorciere:['🧙‍♀️','Magicienne','Aider ou faire une farce.', 'Tu as une potion "Rend le doudou" (sauve un ami) et une potion "Fait Dodo" (met au coin).'],
-  chasseur:['🦸‍♂️','Super-Héros','Attraper un loup coquin.', 'Si on te cache ton doudou, tu attrapes très vite un ami pour aller au coin avec toi.'],
-  petite:['👧','Petite Filoute','Regarder en cachette.', 'Fais semblant de dormir, mais ouvre un tout petit peu les yeux pendant les loups !'],
-  cupidon:['👼','Ange des Câlins','Faire un gros câlin magique.', 'Tu choisis deux amis. Ils deviennent les Meilleurs Amis : ils font tout ensemble.'],
-  voleur:['🤡','Petit Farceur','Changer de déguisement.', 'La première nuit, tu peux prendre un autre costume au milieu de la table.']
+  loup:['🐺','Loup Malin','Le but du Loup Malin est de cacher les doudous sans se faire attraper.', 'La nuit, tu caches le doudou d\'un ami. Le jour, fais semblant de rien !'],
+  villageois:['🧑‍🌾','Ami','Le but des Amis est d\'arrêter tous les Loups Malins.', 'Tu dors la nuit. Le jour, aide tes amis à trouver qui fait des farces.'],
+  voyante:['🧚‍♀️','Fée Magique','Le but de la Fée est de trouver les Loups Malins avec sa magie.', 'Chaque nuit, tu regardes le secret d\'un ami avec ta baguette magique.'],
+  sorciere:['🧙‍♀️','Magicienne','Le but de la Magicienne est d\'aider les Amis avec ses potions.', 'Tu as une potion "Rend le doudou" (sauve un ami) et une potion "Fait Dodo" (met au coin).'],
+  chasseur:['🦸‍♂️','Super-Héros','Le but du Super-Héros est d\'attraper un Loup Malin avec lui.', 'Si on te cache ton doudou, tu attrapes très vite un ami pour aller au coin avec toi.'],
+  petite:['👧','Petite Filoute','Le but de la Filoute est d\'espionner les Loups Malins en cachette.', 'Fais semblant de dormir, mais ouvre un tout petit peu les yeux pendant les loups !'],
+  cupidon:['👼','Ange des Câlins','Le but de l\'Ange est de lier deux amis pour qu\'ils gagnent ensemble.', 'Tu choisis deux amis. Ils deviennent les Meilleurs Amis : ils font tout ensemble.'],
+  voleur:['🤡','Petit Farceur','Le but du Farceur est de gagner avec son nouveau costume.', 'La première nuit, tu peux prendre un autre costume au milieu de la table.'],
+  ancien:['👴','Papi/Mamie','Le but est d\'aider les Amis en résistant très fort aux farces.', 'Tu résistes à la première farce des Loups Malins (mais pas au coin, ni à la potion).'],
+  boucemissaire:['🐐','Petit Bouc','Le but est de gagner avec les Amis sans aller au coin.', 'Si personne ne se met d\'accord au vote, c\'est toi qui vas au coin à la place de tout le monde.']
 };
 
 const TIPS_ROLE_STD = {
@@ -358,6 +586,16 @@ const TIPS_ROLE_STD = {
     "Les deux cartes écartées sont des rôles qui ne sont PAS dans la partie : c'est une info très précieuse !",
     "Si les deux cartes au centre sont des Loups, vous serez obligé(e) d'en prendre une.",
     "Choisissez stratégiquement selon vos affinités (Loup pour mentir, Villageois pour enquêter)."
+  ],
+  ancien: [
+    "Vous pouvez vous permettre de prendre plus de risques au premier vote que les autres.",
+    "Attention : votre résistance ne fonctionne que contre les loups, pas contre le vote du village !",
+    "Ne révélez pas trop vite que vous avez survécu à une attaque, gardez l'effet de surprise."
+  ],
+  boucemissaire: [
+    "Poussez activement le débat vers un accord clair : une égalité vous coûte très cher.",
+    "Soyez discret(ète) sur votre rôle, sinon plus personne n'osera provoquer d'égalité contre vous.",
+    "En cas de doute entre deux suspects, votre voix peut faire pencher la balance en faveur."
   ]
 };
 
@@ -365,21 +603,21 @@ const TIPS_ROLE_FAM = {
   loup: [
     "La nuit : Mettez-vous d'accord très vite pour cacher un doudou.",
     "Le jour : Fais l'innocent ! Dis que ce n'est pas toi.",
-    "Le jour : Tu peux accuser un copain pour te protéger."
+    "Le jour : Tu peux accuser un ami pour te protéger."
   ],
   villageois: [
     "Le jour : Écoute bien ceux qui rigolent ou qui mentent.",
     "Ne te fâche pas si on t'accuse, explique juste que tu n'as rien fait.",
-    "Aide le groupe à trouver le vrai Loup Coquin."
+    "Aide le groupe à trouver le vrai Loup Malin."
   ],
   voyante: [
     "La nuit : Regarde le secret de celui qui te semble le plus malicieux.",
-    "Le jour : Si tu as vu un Loup Coquin, essaie de le dire sans révéler que tu es la Fée.",
+    "Le jour : Si tu as vu un Loup Malin, essaie de le dire sans révéler que tu es la Fée.",
     "Garde ton secret au début pour ne pas perdre ton doudou la nuit suivante."
   ],
   sorciere: [
     "La nuit : Garde ta Potion de Réveil pour un moment très important.",
-    "N'utilise la Potion de Dodo que si tu es sûr(e) de qui est le Loup Coquin.",
+    "N'utilise la Potion de Dodo que si tu es sûr(e) de qui est le Loup Malin.",
     "Si tu as sauvé quelqu'un, tu sais qu'il est gentil !"
   ],
   chasseur: [
@@ -388,19 +626,29 @@ const TIPS_ROLE_FAM = {
     "Tu peux bluffer et dire que tu es la Fée pour que les loups t'attaquent."
   ],
   petite: [
-    "La nuit : Ouvre un tout petit peu les yeux quand les Loups Coquins se réveillent.",
-    "Si un Loup Coquin te voit, c'est toi qui perdras ton doudou !",
+    "La nuit : Ouvre un tout petit peu les yeux quand les Loups Malins se réveillent.",
+    "Si un Loup Malin te voit, c'est toi qui perdras ton doudou !",
     "Le jour : Utilise ce que tu as vu, mais reste très discrète."
   ],
   cupidon: [
     "La nuit : Tu peux te choisir toi-même pour être le Meilleur Ami de quelqu'un.",
-    "Si tu lies un Loup Coquin et un Petit Copain, vous devrez gagner tous seuls !",
-    "Le jour : Fais comme si tu étais un simple Petit Copain."
+    "Si tu lies un Loup Malin et un Ami, vous devrez gagner tous seuls !",
+    "Le jour : Fais comme si tu étais un simple Ami."
   ],
   voleur: [
     "La nuit : Tu peux changer ton costume avec un de ceux qui sont au milieu.",
-    "Si les deux costumes au milieu sont des Loups Coquins, tu es obligé(e) d'en mettre un !",
-    "Le jour : Garde ton nouveau rôle secret."
+    "Si les deux costumes au milieu sont des Loups Malins, tu es obligé(e) d'en mettre un !",
+    "Le jour : Garde ton nouveau costume secret."
+  ],
+  ancien: [
+    "Tu peux te montrer un peu plus courageux(se) que les autres au début du jeu.",
+    "Attention, ça ne marche que contre les Loups Malins, pas contre le coin !",
+    "Ne dis pas tout de suite que tu as résisté, garde la surprise."
+  ],
+  boucemissaire: [
+    "Aide le groupe à bien se mettre d'accord, sinon c'est toi qui vas au coin !",
+    "Reste discret(ète) sur ton rôle pour que personne n'en profite.",
+    "En cas d'hésitation entre deux amis, ton avis peut faire la différence."
   ]
 };
 
@@ -411,16 +659,38 @@ const TIPS_JOUR_STD = [
     "💡 Conseil : Si quelqu'un est trop silencieux, c'est peut-être qu'il a peur de faire une gaffe..."
 ];
 const TIPS_JOUR_FAM = [
-    "💡 Astuce : Les Loups Coquins ont souvent du mal à ne pas rigoler quand on les accuse.",
+    "💡 Astuce : Les Loups Malins ont souvent du mal à ne pas rigoler quand on les accuse.",
     "💡 La Fée : Ne dis pas ton secret tout de suite ! Les loups cacheront ton doudou cette nuit.",
-    "💡 Astuce : Si quelqu'un accuse trop fort ses copains, c'est peut-être lui le Loup Coquin...",
+    "💡 Astuce : Si quelqu'un accuse trop fort ses amis, c'est peut-être lui le Loup Malin...",
     "💡 Astuce : Regardez bien les yeux des autres, parfois on devine qui ment !"
 ];
 
-const BOT_NAMES_STD = ['Bot-Alpha', 'Bot-Beta', 'Bot-Gamma', 'Bot-Delta', 'Bot-Echo', 'Bot-Zeta'];
-const BOT_NAMES_FAM = ['Doudou', 'Lapinou', 'Poussin', 'Ourson', 'Panda', 'Chaton'];
+const BOT_NAMES = ['Adam', 'Alice', 'Anna', 'David', 'Emma', 'Eva', 'Lina', 'Lucas', 'Maya', 'Mia', 'Noah', 'Olivia', 'Sofia', 'Thomas', 'Victor', 'Zoé'];
 
 const STEP_TO_ROLE = { 'thief':'voleur', 'cupid':'cupidon', 'wolves':'loup', 'seer':'voyante', 'witch':'sorciere' };
+
+const ROLE_ORDER = ['loup','villageois','voyante','sorciere','chasseur','petite','cupidon','voleur','ancien','boucemissaire'];
+function buildRolesSummaryHTML(dict) {
+    return ROLE_ORDER.map(k => {
+        let r = dict[k];
+        return `<div style="display:flex; gap:12px; align-items:flex-start; padding:10px 0; border-bottom:1px solid rgba(150,150,150,0.15);">
+                  <span style="font-size:1.5rem; flex-shrink:0; line-height:1.3;">${r[0]}</span>
+                  <div>
+                    <div style="font-weight:800; color:var(--text); font-size:1.02rem;">${r[1]}</div>
+                    <div style="font-size:0.9rem; color:var(--text-muted); line-height:1.45; margin-top:2px;"><b>But :</b> ${r[2]}<br><i>${r[3]}</i></div>
+                  </div>
+                </div>`;
+    }).join('');
+}
+
+const ROLE_OPTIONS = ['voyante','sorciere','chasseur','petite','cupidon','voleur','ancien','boucemissaire'];
+function applyRoleOptionLabels(dict) {
+    ROLE_OPTIONS.forEach(k => {
+        let r = dict[k];
+        $('rn-' + k).textContent = r[0] + ' ' + r[1];
+        $('rt-' + k).innerHTML = `<b>But :</b> ${r[2]}<br><i>${r[3]}</i>`;
+    });
+}
 
 let TXT = {}; 
 let active_TIPS_ROLE = {};
@@ -435,27 +705,28 @@ let timerInterval = null;
 let activeRolesConfig = []; 
 let isAuto = true;
 let isFamily = false;
+let chosenVoiceURI = null;
+
+// Force hide subtitle to clear stuck subtitles
+function forceHideSubtitle() {
+    let bar = $('subtitle-bar');
+    if(bar) bar.style.display = 'none';
+}
 
 // --- GESTION DU THEME (Standard vs Family) ---
 function updateTheme() {
     isFamily = $('mode-fam').checked;
     
     if(isFamily) {
-        document.body.classList.add('theme-family');
-        $('app-subtitle').textContent = "VERSION FAMILLE (3 ANS+)";
-        $('rn-voyante').textContent = "🧚‍♀️ Fée Magique";
-        $('rn-sorciere').textContent = "🧙‍♀️ Magicienne";
-        $('rn-chasseur').textContent = "🦸‍♂️ Super-Héros";
-        $('rn-petite').textContent = "👧 Petite Filoute";
-        $('rn-cupidon').textContent = "👼 Ange des Câlins";
-        $('rn-voleur').textContent = "🤡 Petit Farceur";
-        $('lbl-wolves').textContent = "COQUINS";
-        $('lbl-villagers').textContent = "COPAINS";
+        document.body.className = 'theme-family';
+        applyRoleOptionLabels(R_FAM);
+        $('lbl-wolves').textContent = "MALINS";
+        $('lbl-villagers').textContent = "AMIS";
         
         $('intro-desc').innerHTML = `Des petits malins se cachent parmi vous pour faire des farces. <br><br>
         <b>Le but du jeu :</b><br>
-        Si tu es un <b>Petit Copain</b>, trouve les Loups Coquins pour qu'ils arrêtent leurs bêtises. <br>
-        Si tu es un <b>Loup Coquin</b>, cache le doudou des copains la nuit sans te faire prendre le jour !<br><br>
+        Si tu es un <b>Ami</b>, trouve les Loups Malins pour qu'ils arrêtent leurs bêtises. <br>
+        Si tu es un <b>Loup Malin</b>, cache le doudou des amis la nuit sans te faire prendre le jour !<br><br>
         L'application gère tout. Distribuez les rôles, posez l'appareil au centre, et écoutez la belle histoire...`;
         
         active_TIPS_ROLE = TIPS_ROLE_FAM;
@@ -463,21 +734,21 @@ function updateTheme() {
         
         TXT = {
             nightIntro1: "C'est l'heure du dodo dans la forêt magique.",
-            nightIntro2: "Les petits copains doivent trouver les Loups Coquins.",
-            nightIntro3: "Les Loups Coquins adorent cacher les doudous.",
+            nightIntro2: "Les amis doivent trouver les Loups Malins.",
+            nightIntro3: "Les Loups Malins adorent cacher les doudous.",
             nightIntro4: "Tout le monde ferme les yeux et fait semblant de dormir. Chut !",
             nightFalls: "La lune se lève. Tout le monde fait un gros dodo.",
             dayBreaks: "Le soleil brille ! Tout le monde se réveille et s'étire !",
             
-            vocabWolf: "Loup Coquin", vocabKill: "Cacher le doudou", vocabKilled: "a perdu son doudou et va se reposer",
-            vocabVote: "envoyer au coin", vocabBurn: "Mettre au coin", vocabHunter: "attraper", vocabDead: "Endormi",
+            vocabWolf: "Loup Malin", vocabKill: "Cacher le doudou", vocabKilled: "a perdu son doudou et va se reposer",
+            vocabVote: "envoyé(e) au coin", vocabBurn: "Mettre au coin", vocabHunter: "attraper", vocabDead: "Endormi",
             uiNightVoteStr: "À qui voulez-vous cacher le doudou ?", uiNightVoteBtn: "🌟 Cacher son doudou",
             uiVoteTitle: "🧸 L'heure du Coin", uiVoteBtn: "👉 Envoyer au coin",
             
             botVoteStrs: [
                 "pense que la farce a été faite par",
                 "soupçonne très fort",
-                "croit que le petit coquin est",
+                "croit que le petit malin est",
                 "voudrait envoyer au coin",
                 "a entendu rigoler",
                 "se méfie beaucoup de"
@@ -485,31 +756,26 @@ function updateTheme() {
             
             speechNoDeath: "Bravo ! Tout le monde a encore son doudou ce matin.",
             speechDeath: "Oh non ! Quelqu'un a fait une farce cette nuit.",
-            speechDebate: "Qui a fait la farce ? Discutez ensemble pour trouver le Loup Coquin.",
+            speechDebate: "Qui a fait la farce ? Discutez ensemble pour trouver le Loup Malin.",
             speechVote: "Au compte de 3, pointez du doigt celui qui a fait la farce.",
-            winVillage: "🏆 Bravo les Copains !", winWolves: "🐺 Les Loups Coquins ont gagné !", winLovers: "👼 Les Meilleurs Amis ont gagné !",
-            winDraw: "💤 Tout le monde dort !", winDrawSub: "Il n'y a plus personne pour jouer..."
+            winVillage: "🏆 Bravo les Amis !", winWolves: "🐺 Les Loups Malins ont gagné !", winLovers: "👼 Les Meilleurs Amis ont gagné !",
+            winDraw: "💤 Tout le monde dort !", winDrawSub: "Il n'y a plus personne pour jouer...",
+            endTitle: "L'Album des Amis"
         };
         
-        $('rules-roles-list').innerHTML = `<p style="font-size:1rem;">
-            🐺 <b>Loup Coquin</b> <i>(Loup-garou)</i> : Cache le doudou d'un copain chaque nuit.<br>
-            🧑‍🌾 <b>Petit Copain</b> <i>(Villageois)</i> : Aucun pouvoir, aide à trouver les coquins.<br>
-            🧚‍♀️ <b>Fée Magique</b> <i>(Voyante)</i> : Regarde le secret d'un joueur par nuit.<br>
-            🧙‍♀️ <b>Magicienne</b> <i>(Sorcière)</i> : 1 potion de réveil (sauve) et 1 potion de dodo (élimine).<br>
-            🦸‍♂️ <b>Super-Héros</b> <i>(Chasseur)</i> : S'il est mis au coin, il attrape quelqu'un avec lui.<br>
-            👧 <b>Petite Filoute</b> <i>(Petite Fille)</i> : Espionne en cachette la nuit.<br>
-            👼 <b>Ange des Câlins</b> <i>(Cupidon)</i> : Lie 2 meilleurs amis pour toujours.<br>
-            🤡 <b>Petit Farceur</b> <i>(Voleur)</i> : Peut changer de costume avec le centre.</p>`;
+        $('rules-general-list').innerHTML = `<p style="font-size:1rem; line-height:1.65;">
+            <b>🎯 Le but :</b> Les <b>Amis</b> doivent trouver et arrêter tous les <b>Loups Malins</b>. Les <b>Loups Malins</b> doivent cacher des doudous chaque nuit sans se faire prendre.<br><br>
+            <b>🌙 La Nuit :</b> Chaque ami qui a un pouvoir spécial l'utilise en secret, chacun son tour, quand l'application l'appelle. Les autres font semblant de dormir.<br><br>
+            <b>☀️ Le Jour :</b> Tout le monde se réveille, découvre ce qui s'est passé, discute ensemble, puis vote pour envoyer un suspect au coin.<br><br>
+            <b>🏆 Fin de partie :</b> La partie s'arrête dès qu'une équipe gagne (les Amis, les Loups Malins, ou les Meilleurs Amis si Cupidon a lié un Loup et un Ami qui survivent seuls tous les deux).
+        </p>`;
+        let rolesHTML = buildRolesSummaryHTML(R_FAM);
+        $('rules-roles-list').innerHTML = rolesHTML;
+        $('setup-roles-summary').innerHTML = rolesHTML;
             
     } else {
-        document.body.classList.remove('theme-family');
-        $('app-subtitle').textContent = "ÉDITION DÉFINITIVE";
-        $('rn-voyante').textContent = "🔮 Voyante";
-        $('rn-sorciere').textContent = "🧙‍♀️ Sorcière";
-        $('rn-chasseur').textContent = "🏹 Chasseur";
-        $('rn-petite').textContent = "👧 Petite Fille";
-        $('rn-cupidon').textContent = "💘 Cupidon";
-        $('rn-voleur').textContent = "🃏 Voleur";
+        document.body.className = 'theme-night';
+        applyRoleOptionLabels(R_STD);
         $('lbl-wolves').textContent = "LOUPS";
         $('lbl-villagers').textContent = "SIMPLES";
         
@@ -531,7 +797,7 @@ function updateTheme() {
             dayBreaks: "Le soleil se lève sur le village. Tout le monde se réveille, et ouvre les yeux.",
             
             vocabWolf: "Loup-Garou", vocabKill: "Dévorer", vocabKilled: "nous a quittés",
-            vocabVote: "éliminer", vocabBurn: "Brûler", vocabHunter: "abattre", vocabDead: "Mort",
+            vocabVote: "éliminé(e)", vocabBurn: "Brûler", vocabHunter: "abattre", vocabDead: "Mort",
             uiNightVoteStr: "Choisissez qui vous allez dévorer.", uiNightVoteBtn: "🩸 Dévorer cette proie",
             uiVoteTitle: "🔥 Le Bûcher", uiVoteBtn: "🔥 Brûler",
             
@@ -549,18 +815,19 @@ function updateTheme() {
             speechDebate: "Il est temps de débattre. Qui ment parmi vous ? Discutez, puis ouvrez le tribunal.",
             speechVote: "L'heure du jugement a sonné. Au compte de 3, pointez tous du doigt votre suspect.",
             winVillage: "🏡 Le Village Survit", winWolves: "🐺 Le Règne des Loups", winLovers: "💘 L'Amour Triomphe",
-            winDraw: "🪦 Cimetière", winDrawSub: "Il ne reste plus personne en vie..."
+            winDraw: "🪦 Cimetière", winDrawSub: "Il ne reste plus personne en vie...",
+            endTitle: "Le Livre des Âmes"
         };
         
-        $('rules-roles-list').innerHTML = `<p style="font-size:1rem;">
-            🐺 <b>Loups-Garous :</b> Dévorent un villageois chaque nuit.<br>
-            🧑‍🌾 <b>Villageois :</b> Aucun pouvoir, trouvent les loups le jour.<br>
-            🔮 <b>Voyante :</b> Lit l'esprit d'un joueur par nuit.<br>
-            🧙‍♀️ <b>Sorcière :</b> 1 potion de vie et 1 potion de mort.<br>
-            🏹 <b>Chasseur :</b> S'il meurt, il abat quelqu'un de son choix.<br>
-            👧 <b>Petite Fille :</b> Espionne secrètement les loups la nuit.<br>
-            💘 <b>Cupidon :</b> Lie 2 amoureux. Si l'un meurt, l'autre aussi.<br>
-            🃏 <b>Voleur :</b> Peut échanger sa carte avec le centre.</p>`;
+        $('rules-general-list').innerHTML = `<p style="font-size:1rem; line-height:1.65;">
+            <b>🎯 Le but :</b> Les <b>Villageois</b> doivent démasquer et éliminer tous les <b>Loups-Garous</b> au bûcher. Les <b>Loups</b> doivent dévorer le village chaque nuit jusqu'à être aussi nombreux (ou plus) que les villageois restants.<br><br>
+            <b>🌙 La Nuit :</b> Chaque joueur avec un rôle spécial agit en secret, à tour de rôle, quand l'application l'appelle. Les autres dorment, yeux fermés.<br><br>
+            <b>☀️ Le Jour :</b> Le village découvre les événements de la nuit, débat pour démasquer les coupables, puis vote pour éliminer un suspect.<br><br>
+            <b>🏆 Fin de partie :</b> La partie s'arrête dès qu'une équipe l'emporte (le Village, les Loups, ou les Amoureux si Cupidon a lié un Loup et un Villageois qui survivent seuls tous les deux).
+        </p>`;
+        let rolesHTML = buildRolesSummaryHTML(R_STD);
+        $('rules-roles-list').innerHTML = rolesHTML;
+        $('setup-roles-summary').innerHTML = rolesHTML;
     }
     checkConfig(); 
 }
@@ -570,6 +837,15 @@ window.addEventListener('DOMContentLoaded', updateTheme);
 // --- AUDIO PROCEDURAL ---
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 let currentAmbienceLoops = [];
+let ambienceBaseGain = null;
+let ambienceBaseVolume = 0;
+
+function duckAmbience(active) {
+    if(!ambienceBaseGain) return;
+    let now = audioCtx.currentTime;
+    ambienceBaseGain.gain.cancelScheduledValues(now);
+    ambienceBaseGain.gain.linearRampToValueAtTime(active ? ambienceBaseVolume * 0.4 : ambienceBaseVolume, now + 0.35);
+}
 
 function startNightAmbience() {
     stopAmbience();
@@ -588,6 +864,8 @@ function startNightAmbience() {
     noise.connect(filter).connect(gain).connect(audioCtx.destination);
     noise.start();
     currentAmbienceLoops.push({source: noise, gain: gain});
+    ambienceBaseGain = gain;
+    ambienceBaseVolume = gain.gain.value;
     
     if(!isFamily) {
         let wolfInterval = setInterval(() => {
@@ -641,6 +919,8 @@ function startDayAmbience() {
     noise.connect(filter).connect(gain).connect(audioCtx.destination);
     noise.start();
     currentAmbienceLoops.push({source: noise, gain: gain});
+    ambienceBaseGain = gain;
+    ambienceBaseVolume = gain.gain.value;
 
     let birdInterval = setInterval(() => {
         let osc = audioCtx.createOscillator();
@@ -667,6 +947,7 @@ function stopAmbience() {
         if(item.interval) clearInterval(item.interval);
     });
     currentAmbienceLoops = [];
+    ambienceBaseGain = null;
 }
 
 window.currentUtterance = null; 
@@ -683,24 +964,91 @@ function speak(texte) {
   return new Promise(resolve => {
     if (!isAuto) { resolve(); return; }
     ensureAudioContext();
-    let u = new SpeechSynthesisUtterance(texte);
-    u.lang = 'fr-FR';
+    window.speechSynthesis.cancel(); 
+    forceHideSubtitle();
     
-    let voices = window.speechSynthesis.getVoices();
-    let frVoices = voices.filter(v => v.lang.startsWith('fr'));
-    let bestVoice = frVoices.find(v => v.name.includes('Premium') || v.name.includes('Google') || v.name.includes('Enhanced') || v.name.includes('Thomas') || v.name.includes('Aurélie'));
-    if(bestVoice) u.voice = bestVoice;
-    else if(frVoices.length > 0) u.voice = frVoices[0];
+    setTimeout(() => {
+        let u = new SpeechSynthesisUtterance(texte);
+        u.lang = 'fr-FR';
+        
+        let voices = window.speechSynthesis.getVoices();
+        let frVoices = voices.filter(v => v.lang.startsWith('fr'));
+        let bestVoice = chosenVoiceURI ? voices.find(v => v.voiceURI === chosenVoiceURI) : null;
+        if(!bestVoice) {
+            bestVoice = frVoices.find(v => /premium|enhanced|neural|natural/i.test(v.name))
+                     || frVoices.find(v => !v.localService)
+                     || frVoices.find(v => v.name.includes('Google') || v.name.includes('Thomas') || v.name.includes('Aurélie'))
+                     || frVoices[0];
+        }
+        if(bestVoice) u.voice = bestVoice;
 
-    u.rate = 0.95;
-    u.pitch = isFamily ? 1.2 : 0.95; 
-    window.currentUtterance = u;
-    u.onend = resolve;
-    u.onerror = resolve; 
-    window.speechSynthesis.speak(u);
+        u.rate = 0.95 + (Math.random() * 0.08 - 0.04);
+        u.pitch = (isFamily ? 1.2 : 0.95) + (Math.random() * 0.08 - 0.04); 
+        window.currentUtterance = u;
+        
+        // Timeout de sécurité au cas où l'API ne déclenche pas le onend (bug Chrome fréquent)
+        let fallbackTimer = setTimeout(() => {
+            finish();
+        }, Math.max(3000, texte.length * 90)); 
+
+        u.onstart = () => {
+            duckAmbience(true);
+            $('subtitle-text').textContent = texte;
+            $('subtitle-bar').style.display = 'flex';
+        };
+        let finish = () => {
+            clearTimeout(fallbackTimer);
+            duckAmbience(false);
+            forceHideSubtitle();
+            resolve();
+        };
+        u.onend = finish;
+        u.onerror = finish; 
+        window.speechSynthesis.speak(u);
+    }, 50); 
   });
 }
+
 function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+function pause(base, jitter=250) { return wait(Math.max(150, base + (Math.random()*jitter*2 - jitter))); }
+
+function populateVoiceList() {
+    let voices = window.speechSynthesis.getVoices();
+    let frVoices = voices.filter(v => v.lang.toLowerCase().startsWith('fr'));
+    let sel = $('voice-select');
+    if(!sel || frVoices.length === 0) return;
+    sel.innerHTML = frVoices.map(v => `<option value="${v.voiceURI}">${v.name}${v.localService ? '' : ' (réseau)'}</option>`).join('');
+    if(!chosenVoiceURI || !frVoices.some(v => v.voiceURI === chosenVoiceURI)) {
+        let best = frVoices.find(v => /premium|enhanced|neural|natural/i.test(v.name))
+                || frVoices.find(v => !v.localService)
+                || frVoices.find(v => v.name.includes('Google') || v.name.includes('Thomas') || v.name.includes('Aurélie'))
+                || frVoices[0];
+        if(best) { chosenVoiceURI = best.voiceURI; sel.value = best.voiceURI; }
+    } else {
+        sel.value = chosenVoiceURI;
+    }
+}
+window.speechSynthesis.onvoiceschanged = populateVoiceList;
+window.addEventListener('DOMContentLoaded', populateVoiceList);
+
+function updateGMMode() {
+    let auto = $('mode-auto').checked;
+    $('voice-inline').style.display = auto ? 'flex' : 'none';
+}
+window.addEventListener('DOMContentLoaded', updateGMMode);
+
+function testVoice() {
+    ensureAudioContext();
+    window.speechSynthesis.cancel();
+    let u = new SpeechSynthesisUtterance(isFamily ? "Bonjour les amis, c'est l'heure de l'histoire !" : "Bienvenue dans la Nuit des Loups. Je serai votre maître du jeu.");
+    u.lang = 'fr-FR';
+    let voices = window.speechSynthesis.getVoices();
+    let v = voices.find(x => x.voiceURI === chosenVoiceURI);
+    if(v) u.voice = v;
+    u.rate = 0.95;
+    u.pitch = isFamily ? 1.2 : 0.95;
+    window.speechSynthesis.speak(u);
+}
 
 document.body.addEventListener('click', () => {
     ensureAudioContext();
@@ -712,7 +1060,11 @@ document.body.addEventListener('click', () => {
 
 // --- UTILITAIRES ---
 function $(id) { return document.getElementById(id); }
-function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); $(id).classList.add('active'); }
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+  document.body.classList.toggle('no-header', id === 'welcome-screen');
+}
 function toggleRules() { $('rules-modal').classList.toggle('open'); }
 
 function customAlert(msg, callback) {
@@ -723,6 +1075,124 @@ function customAlert(msg, callback) {
     $('custom-alert').style.display = 'none';
     if(callback) callback();
   };
+}
+
+function customConfirm(msg, onYes, onNo) {
+  ensureAudioContext();
+  $('confirm-modal-text').innerHTML = msg;
+  $('confirm-modal').style.display = 'flex';
+  $('confirm-yes-btn').onclick = () => { $('confirm-modal').style.display = 'none'; if(onYes) onYes(); };
+  $('confirm-no-btn').onclick = () => { $('confirm-modal').style.display = 'none'; if(onNo) onNo(); };
+}
+
+// --- PETITS EFFETS SONORES PONCTUELS ---
+function playBell() {
+  try {
+    ensureAudioContext();
+    let now = audioCtx.currentTime;
+    [660, 990].forEach((freq) => {
+        let osc = audioCtx.createOscillator(); let g = audioCtx.createGain();
+        osc.type = 'sine'; osc.frequency.value = freq; osc.connect(g); g.connect(audioCtx.destination);
+        g.gain.setValueAtTime(0, now); g.gain.linearRampToValueAtTime(0.12, now + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
+        osc.start(now); osc.stop(now + 1.4);
+    });
+  } catch(e) {}
+}
+function playGunshot() {
+  try {
+    ensureAudioContext();
+    let now = audioCtx.currentTime;
+    let bufferSize = Math.floor(audioCtx.sampleRate * 0.25);
+    let buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    let data = buffer.getChannelData(0);
+    for(let i=0;i<bufferSize;i++) data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufferSize, 3);
+    let noise = audioCtx.createBufferSource(); noise.buffer = buffer;
+    let filter = audioCtx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 1200;
+    let gain = audioCtx.createGain(); gain.gain.value = 0.5;
+    noise.connect(filter).connect(gain).connect(audioCtx.destination);
+    noise.start(now);
+  } catch(e) {}
+}
+function playChime() {
+  try {
+    ensureAudioContext();
+    let now = audioCtx.currentTime;
+    [880, 1320, 1760].forEach((freq, i) => {
+        let osc = audioCtx.createOscillator(); let g = audioCtx.createGain();
+        osc.type = 'sine'; osc.frequency.value = freq; osc.connect(g); g.connect(audioCtx.destination);
+        let t = now + i*0.12;
+        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.1, t + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.9);
+        osc.start(t); osc.stop(t + 0.9);
+    });
+  } catch(e) {}
+}
+
+// --- SAUVEGARDE AUTOMATIQUE & REPRISE DE PARTIE ---
+const SAVE_KEY = 'lndl-save-v1';
+function saveGame(phase) {
+  try {
+    let payload = { phase, players, state, extraCards, activeRolesConfig, distribIdx, isAuto, isFamily, pNames, chosenVoiceURI, savedAt: Date.now() };
+    localStorage.setItem(SAVE_KEY, JSON.stringify(payload));
+  } catch(e) {}
+}
+function clearSave() {
+  try { localStorage.removeItem(SAVE_KEY); } catch(e) {}
+}
+function checkForSave() {
+  let raw;
+  try { raw = localStorage.getItem(SAVE_KEY); } catch(e) { return; }
+  if(!raw) return;
+  try {
+    let save = JSON.parse(raw);
+    let humains = (save.players || []).filter(p => !p.isBot).length;
+    $('welcome-resume-info').textContent = `${save.isFamily ? 'Version Famille' : 'Version Standard'} · Jour ${save.state && save.state.day ? save.state.day : 1} · ${humains} joueur(s) humain(s)`;
+    $('welcome-resume-banner').style.display = 'block';
+  } catch(e) { clearSave(); }
+}
+window.addEventListener('DOMContentLoaded', checkForSave);
+
+function discardSave() {
+  clearSave();
+  $('welcome-resume-banner').style.display = 'none';
+}
+
+function resumeGame() {
+  let raw;
+  try { raw = localStorage.getItem(SAVE_KEY); } catch(e) { return; }
+  if(!raw) return;
+  let save;
+  try { save = JSON.parse(raw); } catch(e) { clearSave(); return; }
+
+  players = save.players;
+  state = save.state;
+  extraCards = save.extraCards;
+  activeRolesConfig = save.activeRolesConfig;
+  distribIdx = save.distribIdx;
+  isAuto = save.isAuto;
+  isFamily = save.isFamily;
+  pNames = save.pNames;
+  chosenVoiceURI = save.chosenVoiceURI || null;
+
+  $('mode-fam').checked = isFamily;
+  $('mode-std').checked = !isFamily;
+  $('mode-auto').checked = isAuto;
+  $('mode-manual').checked = !isAuto;
+  updateTheme();
+  updateGMMode();
+
+  document.body.className = isFamily ? 'theme-family theme-night' : 'theme-night';
+
+  if(save.phase === 'night') { runNightEngine(); }
+  else if(save.phase === 'day') { resumeToDay(); }
+  else { showDistrib(); }
+}
+
+function resumeToDay() {
+  document.body.className = isFamily ? 'theme-family theme-day' : 'theme-day';
+  $('app-title-text').textContent = "☀️ Le Jour se lève";
+  resolveDeaths(async () => { showDay(); });
 }
 
 // --- SETUP ---
@@ -741,14 +1211,59 @@ $('add-player-form').addEventListener('submit', function(e) {
   }
 });
 
+$('voice-select').addEventListener('change', function() {
+    chosenVoiceURI = this.value;
+});
+
 function renderPList() {
   $('p-count').textContent = pNames.length;
   $('p-list').innerHTML = pNames.map((n,i) => `<div class="tgt"><span>👤 ${n}</span><button type="button" onclick="pNames.splice(${i},1);renderPList();checkConfig()">Retirer</button></div>`).join('');
+  try { localStorage.setItem('lndl-playernames', JSON.stringify(pNames)); } catch(e) {}
+  renderBotCount();
 }
+
+// --- NOMBRE DE BOTS ---
+let botCount = 4;
+const BOT_COUNT_MAX = 12;
+function minBotsNeeded() { return Math.max(0, 4 - pNames.length); }
+function adjustBotCount(delta) {
+  let min = minBotsNeeded();
+  botCount = Math.min(BOT_COUNT_MAX, Math.max(min, botCount + delta));
+  renderBotCount();
+  checkConfig();
+}
+function renderBotCount() {
+  let min = minBotsNeeded();
+  if(botCount < min) botCount = min;
+  if(botCount > BOT_COUNT_MAX) botCount = BOT_COUNT_MAX;
+  $('bot-count-display').textContent = botCount;
+  $('bot-count-hint').textContent = min > 0
+      ? `Minimum ${min} pour atteindre 4 joueurs au total`
+      : (botCount > 0 ? `Pour pimenter la partie` : `Optionnel`);
+}
+
+function loadSavedPlayerNames() {
+  if(pNames.length) return;
+  try {
+    let raw = localStorage.getItem('lndl-playernames');
+    if(raw) {
+      let saved = JSON.parse(raw);
+      if(Array.isArray(saved) && saved.length) {
+        pNames = saved.slice(0, 20);
+        renderPList();
+        checkConfig();
+      }
+    }
+  } catch(e) {}
+}
+window.addEventListener('DOMContentLoaded', loadSavedPlayerNames);
+window.addEventListener('DOMContentLoaded', renderBotCount);
+
 
 function checkConfig() {
   let n = pNames.length;
-  let total = Math.max(4, n); // Les bots complètent pour atteindre 4
+  renderBotCount();
+  let total = n + botCount; 
   let btn = $('start-btn');
   let err = $('error-box');
   let adv = $('advice-box');
@@ -765,6 +1280,8 @@ function checkConfig() {
   if($('opt-petite').checked) specialCount++;
   if($('opt-cupidon').checked) specialCount++;
   if($('opt-voleur').checked) specialCount++; 
+  if($('opt-ancien').checked) specialCount++;
+  if($('opt-boucemissaire').checked) specialCount++;
   
   let villagers = total - wolves - specialCount;
 
@@ -773,7 +1290,7 @@ function checkConfig() {
   $('d-villagers').textContent = villagers >= 0 ? villagers : 0;
 
   let ideal = "";
-  if (n < 4) ideal = `💡 <b>Bots Automatiques :</b> Vous êtes ${n}. L'application ajoutera ${4-n} Bots pour que vous puissiez jouer !`;
+  if (botCount > 0) ideal = `💡 <b>Bots :</b> ${botCount} bot(s) rejoindront la partie, pour un total de ${total} joueurs.`;
   else ideal = `✅ <b>Composition valide.</b> (Aucun bot ajouté).`;
   
   if (villagers < 0) {
@@ -790,11 +1307,19 @@ function initGame() {
   resetAudio();
   isAuto = $('mode-auto').checked;
   
-  let bNames = isFamily ? BOT_NAMES_FAM : BOT_NAMES_STD;
-  let botIdx = 0;
-  while(pNames.length < 4) {
-      pNames.push(bNames[botIdx % bNames.length]);
-      botIdx++;
+  let bNames = [...BOT_NAMES].sort(() => Math.random() - 0.5);
+  let botNameSet = new Set();
+  let idx = 0;
+  for(let i = 0; i < botCount; i++) {
+      let name;
+      do {
+          let base = bNames[idx % bNames.length];
+          let suffix = Math.floor(idx / bNames.length);
+          name = suffix > 0 ? `${base} ${suffix+1}` : base;
+          idx++;
+      } while(pNames.includes(name));
+      pNames.push(name);
+      botNameSet.add(name);
   }
   
   let n = pNames.length;
@@ -807,6 +1332,8 @@ function initGame() {
   if($('opt-petite').checked) deck.push('petite');
   if($('opt-cupidon').checked) deck.push('cupidon');
   if($('opt-voleur').checked) deck.push('voleur');
+  if($('opt-ancien').checked) deck.push('ancien');
+  if($('opt-boucemissaire').checked) deck.push('boucemissaire');
   
   while(deck.length < n) deck.push('villageois');
   deck.sort(() => Math.random() - 0.5);
@@ -816,7 +1343,8 @@ function initGame() {
       name: name, 
       role: deck[i], 
       alive: true,
-      isBot: BOT_NAMES_STD.includes(name) || BOT_NAMES_FAM.includes(name)
+      lives: deck[i] === 'ancien' ? 2 : 1,
+      isBot: botNameSet.has(name)
   }));
   
   if($('opt-voleur').checked) {
@@ -825,10 +1353,12 @@ function initGame() {
   } else { extraCards = []; }
   
   activeRolesConfig = [...new Set([...deck, ...extraCards])];
-  state = { day: 1, lovers: [], victim: null, pz: null, heal: 1, poison: 1, hq: [], deadThisTurn: [], thiefDone: false };
+  state = { day: 1, lovers: [], victim: null, pz: null, heal: 1, poison: 1, hq: [], deadThisTurn: [], thiefDone: false, suspicion: {}, dayVotes: {} };
   distribIdx = 0;
   
-  document.body.className = isFamily ? 'theme-family' : 'theme-night';
+  document.body.className = isFamily ? 'theme-family theme-night' : 'theme-night';
+  $('app-title-text').textContent = "La Nuit des Loups";
+  saveGame('distrib');
   showDistrib();
 }
 
@@ -842,11 +1372,15 @@ function showDistrib() {
   showScreen('distrib-screen');
   let p = players[distribIdx];
   $('distrib-who').textContent = p.name;
-  $('distrib-role').style.display = 'none';$('distrib-btn').style.display = 'block';
+  $('distrib-role').style.display = 'none';
+  $('distrib-cta-pre').style.display = 'flex';
+  $('distrib-cta-post').style.display = 'none';
 }
 
 function revealRole() {
-  $('distrib-role').style.display = 'block';$('distrib-btn').style.display = 'none';
+  $('distrib-role').style.display = 'block';
+  $('distrib-cta-pre').style.display = 'none';
+  $('distrib-cta-post').style.display = 'flex';
   let p = players[distribIdx];
   
   let R_DICT = isFamily ? R_FAM : R_STD;
@@ -854,26 +1388,26 @@ function revealRole() {
   let tips = active_TIPS_ROLE[p.role];
   let equiv = isFamily ? `<div style="font-size:0.95rem; color:var(--text-muted); font-style:italic; margin-top:-5px; margin-bottom:15px;">(Équivalent classique : ${R_STD[p.role][1]})</div>` : "";
   
-  let h = `<h3 style="font-size:2.4rem;color:var(--highlight);margin:0 0 5px 0;text-shadow:0 0 10px rgba(217,119,6,0.5)">${r[0]} ${r[1]}</h3>`;
+  let h = `<h3 style="font-size:2.4rem;color:var(--highlight);margin:0 0 5px 0;">${r[0]} ${r[1]}</h3>`;
   h += equiv;
   
-  h += `<div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:12px; margin-bottom:12px; text-align:left; border-left:4px solid var(--highlight);">
-          <div style="color:var(--highlight); font-weight:bold; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">🎯 Ton But</div>
-          <div style="color:var(--text); font-size:1.05rem;">${r[2]}</div>
-        </div>`;
+  h += `<details style="background:rgba(0,0,0,0.3); border-radius:8px; padding:12px; margin-bottom:10px; text-align:left; border-left:4px solid var(--highlight);">
+          <summary style="cursor:pointer; color:var(--highlight); font-weight:bold; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; outline:none;">🎯 Ton But</summary>
+          <div style="color:var(--text); font-size:1.05rem; margin-top:8px;">${r[2]}</div>
+        </details>`;
         
-  h += `<div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:12px; margin-bottom:15px; text-align:left; border-left:4px solid var(--accent);">
-          <div style="color:var(--accent); font-weight:bold; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">✨ Ce que tu dois faire</div>
-          <div style="color:var(--text-muted); font-size:1rem; line-height:1.5;">${r[3]}</div>
-        </div>`;
+  h += `<details style="background:rgba(0,0,0,0.3); border-radius:8px; padding:12px; margin-bottom:10px; text-align:left; border-left:4px solid var(--accent);">
+          <summary style="cursor:pointer; color:var(--accent); font-weight:bold; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; outline:none;">✨ Ce que tu dois faire</summary>
+          <div style="color:var(--text-muted); font-size:1rem; line-height:1.5; margin-top:8px;">${r[3]}</div>
+        </details>`;
 
-  h += `<div style="text-align:left; background:rgba(217,119,6,0.1); border-radius:8px; padding:12px; border-left:4px solid var(--gold);">`;
-  h += `<div style="color:var(--gold); font-weight:bold; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">💡 Astuces</div>`;
-  h += `<ul style="margin:0; padding-left:20px; color:var(--text-light); font-size:0.95rem; line-height:1.5;">`;
+  h += `<details style="text-align:left; background:rgba(217,119,6,0.1); border-radius:8px; padding:12px;border-left:4px solid var(--gold);">`;
+  h += `<summary style="cursor:pointer; color:var(--gold); font-weight:bold; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; outline:none;">💡 Astuces</summary>`;
+  h += `<ul style="margin:8px 0 0; padding-left:20px; color:var(--text-light); font-size:0.95rem; line-height:1.5;">`;
   tips.forEach(t => {
       h += `<li style="margin-bottom:6px">${t}</li>`;
   });
-  h += `</ul></div>`;
+  h += `</ul></details>`;
 
   if(p.role === 'loup') {
       let mates = players.filter(x => x.role === 'loup' && x.id !== p.id).map(x => x.name);
@@ -882,7 +1416,7 @@ function revealRole() {
   }
   $('distrib-role-info').innerHTML = h;
 }
-function nextDistrib() { distribIdx++; showDistrib(); }
+function nextDistrib() { distribIdx++; saveGame('distrib'); showDistrib(); }
 
 // --- BOT INTELLIGENCE (Nuit) ---
 function playBotLogic(rKey) {
@@ -915,7 +1449,7 @@ function playBotLogic(rKey) {
             if(Math.random() < 0.4) { state.heal = 0; state.victim = null; }
         } 
         else if(state.poison && Math.random() < 0.15) {
-            let targets = players.filter(p => p.alive && p.id !== state.victim && p.id !== botWitch.id); // Ne s'empoisonne pas lui même
+            let targets = players.filter(p => p.alive && p.id !== state.victim && p.id !== botWitch.id);
             if(targets.length > 0) {
                 state.pz = targets[Math.floor(Math.random()*targets.length)].id;
                 state.poison = 0;
@@ -927,7 +1461,9 @@ function playBotLogic(rKey) {
 // --- MOTEUR DE LA NUIT ---
 async function runNightEngine() {
   resetAudio();
-  document.body.className = isFamily ? 'theme-family' : 'theme-night';
+  forceHideSubtitle();
+  $('app-title-text').textContent = "La Nuit des Loups";
+  document.body.className = isFamily ? 'theme-family theme-night' : 'theme-night';
   startNightAmbience(); 
 
   let R_DICT = isFamily ? R_FAM : R_STD;
@@ -943,24 +1479,39 @@ async function runNightEngine() {
 
   let petiteFilleInGame = activeRolesConfig.includes('petite');
   state.victim = null; state.pz = null; state.currentRole = null;
+  saveGame('night');
 
   showScreen('night-auto-screen');
   $('ui-night-title').textContent = isFamily ? "🌙 Dodo magique" : "🌙 La Nuit";
   $('night-action-trigger').style.display = 'none';
+  $('night-action-btn').onclick = openRoleAction;
   
   if(isAuto) {
       $('night-instruction').innerHTML = `📱 <b>Posez le téléphone au centre et fermez les yeux.</b><br><br>Prenez l'appareil UNIQUEMENT si c'est votre tour. S'il n'y a que des bots, le jeu jouera tout seul en silence.`;
       $('night-status').textContent = isFamily ? "Tout le monde dort..." : "Le village s'endort...";
       
       if(state.day === 1) {
-          await speak(TXT.nightIntro1); await wait(1000);
-          await speak(TXT.nightIntro2); await wait(1000);
-          await speak(TXT.nightIntro3); await wait(1000);
-          await speak(TXT.nightIntro4); await wait(2000);
+          await speak(TXT.nightIntro1); await pause(900);
+          await speak(TXT.nightIntro2); await pause(900);
+          await speak(TXT.nightIntro3); await pause(900);
+          await speak(TXT.nightIntro4); await pause(1800, 400);
       }
-      await speak(TXT.nightFalls); await wait(4000); 
+      await speak(TXT.nightFalls); await pause(3500, 500); 
   } else {
-      $('night-instruction').innerHTML = `🗣️ <b>Maître du Jeu :</b><br>Lisez les textes à haute voix, puis saisissez les actions sur l'écran (les bots jouent seuls).`;
+      let introLines = state.day === 1
+          ? [TXT.nightIntro1, TXT.nightIntro2, TXT.nightIntro3, TXT.nightIntro4, TXT.nightFalls]
+          : [TXT.nightFalls];
+      $('night-instruction').innerHTML = `🗣️ <b>Maître du Jeu, lis à voix haute :</b><br><br><i>« ${introLines.join(' ')} »</i>`;
+      $('night-status').textContent = "";
+      $('night-timer').style.display = 'none';
+      $('night-bot-text').textContent = "";
+      $('night-action-btn').style.display = 'inline-block';
+      $('night-action-btn').textContent = "▶️ J'ai fini de lire, commencer";
+      $('night-action-btn').onclick = () => currentResolve();
+      $('night-action-trigger').style.display = 'flex';
+      await new Promise(resolve => { currentResolve = resolve; });
+      $('night-action-trigger').style.display = 'none';
+      $('night-action-btn').onclick = openRoleAction;
   }
 
   for(let step of state.seq) {
@@ -977,10 +1528,10 @@ async function runNightEngine() {
       if(isAuto) {
           $('night-status').textContent = step.name;
           if(step.id === 'wolves' && petiteFilleInGame) {
-              await speak("Si la " + R_DICT['petite'][1] + " est réveillée..."); await wait(1000);
-              await speak("Elle peut ouvrir un tout petit peu les yeux."); await wait(2500);
+              await speak("Si la " + R_DICT['petite'][1] + " est réveillée..."); await pause(900);
+              await speak("Elle peut ouvrir un tout petit peu les yeux."); await pause(2200, 400);
           }
-          await speak(step.vocal1); await wait(1500); await speak(step.vocal2);
+          await speak(step.vocal1); await pause(1200, 350); await speak(step.vocal2);
           
           if(humansWithRole.length > 0) {
               $('night-action-btn').style.display = 'inline-block';$('night-action-btn').textContent = "✋ C'est moi, je prends l'appareil";
@@ -994,15 +1545,18 @@ async function runNightEngine() {
       } else {
           let extra = (step.id === 'wolves' && petiteFilleInGame) ? `<br><br><i>(La ${R_DICT['petite'][1]} peut entrouvrir les yeux.)</i>` : "";
           $('night-status').innerHTML = `« ${step.vocal1} ${step.vocal2} »${extra}`;
+          $('night-action-btn').style.display = 'inline-block';
           if(humansWithRole.length > 0) {
-              $('night-action-btn').style.display = 'inline-block';$('night-action-btn').textContent = "👁️ Saisir l'action pour le joueur";
+              $('night-action-btn').textContent = "👁️ Saisir l'action pour le joueur";
+              $('night-action-btn').onclick = openRoleAction;
           } else {
-              $('night-action-btn').style.display = 'none';
+              $('night-action-btn').textContent = aliveBots.length > 0 ? "▶️ Continuer (les bots ont choisi)" : "▶️ Continuer";
+              $('night-action-btn').onclick = () => currentResolve();
           }
           $('night-timer').style.display = 'none';$('night-bot-text').textContent = "";
       }
       
-      $('night-action-trigger').style.display = 'block';
+      $('night-action-trigger').style.display = 'flex';
       let roleCompleted = new Promise(resolve => { currentResolve = resolve; });
       
       if(isAuto) {
@@ -1019,22 +1573,32 @@ async function runNightEngine() {
       $('night-action-trigger').style.display = 'none';
       showScreen('night-auto-screen'); 
       
+      if(step.id === 'wolves' && petiteFilleInGame && isAuto && Math.random() < 0.2) {
+          await speak(isFamily ? "Chut... un des Loups Malins a cru entendre quelque chose bouger." : "Un grognement s'arrête net... un loup a-t-il senti une présence ?");
+          await pause(1200, 300);
+      }
+      
       if(isAuto) {
           $('night-status').textContent = step.name + " se rendort.";
-          await speak(step.name + ", rendors-toi."); await wait(1000);
-          await speak("Ferme les yeux."); await wait(3000); 
+          await speak(step.name + ", rendors-toi."); await pause(800);
+          await speak("Ferme les yeux."); await pause(2500, 500); 
       } else {
           await new Promise(resolve => customAlert(`🗣️ Dites :<br><br><b>« ${step.name}, rendors-toi et ferme les yeux. »</b>`, resolve));
       }
   }
 
-  resetAudio(); // On coupe le "rendors-toi" si c'est allé trop vite
+  resetAudio(); 
+  forceHideSubtitle();
+  $('app-title-text').textContent = "☀️ Le Jour se lève";
+  $('ui-night-title').textContent = isFamily ? "☀️ Le Matin" : "☀️ Le Matin";
+  
   if(isAuto) {
       stopAmbience(); startDayAmbience(); 
       $('night-status').textContent = "Le matin arrive...";
       await speak(TXT.dayBreaks);
   } else {
       stopAmbience(); startDayAmbience();
+      $('night-status').textContent = "Le matin arrive...";
       await new Promise(resolve => customAlert(`🗣️ Dites :<br><br><b>« ${TXT.dayBreaks} »</b>`, resolve));
   }
   
@@ -1056,7 +1620,7 @@ function openRoleAction() {
       if(roleKey==='cupidon') stdName = "Cupidon";
       if(roleKey==='voyante') stdName = "Voyante";
       if(roleKey==='sorciere') stdName = "Sorcière";
-      h += `<p style="text-align:center; color:var(--text-muted); font-style:italic; margin-top:0;">(Rôle : ${stdName})</p>`;
+      h += `<p style="text-align:center; color:var(--text-muted); font-style:italic; margin-top:0;">(Équivalent classique : ${stdName})</p>`;
   }
   
   let roleAlives = players.filter(p => p.role === roleKey && p.alive && !p.isBot); 
@@ -1064,10 +1628,10 @@ function openRoleAction() {
   if(roleAlives.length === 0) {
       if(isAuto) {
           h += `<div class="info-box" style="border-color:var(--accent);color:var(--text)"><b>Tu n'es pas là.</b><br><br>Attends quelques secondes en silence pour que personne ne devine qui tu es, puis valide.</div>`;
-          h += `<button class="btn btn-secondary" style="border-color:var(--accent);color:var(--accent)" onclick="closeRoleAction()">Continuer</button>`;
+          h += `<button class="btn btn-secondary" onclick="closeRoleAction()">Continuer</button>`;
       } else {
           h += `<div class="info-box" style="border-color:var(--accent);color:var(--text)">Le joueur humain pour ce rôle est mort. Patientez 5 secondes en silence.</div>`;
-          h += `<button class="btn btn-secondary" style="border-color:var(--accent);color:var(--accent)" onclick="closeRoleAction()">Continuer</button>`;
+          h += `<button class="btn btn-secondary" onclick="closeRoleAction()">Continuer</button>`;
       }
       $('role-action-content').innerHTML = h; return;
   }
@@ -1143,7 +1707,7 @@ function renderSeer() {
   players.filter(p => p.alive && p.role !== 'voyante').forEach(p => { h += `<button class="tgt" onclick="seerSond('${p.id}')">🔮 Regarder ${p.name}</button>`; });
   return h + `</div>`;
 }
-function seerSond(id) { seerSeen = players.find(x => x.id === id); openRoleAction(); }
+function seerSond(id) { seerSeen = players.find(x => x.id === id); playChime(); openRoleAction(); }
 
 function renderWitch() {
   let R_DICT = isFamily ? R_FAM : R_STD;
@@ -1158,17 +1722,31 @@ function renderWitch() {
   let labelHeal = isFamily ? "💚 Potion de Réveil (Sauver)" : "💚 Potion de Vie (Sauver)";
   let labelPz = isFamily ? "💤 Potion de Dodo (Endormir)" : "☠️ Potion de Mort (Tuer)";
   
-  if(state.heal && state.victim) h += `<button class="btn" style="background:#059669;box-shadow:0 6px 15px rgba(5,150,105,0.3)" onclick="witchHeal()">${labelHeal}</button>`;
-  else if (!state.heal) h += `<p style="text-align:center;color:#059669;font-weight:bold;margin:10px 0;"><i>Potion utilisée.</i></p>`;
+  if(state.heal && state.victim) {
+      h += `<button class="btn" style="background:#059669;box-shadow:0 6px 15px rgba(5,150,105,0.3)" onclick="witchHeal()">${labelHeal}</button>`;
+  } else if (state.heal && !state.victim) {
+      h += `<button class="btn" disabled style="background:#059669;opacity:0.5">${labelHeal} (Personne à sauver)</button>`;
+  } else {
+      h += `<p style="text-align:center;color:#059669;font-weight:bold;margin:10px 0;"><i>Potion utilisée.</i></p>`;
+  }
   
   if(state.poison) h += `<button class="btn" style="background:#701a75;box-shadow:0 6px 15px rgba(112,26,117,0.3)" onclick="witchMode='pz';openRoleAction()">${labelPz}</button>`;
-  else if (!state.poison) h += `<p style="text-align:center;color:#701a75;font-weight:bold;margin:10px 0;"><i>Potion utilisée.</i></p>`;
+  else h += `<p style="text-align:center;color:#701a75;font-weight:bold;margin:10px 0;"><i>Potion utilisée.</i></p>`;
   
-  h += `<button class="btn btn-secondary" style="margin-top:20px" onclick="closeRoleAction()">Ne rien faire</button>`;
+  let hasActed = (!state.heal && state.victim === null) || (!state.poison && state.pz !== null);
+  let btnText = hasActed ? "Terminer mon tour" : "Ne rien faire";
+  
+  h += `<button class="btn btn-secondary" style="margin-top:20px" onclick="closeRoleAction()">${btnText}</button>`;
   return h;
 }
-function witchHeal() { state.heal = 0; state.victim = null; closeRoleAction(); }
-function witchPzAction(id) { state.poison = 0; state.pz = id; witchMode=''; closeRoleAction(); }
+function witchHeal() { state.heal = 0; state.victim = null; openRoleAction(); }
+function witchPzAction(id) {
+  let target = players.find(x => x.id === id);
+  let potionName = isFamily ? "Potion de Dodo" : "Potion de Mort";
+  customConfirm(`Confirmer l'utilisation de la ${potionName} sur <b>${target.name}</b> ?<br><span style="font-size:0.85rem;color:var(--text-muted)">Cette action est irréversible.</span>`, () => {
+      state.poison = 0; state.pz = id; closeRoleAction();
+  });
+}
 
 // --- RESOLUTION DU JOUR ---
 function killPlayer(id) {
@@ -1183,13 +1761,31 @@ function killPlayer(id) {
   }
 }
 
+// L'attaque des loups tient compte de la résistance de l'Ancien (une vie de plus, uniquement face aux loups)
+function wolfAttack(id) {
+  let p = players.find(x => x.id === id);
+  if(!p || !p.alive) return;
+  if(p.role === 'ancien' && p.lives > 1) {
+      p.lives--;
+      state.elderSurvived = p.id;
+      return;
+  }
+  killPlayer(id);
+}
+
 function dawn() {
-  document.body.className = 'theme-day'; 
+  document.body.className = isFamily ? 'theme-family theme-day' : 'theme-day'; 
   state.deadThisTurn = [];
-  if(state.victim) killPlayer(state.victim);
+  state.elderSurvived = null;
+  if(state.victim) wolfAttack(state.victim);
   if(state.pz && state.pz !== state.victim) killPlayer(state.pz);
+  saveGame('day');
   resolveDeaths(async () => { 
       if(isAuto) {
+          if(state.elderSurvived) {
+              let survivor = players.find(x => x.id === state.elderSurvived);
+              await speak(survivor.name + (isFamily ? " a résisté très fort à la farce cette nuit !" : " a survécu à l'attaque des loups cette nuit, plus résistant(e) que les autres !"));
+          }
           if(state.deadThisTurn.length === 0) {
               await speak(TXT.speechNoDeath);
           } else {
@@ -1216,12 +1812,18 @@ function resolveDeaths(next) {
 
 function showDay() {
   let R_DICT = isFamily ? R_FAM : R_STD;
+  state.dayVotes = {};
   showScreen('day-screen');
   let h = `<h2 style="color:var(--accent)">☀️ Jour ${state.day}</h2>`;
+  
+  if(state.elderSurvived) {
+      h += `<div class="info-box" style="text-align:center;border-color:var(--highlight);background:rgba(217,119,6,0.15)">👴 <b>${players.find(x => x.id === state.elderSurvived).name}</b> a résisté à l'attaque cette nuit !</div>`;
+  }
+  
   if(state.deadThisTurn.length === 0) {
-      h += `<div class="story-box" style="text-align:center;border-color:var(--success);color:var(--text);background:rgba(16,185,129,0.1)">Tout le monde est là !</div>`;
+      h += `<div style="padding:20px; border-radius:12px; border:1px solid var(--success); color:var(--text); background:rgba(16,185,129,0.1); text-align:center; margin-bottom:24px; font-weight:bold;">Tout le monde est là !</div>`;
   } else {
-      h += `<div class="story-box" style="text-align:center;border-color:var(--accent);color:var(--text);background:rgba(225,29,72,0.1)">`;
+      h += `<div style="padding:20px; border-radius:12px; border:1px solid var(--accent); color:var(--text); background:rgba(225,29,72,0.1); text-align:center; margin-bottom:24px;">`;
       h += `<p style="margin-top:0;font-family:var(--font-title);font-size:1.3rem;color:var(--accent);font-weight:bold">${TXT.speechDeath}</p>`;
       state.deadThisTurn.forEach(p => {
           let love = state.lovers.includes(p.id) ? `<br><small style="color:var(--accent);font-weight:bold">💔 Part avec son ami</small>` : '';
@@ -1235,13 +1837,12 @@ function showDay() {
         <b>2. Votez :</b> Mettez-vous d'accord, et pointez du doigt l'accusé.
         </div>`;
         
-  // Conseils de jour
   let t = active_TIPS_JOUR[Math.floor(Math.random()*active_TIPS_JOUR.length)];
   h += `<div style="text-align:center; color:var(--text-muted); font-size:0.95rem; font-style:italic; margin-bottom:15px;">${t}</div>`;
   
-  h += `<button class="btn btn-secondary" onclick="botVotes()" style="margin-bottom:10px;border-color:var(--text-muted);color:var(--text-dark)">🤖 Avis des Bots</button>`;
-  h += `<button class="btn btn-highlight" onclick="startVote()">⚖️ ${TXT.uiVoteTitle}</button>`;
   $('day-content').innerHTML = h;
+  $('day-vote-btn').textContent = `⚖️ ${TXT.uiVoteTitle}`;
+  $('day-cta').style.display = 'flex';
 }
 
 // --- INTELLIGENCE VOTE DE JOUR ---
@@ -1249,16 +1850,32 @@ function botVotes() {
   let aliveBots = players.filter(p => p.alive && p.isBot);
   if(aliveBots.length === 0) return customAlert("Il n'y a pas/plus de Bots en vie !");
   
+  if(!state.suspicion) state.suspicion = {};
+  if(!state.dayVotes) state.dayVotes = {};
   let alivePlayers = players.filter(p => p.alive);
   let msg = `<b style="color:var(--highlight);font-size:1.2rem;">Intuitions des Bots :</b><br><br>`;
   
   aliveBots.forEach(b => {
-      let targets = alivePlayers.filter(t => t.id !== b.id);
-      
-      if(b.role === 'loup') targets = targets.filter(t => t.role !== 'loup');
-      if(state.lovers.includes(b.id)) targets = targets.filter(t => !state.lovers.includes(t.id) || targets.length === 1);
+      // Un bot garde le même avis toute la journée (plusieurs clics = mêmes accusations), 
+      // et se souvient des soupçons accumulés les jours précédents.
+      let voteId = state.dayVotes[b.id];
+      if(!voteId || !players.find(x => x.id === voteId && x.alive)) {
+          let targets = alivePlayers.filter(t => t.id !== b.id);
+          if(b.role === 'loup') targets = targets.filter(t => t.role !== 'loup');
+          if(state.lovers.includes(b.id)) targets = targets.filter(t => !state.lovers.includes(t.id) || targets.length === 1);
 
-      let vote = targets[Math.floor(Math.random()*targets.length)];
+          let weighted = [];
+          targets.forEach(t => {
+              let weight = 1 + (state.suspicion[t.id] || 0);
+              for(let i=0;i<weight;i++) weighted.push(t);
+          });
+          let pool = weighted.length ? weighted : targets;
+          let vote = pool[Math.floor(Math.random()*pool.length)];
+          voteId = vote.id;
+          state.dayVotes[b.id] = voteId;
+          state.suspicion[voteId] = (state.suspicion[voteId] || 0) + 1;
+      }
+      let vote = players.find(x => x.id === voteId);
       let phrase = TXT.botVoteStrs[Math.floor(Math.random()*TXT.botVoteStrs.length)];
       
       msg += `<div style="margin-bottom:10px; padding:10px; background:rgba(0,0,0,0.1); border-radius:8px;">🤖 <b>${b.name}</b> ${phrase} <b>${vote.name}</b>.</div>`;
@@ -1270,20 +1887,49 @@ function botVotes() {
 // --- LE VOTE ---
 async function startVote() {
   showScreen('vote-screen');
+  playBell();
   let h = `<h2 style="color:var(--accent)">${TXT.uiVoteTitle}</h2>`;
   h += `<div class="info-box">Validez le choix de la majorité ci-dessous.</div>`;
   h += `<div class="targets">`;
+  
+  // On ne peut voter que contre les joueurs VIVANTS
   players.filter(p => p.alive).forEach(p => {
       h += `<button class="tgt" onclick="executeVote('${p.id}')">${TXT.uiVoteBtn} ${p.name}</button>`;
   });
-  h += `</div><button class="btn btn-secondary" onclick="executeVote(null)">⚖️ Égalité (On ne fait rien)</button>`;
+  h += `</div>`;
   $('vote-content').innerHTML = h;
+
+  let R_DICT_vote = isFamily ? R_FAM : R_STD;
+  let scapegoatAlive = players.find(p => p.alive && p.role === 'boucemissaire');
+  let tieLabel = scapegoatAlive
+      ? `⚖️ Égalité (${scapegoatAlive.name}, ${R_DICT_vote['boucemissaire'][1]}, sera ${TXT.vocabVote})`
+      : '⚖️ Égalité (On ne fait rien)';
+  $('vote-tie-btn').textContent = tieLabel;
+  $('vote-cta').style.display = 'flex';
 
   resetAudio();
   if(isAuto) await speak(TXT.speechVote);
 }
 
+// Étape de confirmation avant toute élimination par vote (action irréversible)
 function executeVote(id) {
+  let R_DICT = isFamily ? R_FAM : R_STD;
+  if(id === null) {
+      let scapegoat = players.find(p => p.alive && p.role === 'boucemissaire');
+      if(scapegoat) {
+          let place = isFamily ? "à la place de tout le monde" : "à la place du village";
+          customConfirm(`Égalité des votes : <b>${scapegoat.name}</b> (${R_DICT['boucemissaire'][1]}) est automatiquement ${TXT.vocabVote} ${place}.<br><span style="font-size:0.85rem;color:var(--text-muted)">Cette action est irréversible.</span>`, () => performVote(scapegoat.id));
+          return;
+      }
+      performVote(null);
+      return;
+  }
+  let p = players.find(x => x.id === id);
+  let confirmVerb = isFamily ? "envoyer au coin" : "éliminer";
+  customConfirm(`Confirmer : ${confirmVerb} <b>${p.name}</b> ?<br><span style="font-size:0.85rem;color:var(--text-muted)">Cette action est irréversible.</span>`, () => performVote(id));
+}
+
+function performVote(id) {
   let R_DICT = isFamily ? R_FAM : R_STD;
   state.deadThisTurn = []; 
   if(id) {
@@ -1316,6 +1962,7 @@ function executeVote(id) {
 async function hunterRevenge(hId, nextCallback) {
   let R_DICT = isFamily ? R_FAM : R_STD;
   let p = players.find(x => x.id === hId);
+  $('vote-cta').style.display = 'none';
   
   if(p.isBot) {
       showScreen('vote-screen'); 
@@ -1332,7 +1979,7 @@ async function hunterRevenge(hId, nextCallback) {
       } else {
           await wait(3000);
       }
-      executeHunter(target.id);
+      performHunter(target.id);
       return;
   }
 
@@ -1351,16 +1998,23 @@ async function hunterRevenge(hId, nextCallback) {
   }
 }
 
+// Confirmation avant le tir du Chasseur (action irréversible) — uniquement pour un choix humain
 function executeHunter(id) {
+  let p = players.find(x => x.id === id);
+  customConfirm(`Confirmer : ${TXT.vocabHunter} <b>${p.name}</b> avec toi ?<br><span style="font-size:0.85rem;color:var(--text-muted)">Cette action est irréversible.</span>`, () => performHunter(id));
+}
+
+function performHunter(id) {
   let R_DICT = isFamily ? R_FAM : R_STD;
-  state.deadThisTurn = []; 
+  let before = state.deadThisTurn.length;
   killPlayer(id);
+  playGunshot();
   let t = players.find(x=>x.id===id);
   let msg = `<b>Bingo !</b>\n<b>${t.name}</b> est ${TXT.vocabDead}.\n\nIl/Elle était :\n<br><span style="font-size:1.8rem;color:var(--accent);display:block;margin-top:10px">${R_DICT[t.role][0]} ${R_DICT[t.role][1]}</span>`;
   let voiceMsg = `${t.name} a été ${TXT.vocabVote}. Son rôle était ${R_DICT[t.role][1]}.`;
 
-  if(state.deadThisTurn.length > 1) {
-      let lover = state.deadThisTurn.find(x => x.id !== id);
+  if(state.deadThisTurn.length - before > 1) {
+      let lover = state.deadThisTurn.slice(before).find(x => x.id !== id);
       msg += `<br><br>💔 <b>${lover.name}</b> part aussi. Son rôle était : <b>${R_DICT[lover.role][1]}</b>.`;
       voiceMsg += ` ${lover.name} part également avec lui. Son rôle était ${R_DICT[lover.role][1]}.`;
   }
@@ -1399,8 +2053,9 @@ function checkWin() {
 function showWin(team) {
   let R_DICT = isFamily ? R_FAM : R_STD;
   stopAmbience();
+  clearSave();
   if (team === 'village') document.body.className = 'theme-day';
-  else document.body.className = isFamily ? 'theme-family' : 'theme-night';
+  else document.body.className = isFamily ? 'theme-family theme-night' : 'theme-night';
 
   showScreen('end-screen');
   
@@ -1421,13 +2076,14 @@ function showWin(team) {
   } else {
       msg = TXT.winWolves;
       color = 'var(--accent)';
-      sub = isFamily ? 'Les Loups Coquins ont caché tous les doudous !' : 'Le dernier cri résonne dans la nuit...';
+      sub = isFamily ? 'Les Loups Malins ont caché tous les doudous !' : 'Le dernier cri résonne dans la nuit...';
   }
   
-  let h = `<h2 style="font-size:2.5rem;color:${color};margin-bottom:5px;text-shadow:0 0 25px ${color};text-transform:uppercase">${msg}</h2>`;
+  let h = `<h2 style="font-size:2.5rem;color:${color};margin-bottom:5px;text-shadow:0 2px 4px rgba(0,0,0,0.5);text-transform:uppercase;line-height:1.2;">${msg}</h2>`;
   h += `<p style="text-align:center;color:var(--text);font-style:italic;margin-bottom:25px;font-size:1.2rem">${sub}</p>`;
   h += `<div style="text-align:left;width:100%;background:var(--input-bg);padding:20px;border-radius:12px;border:1px solid rgba(150,150,150,0.2);margin-top:20px;">`;
   
+  h += `<h3 style="color:var(--text);text-align:center;margin-bottom:15px;font-size:1.2rem">${TXT.endTitle}</h3>`;
   players.forEach(p => {
       let status = p.alive ? (isFamily?'🌟':'❤️') : (isFamily?'💤':'💀');
       let love = state.lovers.includes(p.id) ? ' 💘' : '';
@@ -1439,8 +2095,9 @@ function showWin(team) {
             </div>`;
   });
   
-  h += `</div><button class="btn" style="margin-top:30px" onclick="location.reload()">🔄 Rejouer une Partie</button>`;
+  h += `</div>`;
   $('end-content').innerHTML = h;
+  $('end-cta').style.display = 'flex';
 
   if(isAuto) {
       resetAudio();
