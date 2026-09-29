@@ -232,7 +232,7 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
 #custom-alert-box { text-align:center; max-width:400px; }
 #custom-alert-text { font-size:1.2rem; line-height:1.6; margin-bottom:25px; white-space:pre-line; color:var(--text); }
 #subtitle-bar { position:fixed; left:0; right:0; bottom:max(14px,env(safe-area-inset-bottom)); display:none; justify-content:center; padding:0 16px; z-index:500; pointer-events:none; }
-#subtitle-text { background:rgba(0,0,0,0.78); color:#fff; padding:10px 18px; border-radius:12px; font-size:0.98rem; text-align:center; max-width:520px; line-height:1.4; box-shadow:0 6px 20px rgba(0,0,0,0.4); }
+#subtitle-text { background:rgba(0,0,0,0.55); color:#fff; padding:10px 18px; border-radius:12px; font-size:0.98rem; text-align:center; max-width:520px; line-height:1.4; box-shadow:0 3px 10px rgba(0,0,0,0.2); }
 </style>
 </head>
 <body class="theme-night no-header">
@@ -281,7 +281,7 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
     <h4 style="color:var(--highlight); margin-top:24px; font-size:1.1rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">🤖 L'Intelligence des Bots</h4>
     <p style="font-size:1rem;">Vous êtes moins de 4 joueurs ? Aucun problème.</p>
     <ul style="font-size:1rem; padding-left:20px;">
-      <li style="margin-bottom:10px">L'application ajoutera des Bots intelligents pour compléter le jeu.</li>
+      <li style="margin-bottom:10px">L'application ajoutera des Bots intelligents pour compléter le jeu : chacun a sa personnalité (meneur, prudent, suiveur, analyste, farceur), sa mémoire, et ne se répète pas.</li>
       <li style="margin-bottom:10px"><b>La Nuit :</b> Les Bots jouent tous seuls en silence. L'écran ne vous demandera de prendre le téléphone <b>que</b> si c'est votre tour à vous.</li>
       <li style="margin-bottom:10px"><b>Le Jour :</b> Vous pouvez cliquer sur "🤖 Avis des Bots" pour savoir qui chaque Bot accuse (attention, les Bots Loups mentent pour vous piéger, et ils se souviennent de leurs soupçons d'un jour à l'autre !).</li>
     </ul>
@@ -429,10 +429,10 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
     <div id="error-box" style="display:none;color:#fff;text-align:center;font-weight:bold;margin-top:10px;padding:15px;background:var(--accent);border-radius:8px"></div>
   </div>
 
-  <details class="card" style="padding:20px 24px;">
-    <summary style="cursor:pointer; font-family:var(--font-title); font-size:1.2rem; color:var(--highlight); letter-spacing:1px; outline:none;">📖 Résumé de tous les rôles</summary>
-    <div id="setup-roles-summary" style="margin-top:14px;"></div>
-  </details>
+  <div class="card" style="padding:20px 24px;">
+    <h2 style="margin-bottom:4px;">🧭 Conseil de rôles selon le nombre de joueurs</h2>
+    <div id="setup-role-advice" style="margin-top:10px;"></div>
+  </div>
 
   <div class="sticky-cta">
     <button class="btn" id="start-btn" disabled onclick="initGame()">🚀 Lancer l'Histoire</button>
@@ -469,7 +469,7 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
   <div class="stage" style="text-align:center;">
     <h2 style="color:var(--accent);font-size:2.5rem;text-shadow:0 2px 4px rgba(0,0,0,0.5);" id="ui-night-title">🌙 La Nuit</h2>
     <div id="night-instruction" class="info-box" style="border-color:rgba(255,255,255,0.2);background:var(--input-bg);"></div>
-    <div id="night-status" style="font-size:1.8rem;text-align:center;margin:30px 0;font-weight:900;color:var(--highlight);font-family:var(--font-title);line-height:1.4; text-shadow:0 2px 4px rgba(0,0,0,0.5);">Attente...</div>
+    <div id="night-status" style="font-size:1.8rem;text-align:center;margin:30px 0;font-weight:900;color:var(--highlight);font-family:var(--font-title);line-height:1.4; text-shadow:0 1px 2px rgba(0,0,0,0.25);">Attente...</div>
   </div>
 
   <div id="night-action-trigger" class="sticky-cta" style="display:none;text-align:center;">
@@ -492,7 +492,7 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
 <div id="day-screen" class="screen">
   <div class="stage" id="day-content"></div>
   <div class="sticky-cta" id="day-cta" style="display:none;">
-    <button class="btn btn-secondary" onclick="botVotes()" id="day-bots-btn">🤖 Avis des Bots</button>
+    <button class="btn btn-secondary" onclick="botVotes()" id="day-bots-btn">🤖 Écouter les Bots</button>
     <button class="btn btn-highlight" onclick="startVote()" id="day-vote-btn">⚖️ Vote</button>
   </div>
 </div>
@@ -716,9 +716,10 @@ function forceHideSubtitle() {
 // --- GESTION DU THEME (Standard vs Family) ---
 function updateTheme() {
     isFamily = $('mode-fam').checked;
+    let onWelcome = $('welcome-screen').classList.contains('active');
     
     if(isFamily) {
-        document.body.className = 'theme-family';
+        document.body.className = 'theme-family' + (onWelcome ? ' no-header' : '');
         applyRoleOptionLabels(R_FAM);
         $('lbl-wolves').textContent = "MALINS";
         $('lbl-villagers').textContent = "AMIS";
@@ -771,10 +772,9 @@ function updateTheme() {
         </p>`;
         let rolesHTML = buildRolesSummaryHTML(R_FAM);
         $('rules-roles-list').innerHTML = rolesHTML;
-        $('setup-roles-summary').innerHTML = rolesHTML;
             
     } else {
-        document.body.className = 'theme-night';
+        document.body.className = 'theme-night' + (onWelcome ? ' no-header' : '');
         applyRoleOptionLabels(R_STD);
         $('lbl-wolves').textContent = "LOUPS";
         $('lbl-villagers').textContent = "SIMPLES";
@@ -827,7 +827,6 @@ function updateTheme() {
         </p>`;
         let rolesHTML = buildRolesSummaryHTML(R_STD);
         $('rules-roles-list').innerHTML = rolesHTML;
-        $('setup-roles-summary').innerHTML = rolesHTML;
     }
     checkConfig(); 
 }
@@ -1260,10 +1259,35 @@ window.addEventListener('DOMContentLoaded', loadSavedPlayerNames);
 window.addEventListener('DOMContentLoaded', renderBotCount);
 
 
+// Conseils de composition des rôles selon le nombre total de joueurs (vrais + bots)
+function renderRoleAdvice(total) {
+    let R_DICT = isFamily ? R_FAM : R_STD;
+    let nm = k => R_DICT[k][1];
+    let tiers = [
+        { max: 5, label: `1 à 5 joueurs`, txt: `Restez simple : gardez uniquement la ${nm('voyante')} (voire aucun rôle spécial). Avec si peu de monde, chaque rôle en plus dilue le ${nm('loup')} et casse l'équilibre.` },
+        { max: 8, label: `6 à 8 joueurs`, txt: `C'est le format idéal pour la ${nm('voyante')} et le ${nm('chasseur')}. La ${nm('sorciere')} est un bon plus si vous voulez plus de tension.` },
+        { max: 11, label: `9 à 11 joueurs`, txt: `Ajoutez la ${nm('sorciere')} et ${nm('cupidon')} en plus de la ${nm('voyante')} et du ${nm('chasseur')} : assez de monde pour varier les nuits sans perdre le fil.` },
+        { max: 14, label: `12 à 14 joueurs`, txt: `Le groupe est assez grand pour le ${nm('voleur')} et l'${nm('ancien')} sans trop affaiblir les ${nm('loup')}s : ça ajoute de belles surprises.` },
+        { max: Infinity, label: `15 joueurs et +`, txt: `Grande tablée : tous les rôles peuvent être activés, y compris la ${nm('petite')} et le ${nm('boucemissaire')}, pour garder tout le monde impliqué.` }
+    ];
+    let h = `<div style="display:flex;flex-direction:column;gap:8px;">`;
+    tiers.forEach((t, i) => {
+        let prevMax = i === 0 ? 0 : tiers[i-1].max;
+        let active = total > prevMax && total <= t.max;
+        h += `<div style="padding:10px 12px;border-radius:8px;border:1px solid ${active ? 'var(--highlight)' : 'var(--border)'};background:${active ? 'rgba(217,119,6,0.12)' : 'transparent'};">
+                <b style="color:${active ? 'var(--highlight)' : 'var(--text-muted)'};">${active ? '👉 ' : ''}${t.label}</b>
+                <div style="font-size:0.92rem;color:var(--text-muted);margin-top:2px;">${t.txt}</div>
+              </div>`;
+    });
+    h += `</div>`;
+    return h;
+}
+
 function checkConfig() {
   let n = pNames.length;
   renderBotCount();
   let total = n + botCount; 
+  $('setup-role-advice').innerHTML = renderRoleAdvice(total);
   let btn = $('start-btn');
   let err = $('error-box');
   let adv = $('advice-box');
@@ -1418,44 +1442,229 @@ function revealRole() {
 }
 function nextDistrib() { distribIdx++; saveGame('distrib'); showDistrib(); }
 
-// --- BOT INTELLIGENCE (Nuit) ---
+// --- BOT INTELLIGENCE v2 (cerveau par bot, mémoire, rôles, débat évolutif) ---
+const BOT_TRAITS = ['meneur','prudent','suiveur','analyste','farceur'];
+const rnd = a => a[Math.floor(Math.random()*a.length)];
+function pickW(items, wf) {
+    let ws = items.map(wf), tot = ws.reduce((a,b)=>a+(b>0?b:0),0);
+    if(tot <= 0) return rnd(items);
+    let r = Math.random()*tot;
+    for(let i=0;i<items.length;i++){ r -= Math.max(0,ws[i]); if(r <= 0) return items[i]; }
+    return items[items.length-1];
+}
+function brain(b) {
+    state.brain = state.brain || {};
+    if(!state.brain[b.id]) state.brain[b.id] = { trait: rnd(BOT_TRAITS), sus: {}, known: {}, claim: 0 };
+    return state.brain[b.id];
+}
+function seerName() { return (isFamily ? R_FAM : R_STD)['voyante'][1]; }
+function botSus(b, t) {
+    let br = brain(b), W = b.role === 'loup', cl = state.claims || [];
+    let s = 1 + (br.sus[t.id]||0) + 0.5*((state.pub||{})[t.id]||0);
+    if(br.known[t.id] === 'loup') s += 12; else if(br.known[t.id] === 'clean') s = 0.1;
+    let multi = new Set(cl.map(c=>c.by)).size >= 2;
+    cl.forEach(c => {
+        if(c.by === b.id) return;
+        let byWolf = (players.find(p=>p.id===c.by)||{}).role === 'loup';
+        if(!W && c.target === t.id && br.known[c.by] !== 'loup') s += c.result === 'loup' ? 5 : -1.5;
+        if(W && c.by === t.id && !byWolf) s += 3;
+        if(!W && c.by === t.id && multi) s += 1.5;
+    });
+    if((state.deadAcc||[]).some(d => d.t === t.id)) s += 1.5;
+    return Math.max(0.1, s);
+}
+
 function playBotLogic(rKey) {
+    state.pub = state.pub || {}; state.claims = state.claims || []; state.hits = state.hits || {};
+    let alive = players.filter(p => p.alive);
     if(rKey === 'loup') {
-        let targets = players.filter(p => p.alive && p.role !== 'loup');
-        if(targets.length > 0) state.victim = targets[Math.floor(Math.random()*targets.length)].id;
+        let wolves = alive.filter(p => p.role === 'loup' && p.isBot);
+        let targets = alive.filter(p => p.role !== 'loup');
+        let lw = wolves.find(x => state.lovers.includes(x.id));
+        if(lw) { let f = targets.filter(t => !state.lovers.includes(t.id)); if(f.length) targets = f; }
+        if(!targets.length) return;
+        // Cible : les Voyantes déclarées et ceux qui accusent les loups sont menaçants ; le reste est varié
+        let t = pickW(targets, x => (0.6 + Math.random()) * (1 + 5*state.claims.filter(c=>c.by===x.id && !c.fake).length + 2.5*(state.hits[x.id]||0)));
+        state.victim = t.id;
     }
     else if(rKey === 'voleur') {
+        let th = players.find(p => p.role === 'voleur' && p.isBot); if(!th) return;
         let forced = (extraCards[0] === 'loup' && extraCards[1] === 'loup');
-        if(forced) players.find(p=>p.role==='voleur').role = extraCards[0];
-        else if(Math.random() < 0.6) players.find(p=>p.role==='voleur').role = extraCards[Math.floor(Math.random()*2)];
+        if(forced || (extraCards.includes('loup') && Math.random() < 0.4)) th.role = 'loup';
         state.thiefDone = true;
     }
     else if(rKey === 'cupidon') {
-        let botTargets = players.filter(p => p.alive && p.isBot && p.role !== 'cupidon');
-        if(botTargets.length >= 2) {
-            botTargets.sort(() => Math.random() - 0.5);
-            state.lovers = [botTargets[0].id, botTargets[1].id];
-        } else {
-            let targets = players.filter(p => p.alive);
-            targets.sort(() => Math.random() - 0.5);
-            state.lovers = [targets[0].id, targets[1].id];
-        }
+        let cu = players.find(p => p.role === 'cupidon' && p.isBot && p.alive);
+        let pool = alive.filter(p => p.isBot && (!cu || p.id !== cu.id));
+        if(cu && Math.random() < 0.3) pool.push(cu);
+        if(pool.length < 2) pool = alive.slice();
+        pool.sort(() => Math.random() - 0.5);
+        state.lovers = [pool[0].id, pool[1].id];
+    }
+    else if(rKey === 'voyante') {
+        let s = alive.find(p => p.role === 'voyante' && p.isBot); if(!s) return;
+        let br = brain(s), c = alive.filter(p => p.id !== s.id && !br.known[p.id]);
+        if(!c.length) return;
+        let t = pickW(c, x => botSus(s, x) * (0.7 + Math.random()));
+        br.known[t.id] = t.role === 'loup' ? 'loup' : 'clean';
     }
     else if(rKey === 'sorciere') {
-        let botWitch = players.find(p => p.role === 'sorciere' && p.isBot);
-        if(!botWitch) return;
-        
+        let bw = alive.find(p => p.role === 'sorciere' && p.isBot); if(!bw) return;
         if(state.heal && state.victim) {
-            if(Math.random() < 0.4) { state.heal = 0; state.victim = null; }
-        } 
-        else if(state.poison && Math.random() < 0.15) {
-            let targets = players.filter(p => p.alive && p.id !== state.victim && p.id !== botWitch.id);
-            if(targets.length > 0) {
-                state.pz = targets[Math.floor(Math.random()*targets.length)].id;
-                state.poison = 0;
-            }
+            let v = players.find(p => p.id === state.victim), p = state.day === 1 ? 0.8 : 0.5;
+            if(v.id === bw.id) p = 0.97;
+            else if(state.claims.some(c => c.by === v.id && !c.fake)) p += 0.2;
+            else if(botSus(bw, v) > 3) p -= 0.3;
+            if(Math.random() < p) { state.heal = 0; state.victim = null; return; }
+        }
+        if(state.poison && state.day >= 2) {
+            let lp = state.lovers.includes(bw.id) ? state.lovers.find(x => x !== bw.id) : null;
+            let c = alive.filter(p => p.id !== bw.id && p.id !== state.victim && p.id !== lp);
+            c.sort((a,b) => botSus(bw,b) - botSus(bw,a));
+            if(c.length && botSus(bw, c[0]) >= 4 && Math.random() < 0.45) { state.pz = c[0].id; state.poison = 0; }
         }
     }
+}
+
+// Banques de phrases : chaque phrase n'est réutilisée qu'après avoir épuisé les autres
+const BOT_L = {
+  accuse: ["a de gros doutes sur {T}{R}.","trouve {T} bien louche{R}.","veut {BURN} {T}{R}.","ne fait pas confiance à {T}{R}.","a remarqué quelque chose d'étrange chez {T}{R}.","ne quitte plus {T} des yeux{R}.","demande au village de se méfier de {T}{R}.","glisse : « c'est {T} que je surveille »{R}.","trouve que {T} joue un peu trop bien la comédie{R}.","sent que {T} cache quelque chose{R}.","lance : « {T}, explique-toi ! »{R}."],
+  follow: ["rejoint {O} : lui aussi vise {T}{R}.","appuie l'accusation de {O} contre {T}{R}.","est d'accord avec {O} au sujet de {T}{R}.","se range derrière {O} : {T} doit s'expliquer."],
+  defend: ["prend la défense de {T}.","jure que {T} est digne de confiance.","trouve qu'on s'acharne trop sur {T}.","demande de laisser une chance à {T}."],
+  self: ["se défend : « Ce n'est pas moi, regardez ailleurs ! »","s'indigne d'être accusé(e) et réclame des preuves.","garde son calme et répond point par point aux soupçons.","retourne les soupçons contre {T}.","répond du tac au tac à {T} : « Et toi, alors ? »"],
+  pass: ["préfère observer avant de choisir.","reste silencieux(se) et écoute tout le monde.","hésite encore : aucun indice solide pour l'instant.","dit vouloir attendre le vote avant de trancher."],
+  claim: ["se dévoile : « Je suis la {SEER} ! {T} est {RES}. »","abat sa carte : « {SEER} ici. J'ai sondé {T} : {RES}. »"],
+  doubt: ["ne croit pas un mot de {O} et de sa carte de {SEER}.","trouve {O} bien pressé(e) de se dire {SEER}."]
+};
+const BOT_R = {
+  hunch: [" — simple intuition"," — impossible à prouver, juste un mauvais pressentiment"," — rien de concret, mais c'est son ressenti"],
+  hist: [" — déjà soupçonné(e) plus tôt"," — ce n'est pas la première fois qu'on le/la pointe du doigt"],
+  acc: [" — {V} le/la soupçonnait juste avant de mourir"," — {V} l'accusait avant de disparaître"],
+  seer: [" — la {SEER} l'a désigné(e)"],
+  prot: [" — qui défendait pourtant un {W} démasqué"]
+};
+function botFmt(s, o) {
+    o = o || {};
+    let m = { T: o.T ? `<b>${o.T}</b>` : '', O: o.O ? `<b>${o.O}</b>` : '', V: o.V || '', R: o.R || '', RES: o.RES || '', W: TXT.vocabWolf, BURN: TXT.vocabBurn.toLowerCase(), SEER: seerName() };
+    return s.replace(/\{(\w+)\}/g, (x, k) => m[k] !== undefined ? m[k] : '');
+}
+function botSay(kind, o) {
+    let bank = BOT_L[kind]; state.used = state.used || {};
+    let u = state.used[kind] = state.used[kind] || [];
+    let idx = bank.map((_, i) => i).filter(i => !u.includes(i));
+    if(!idx.length) { u.length = 0; idx = bank.map((_, i) => i); }
+    let i = rnd(idx); u.push(i);
+    return botFmt(bank[i], o);
+}
+function botReason(b, t) {
+    let tags = ['hunch'], d = (state.deadAcc||[]).find(x => x.t === t.id);
+    if((brain(b).sus[t.id]||0) >= 1) tags.push('hist');
+    if((state.claims||[]).some(c => c.target === t.id && c.result === 'loup' && c.by !== b.id && !c.fake)) tags.push('seer','seer');
+    if(d) tags.push('acc','acc');
+    if((state.protect||{})[t.id]) tags.push('prot','prot');
+    let tag = rnd(tags);
+    return botFmt(rnd(BOT_R[tag]), { V: d ? d.v : '' });
+}
+
+function botVotes() {
+    let bots = players.filter(p => p.alive && p.isBot);
+    if(!bots.length) return customAlert("Il n'y a pas/plus de Bots en vie !");
+    state.pub = state.pub || {}; state.claims = state.claims || []; state.dayVotes = state.dayVotes || {};
+    state.defended = state.defended || {}; state.lastAcc = state.lastAcc || {}; state.hits = state.hits || {};
+    state.round = (state.round || 0) + 1;
+    let alive = players.filter(p => p.alive), nm = id => (players.find(p => p.id === id) || {}).name;
+    let tally = () => { let t = {}; Object.values(state.dayVotes).forEach(v => { if(players.find(p=>p.id===v && p.alive)) t[v] = (t[v]||0) + 1; }); return t; };
+    let KEEP = { meneur:.85, prudent:.6, suiveur:.3, analyste:.6, farceur:.35 };
+    let PASS = { meneur:.05, prudent:.25, suiveur:.1, analyste:.12, farceur:.1 };
+    let FOLLOW = { meneur:.05, prudent:.15, suiveur:.5, analyste:.15, farceur:.2 };
+    let msg = `<b style="color:var(--highlight);font-size:1.2rem;">${state.round === 1 ? 'Intuitions des Bots' : 'Débat, tour n°' + state.round} :</b><br><br>`;
+
+    bots.sort(() => Math.random() - 0.5).forEach(b => {
+        let br = brain(b), T = tally(), wolf = b.role === 'loup', me = state.dayVotes[b.id];
+        let lp = state.lovers.includes(b.id) ? state.lovers.find(x => x !== b.id) : null;
+        let ok = t => t.alive && t.id !== b.id && t.id !== lp && !(wolf && t.role === 'loup') && br.known[t.id] !== 'clean';
+        let targets = alive.filter(ok); if(!targets.length) targets = alive.filter(t => t.id !== b.id);
+        let accusers = Object.keys(state.dayVotes).filter(a => state.dayVotes[a] === b.id && a !== b.id && players.find(p => p.id === a && p.alive));
+        let line = null, target = null, r = Math.random();
+        let knownW = Object.keys(br.known).filter(k => br.known[k] === 'loup' && (players.find(p => p.id === k)||{}).alive);
+
+        if(b.role === 'voyante' && !br.claim && (knownW.length ? r < 0.6 : accusers.length >= 2) && Object.keys(br.known).length) {
+            let k = knownW[0] || Object.keys(br.known)[0]; br.claim = 1;
+            state.claims.push({ by: b.id, target: k, result: br.known[k], fake: false });
+            if(knownW[0]) target = players.find(p => p.id === k);
+            line = botSay('claim', { T: nm(k), RES: br.known[k] === 'loup' ? 'un ' + TXT.vocabWolf : 'innocent(e)' });
+        }
+        else if(wolf && !br.claim && state.round === 1 && activeRolesConfig.includes('voyante') && !state.claims.length && r < 0.18) {
+            let t = rnd(alive.filter(p => p.role !== 'loup')); br.claim = 1;
+            if(t) { state.claims.push({ by: b.id, target: t.id, result: 'loup', fake: true }); target = t;
+                    line = botSay('claim', { T: t.name, RES: 'un ' + TXT.vocabWolf }); }
+        }
+        if(!line && accusers.length && Math.random() < (br.trait === 'prudent' ? 0.85 : 0.55)) {
+            let aId = rnd(accusers);
+            let a = players.find(p => p.id === aId);
+            line = botSay('self', { T: a.name });
+            if(br.trait === 'meneur' || wolf) target = a;
+        }
+        if(!line && lp && T[lp] && Math.random() < 0.7) {
+            line = botSay('defend', { T: nm(lp) });
+            (state.defended[lp] = state.defended[lp] || []).push(b.id);
+        }
+        if(!line) {
+            let cl = state.claims.find(c => c.by !== b.id && (players.find(p => p.id === c.by)||{}).alive);
+            let leader = Object.keys(T).filter(id => id !== b.id && id !== lp && ok(players.find(p => p.id === id))).sort((x, y) => T[y] - T[x])[0];
+            let x = Math.random();
+            if(state.round > 1 && me && Math.random() < 0.15) line = botSay('pass');
+            else if(x < PASS[br.trait] && state.round > 1) line = botSay('pass');
+            else if(leader && leader !== me && x < PASS[br.trait] + FOLLOW[br.trait]) {
+                target = players.find(p => p.id === leader);
+                let o = Object.keys(state.dayVotes).find(a => state.dayVotes[a] === leader && a !== b.id);
+                line = o ? botSay('follow', { O: nm(o), T: target.name, R: botReason(b, target) }) : null;
+                if(!line) target = null;
+            }
+            if(!line && cl && x > 0.85 && (wolf || br.trait === 'analyste' || br.trait === 'farceur')) {
+                line = botSay('doubt', { O: nm(cl.by) });
+                if(!wolf) br.sus[cl.by] = (br.sus[cl.by]||0) + 1.5;
+            }
+            if(!line && x > 0.7 && x <= 0.85 && br.trait !== 'meneur') {
+                let d = Object.keys(T).filter(id => id !== b.id && players.find(p => p.id === id && p.alive && (p.role !== 'loup' || !wolf))).sort((p, q) => T[q] - T[p])[0];
+                if(d && T[d] >= 2) { line = botSay('defend', { T: nm(d) }); (state.defended[d] = state.defended[d] || []).push(b.id); }
+            }
+            if(!line) {
+                let prev = me && players.find(p => p.id === me && p.alive && ok(p));
+                if(state.round > 1 && prev && Math.random() < KEEP[br.trait]) target = prev;
+                else {
+                    let pw = br.trait === 'analyste' ? 2 : 1.3;
+                    target = pickW(targets, t => Math.pow(botSus(b, t) * (br.trait === 'suiveur' ? 1 + 2*(T[t.id]||0) : 1) * (br.trait === 'farceur' ? 0.5 + Math.random()*2 : 1), pw));
+                }
+                line = botSay('accuse', { T: target.name, R: botReason(b, target) });
+            }
+        }
+        if(target) {
+            state.dayVotes[b.id] = target.id; state.lastAcc[b.id] = target.id;
+            state.pub[target.id] = (state.pub[target.id]||0) + 1;
+            if(target.role === 'loup' && !wolf) state.hits[b.id] = (state.hits[b.id]||0) + 1;
+        }
+        msg += `<div style="margin-bottom:10px; padding:10px; background:rgba(0,0,0,0.1); border-radius:8px;">🤖 <b>${b.name}</b> ${line}</div>`;
+    });
+    let top = Object.entries(tally()).sort((a, b) => b[1] - a[1]).slice(0, 3);
+    if(top.length) msg += `<div style="margin-top:6px;font-size:0.95rem;">🗳️ <b>Tendance des bots :</b> ${top.map(([id, n]) => nm(id) + ' (' + n + ')').join(' · ')}</div>`;
+    saveGame('day');
+    customAlert(msg);
+}
+
+// Les bots tirent les leçons des rôles révélés après un vote
+function botsLearn(id) {
+    if(!id) return;
+    let p = players.find(x => x.id === id); if(!p) return;
+    let wolf = p.role === 'loup', dv = state.dayVotes || {}, bots = players.filter(x => x.isBot);
+    let bump = (who, v) => bots.forEach(o => { if(o.id !== who) { let br = brain(o); br.sus[who] = (br.sus[who]||0) + v; } });
+    Object.keys(dv).forEach(a => { if(dv[a] === id) bump(a, wolf ? -1 : 1.5); });
+    ((state.defended||{})[id] || []).forEach(d => { bump(d, wolf ? 2.5 : -0.5); if(wolf) { state.protect = state.protect || {}; state.protect[d] = 1; } });
+    (state.claims||[]).forEach(c => { if(c.target === id) bump(c.by, ((c.result === 'loup') === wolf) ? -2 : 3); });
+}
+// Au lever du jour : on retient qui accusait les victimes de la nuit
+function botsDawn() {
+    state.deadAcc = (state.deadThisTurn||[]).filter(p => (state.lastAcc||{})[p.id]).map(p => ({ v: p.name, t: state.lastAcc[p.id] }));
 }
 
 // --- MOTEUR DE LA NUIT ---
@@ -1469,15 +1678,16 @@ async function runNightEngine() {
   let R_DICT = isFamily ? R_FAM : R_STD;
 
   state.seq = [];
+  let roleAlive = k => players.some(p => p.alive && p.role === k);
   if(state.day === 1) {
       if(activeRolesConfig.includes('voleur')) state.seq.push({id:'thief', name: R_DICT['voleur'][1], time: 10, vocal1: R_DICT['voleur'][1] + ", réveille-toi.", vocal2: "Ouvre les yeux."});
       if(activeRolesConfig.includes('cupidon')) state.seq.push({id:'cupid', name: R_DICT['cupidon'][1], time: 10, vocal1: R_DICT['cupidon'][1] + ", réveille-toi.", vocal2: isFamily ? "Il est temps de faire un gros câlin." : "Il est temps de lier deux cœurs."});
   }
   state.seq.push({id:'wolves', name: R_DICT['loup'][1] + "s", time: 15, vocal1: R_DICT['loup'][1] + "s, réveillez-vous.", vocal2: "Ouvrez les yeux, et regardez-vous."});
-  if(activeRolesConfig.includes('voyante')) state.seq.push({id:'seer', name: R_DICT['voyante'][1], time: 10, vocal1: R_DICT['voyante'][1] + ", réveille-toi.", vocal2: "Ouvre les yeux."});
-  if(activeRolesConfig.includes('sorciere')) state.seq.push({id:'witch', name: R_DICT['sorciere'][1], time: 10, vocal1: R_DICT['sorciere'][1] + ", réveille-toi.", vocal2: "Ouvre les yeux."});
+  if(activeRolesConfig.includes('voyante') && roleAlive('voyante')) state.seq.push({id:'seer', name: R_DICT['voyante'][1], time: 10, vocal1: R_DICT['voyante'][1] + ", réveille-toi.", vocal2: "Ouvre les yeux."});
+  if(activeRolesConfig.includes('sorciere') && roleAlive('sorciere')) state.seq.push({id:'witch', name: R_DICT['sorciere'][1], time: 10, vocal1: R_DICT['sorciere'][1] + ", réveille-toi.", vocal2: "Ouvre les yeux."});
 
-  let petiteFilleInGame = activeRolesConfig.includes('petite');
+  let petiteFilleInGame = activeRolesConfig.includes('petite') && roleAlive('petite');
   state.victim = null; state.pz = null; state.currentRole = null;
   saveGame('night');
 
@@ -1779,6 +1989,7 @@ function dawn() {
   state.elderSurvived = null;
   if(state.victim) wolfAttack(state.victim);
   if(state.pz && state.pz !== state.victim) killPlayer(state.pz);
+  botsDawn();
   saveGame('day');
   resolveDeaths(async () => { 
       if(isAuto) {
@@ -1812,7 +2023,7 @@ function resolveDeaths(next) {
 
 function showDay() {
   let R_DICT = isFamily ? R_FAM : R_STD;
-  state.dayVotes = {};
+  state.dayVotes = {}; state.round = 0; state.defended = {}; Object.keys(state.pub||{}).forEach(k => state.pub[k] *= 0.5);
   showScreen('day-screen');
   let h = `<h2 style="color:var(--accent)">☀️ Jour ${state.day}</h2>`;
   
@@ -1843,45 +2054,6 @@ function showDay() {
   $('day-content').innerHTML = h;
   $('day-vote-btn').textContent = `⚖️ ${TXT.uiVoteTitle}`;
   $('day-cta').style.display = 'flex';
-}
-
-// --- INTELLIGENCE VOTE DE JOUR ---
-function botVotes() {
-  let aliveBots = players.filter(p => p.alive && p.isBot);
-  if(aliveBots.length === 0) return customAlert("Il n'y a pas/plus de Bots en vie !");
-  
-  if(!state.suspicion) state.suspicion = {};
-  if(!state.dayVotes) state.dayVotes = {};
-  let alivePlayers = players.filter(p => p.alive);
-  let msg = `<b style="color:var(--highlight);font-size:1.2rem;">Intuitions des Bots :</b><br><br>`;
-  
-  aliveBots.forEach(b => {
-      // Un bot garde le même avis toute la journée (plusieurs clics = mêmes accusations), 
-      // et se souvient des soupçons accumulés les jours précédents.
-      let voteId = state.dayVotes[b.id];
-      if(!voteId || !players.find(x => x.id === voteId && x.alive)) {
-          let targets = alivePlayers.filter(t => t.id !== b.id);
-          if(b.role === 'loup') targets = targets.filter(t => t.role !== 'loup');
-          if(state.lovers.includes(b.id)) targets = targets.filter(t => !state.lovers.includes(t.id) || targets.length === 1);
-
-          let weighted = [];
-          targets.forEach(t => {
-              let weight = 1 + (state.suspicion[t.id] || 0);
-              for(let i=0;i<weight;i++) weighted.push(t);
-          });
-          let pool = weighted.length ? weighted : targets;
-          let vote = pool[Math.floor(Math.random()*pool.length)];
-          voteId = vote.id;
-          state.dayVotes[b.id] = voteId;
-          state.suspicion[voteId] = (state.suspicion[voteId] || 0) + 1;
-      }
-      let vote = players.find(x => x.id === voteId);
-      let phrase = TXT.botVoteStrs[Math.floor(Math.random()*TXT.botVoteStrs.length)];
-      
-      msg += `<div style="margin-bottom:10px; padding:10px; background:rgba(0,0,0,0.1); border-radius:8px;">🤖 <b>${b.name}</b> ${phrase} <b>${vote.name}</b>.</div>`;
-  });
-  
-  customAlert(msg);
 }
 
 // --- LE VOTE ---
@@ -1930,6 +2102,7 @@ function executeVote(id) {
 }
 
 function performVote(id) {
+  botsLearn(id);
   let R_DICT = isFamily ? R_FAM : R_STD;
   state.deadThisTurn = []; 
   if(id) {
@@ -1968,13 +2141,14 @@ async function hunterRevenge(hId, nextCallback) {
       showScreen('vote-screen'); 
       let targets = players.filter(x => x.alive && x.id !== hId);
       if(state.lovers.includes(hId)) targets = targets.filter(t => !state.lovers.includes(t.id));
-      let target = targets[Math.floor(Math.random()*targets.length)];
+      let target = pickW(targets, t => Math.pow(botSus(p, t), 2));
       
       $('vote-content').innerHTML = `<div class="story-box" style="text-align:center;">🤖 Le Bot ${p.name} riposte...</div>`;
+      state.hunterNext = nextCallback;
       
       if(isAuto) {
           resetAudio();
-          await speak(`Attendez. Le bot ${p.name} était le ${R_DICT['chasseur'][1]}. Il choisit une cible au hasard.`);
+          await speak(`Attendez. Le bot ${p.name} était le ${R_DICT['chasseur'][1]}. Il choisit sa cible.`);
           await wait(1000); 
       } else {
           await wait(3000);
