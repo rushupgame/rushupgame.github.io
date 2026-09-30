@@ -436,6 +436,7 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
 
   <div class="sticky-cta">
     <button class="btn" id="start-btn" disabled onclick="initGame()">🚀 Lancer l'Histoire</button>
+    <div id="start-btn-hint" style="display:block; text-align:center; font-size:0.82rem; color:var(--text-muted); margin-top:6px;">Configurez d'abord votre jeu</div>
   </div>
 </div>
 
@@ -445,7 +446,7 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
 <div id="distrib-screen" class="screen">
   <div class="stage" style="text-align:center">
     <div class="info-box" style="border-color:var(--highlight);background:rgba(217,119,6,0.1);color:var(--highlight)">
-      👉 <b>Passez secrètement l'appareil</b> à la personne affichée ci-dessous.
+      👉 <b>Passez l'appareil</b> à la personne affichée ci-dessous.
     </div>
     <h2 style="font-size:3rem;color:var(--text);margin:30px 0; text-shadow:0 2px 4px rgba(0,0,0,0.6);" id="distrib-who"></h2>
     
@@ -1283,6 +1284,15 @@ function renderRoleAdvice(total) {
     return h;
 }
 
+function setStartBtn(disabled, reason) {
+  let btn = $('start-btn'), hint = $('start-btn-hint');
+  btn.disabled = disabled;
+  if (hint) {
+    hint.style.display = disabled ? 'block' : 'none';
+    if (disabled && reason) hint.textContent = reason;
+  }
+}
+
 function checkConfig() {
   let n = pNames.length;
   renderBotCount();
@@ -1293,7 +1303,7 @@ function checkConfig() {
   let adv = $('advice-box');
   
   if (n < 1) {
-    btn.disabled = true; return; 
+    setStartBtn(true, 'Configurez d\u2019abord votre jeu'); return; 
   }
   
   let wolves = Math.max(1, Math.floor(total/4));
@@ -1319,9 +1329,9 @@ function checkConfig() {
   
   if (villagers < 0) {
       err.innerHTML = `⚠️ Trop de rôles spéciaux cochés pour ${total} joueurs au total.<br>Veuillez en retirer.`;
-      err.style.display = 'block'; adv.innerHTML = ideal; btn.disabled = true;
+      err.style.display = 'block'; adv.innerHTML = ideal; setStartBtn(true, 'Configurez d\u2019abord votre jeu');
   } else {
-      err.style.display = 'none'; btn.disabled = false;
+      err.style.display = 'none'; setStartBtn(false);
       adv.innerHTML = ideal;
   }
 }
@@ -1415,17 +1425,17 @@ function revealRole() {
   let h = `<h3 style="font-size:2.4rem;color:var(--highlight);margin:0 0 5px 0;">${r[0]} ${r[1]}</h3>`;
   h += equiv;
   
-  h += `<details style="background:rgba(0,0,0,0.3); border-radius:8px; padding:12px; margin-bottom:10px; text-align:left; border-left:4px solid var(--highlight);">
+  h += `<details open style="text-align:left; margin-bottom:14px;">
           <summary style="cursor:pointer; color:var(--highlight); font-weight:bold; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; outline:none;">🎯 Ton But</summary>
           <div style="color:var(--text); font-size:1.05rem; margin-top:8px;">${r[2]}</div>
         </details>`;
         
-  h += `<details style="background:rgba(0,0,0,0.3); border-radius:8px; padding:12px; margin-bottom:10px; text-align:left; border-left:4px solid var(--accent);">
+  h += `<details open style="text-align:left; margin-bottom:14px;">
           <summary style="cursor:pointer; color:var(--accent); font-weight:bold; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; outline:none;">✨ Ce que tu dois faire</summary>
           <div style="color:var(--text-muted); font-size:1rem; line-height:1.5; margin-top:8px;">${r[3]}</div>
         </details>`;
 
-  h += `<details style="text-align:left; background:rgba(217,119,6,0.1); border-radius:8px; padding:12px;border-left:4px solid var(--gold);">`;
+  h += `<details open style="text-align:left;">`;
   h += `<summary style="cursor:pointer; color:var(--gold); font-weight:bold; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; outline:none;">💡 Astuces</summary>`;
   h += `<ul style="margin:8px 0 0; padding-left:20px; color:var(--text-light); font-size:0.95rem; line-height:1.5;">`;
   tips.forEach(t => {
@@ -1642,6 +1652,9 @@ function botVotes() {
         if(target) {
             state.dayVotes[b.id] = target.id; state.lastAcc[b.id] = target.id;
             state.pub[target.id] = (state.pub[target.id]||0) + 1;
+            state.statCast = state.statCast || {}; state.statReceived = state.statReceived || {};
+            state.statCast[b.id] = (state.statCast[b.id]||0) + 1;
+            state.statReceived[target.id] = (state.statReceived[target.id]||0) + 1;
             if(target.role === 'loup' && !wolf) state.hits[b.id] = (state.hits[b.id]||0) + 1;
         }
         msg += `<div style="margin-bottom:10px; padding:10px; background:rgba(0,0,0,0.1); border-radius:8px;">🤖 <b>${b.name}</b> ${line}</div>`;
@@ -1680,12 +1693,12 @@ async function runNightEngine() {
   state.seq = [];
   let roleAlive = k => players.some(p => p.alive && p.role === k);
   if(state.day === 1) {
-      if(activeRolesConfig.includes('voleur')) state.seq.push({id:'thief', name: R_DICT['voleur'][1], time: 10, vocal1: R_DICT['voleur'][1] + ", réveille-toi.", vocal2: "Ouvre les yeux."});
-      if(activeRolesConfig.includes('cupidon')) state.seq.push({id:'cupid', name: R_DICT['cupidon'][1], time: 10, vocal1: R_DICT['cupidon'][1] + ", réveille-toi.", vocal2: isFamily ? "Il est temps de faire un gros câlin." : "Il est temps de lier deux cœurs."});
+      if(activeRolesConfig.includes('voleur')) state.seq.push({id:'thief', name: R_DICT['voleur'][1], time: 10, vocal1: R_DICT['voleur'][1] + ", réveillez-vous.", vocal2: "Ouvrez les yeux."});
+      if(activeRolesConfig.includes('cupidon')) state.seq.push({id:'cupid', name: R_DICT['cupidon'][1], time: 10, vocal1: R_DICT['cupidon'][1] + ", réveillez-vous.", vocal2: isFamily ? "Il est temps de faire un gros câlin." : "Il est temps de lier deux cœurs."});
   }
   state.seq.push({id:'wolves', name: R_DICT['loup'][1] + "s", time: 15, vocal1: R_DICT['loup'][1] + "s, réveillez-vous.", vocal2: "Ouvrez les yeux, et regardez-vous."});
-  if(activeRolesConfig.includes('voyante') && roleAlive('voyante')) state.seq.push({id:'seer', name: R_DICT['voyante'][1], time: 10, vocal1: R_DICT['voyante'][1] + ", réveille-toi.", vocal2: "Ouvre les yeux."});
-  if(activeRolesConfig.includes('sorciere') && roleAlive('sorciere')) state.seq.push({id:'witch', name: R_DICT['sorciere'][1], time: 10, vocal1: R_DICT['sorciere'][1] + ", réveille-toi.", vocal2: "Ouvre les yeux."});
+  if(activeRolesConfig.includes('voyante') && roleAlive('voyante')) state.seq.push({id:'seer', name: R_DICT['voyante'][1], time: 10, vocal1: R_DICT['voyante'][1] + ", réveillez-vous.", vocal2: "Ouvrez les yeux."});
+  if(activeRolesConfig.includes('sorciere') && roleAlive('sorciere')) state.seq.push({id:'witch', name: R_DICT['sorciere'][1], time: 10, vocal1: R_DICT['sorciere'][1] + ", réveillez-vous.", vocal2: "Ouvrez les yeux."});
 
   let petiteFilleInGame = activeRolesConfig.includes('petite') && roleAlive('petite');
   state.victim = null; state.pz = null; state.currentRole = null;
@@ -1790,10 +1803,10 @@ async function runNightEngine() {
       
       if(isAuto) {
           $('night-status').textContent = step.name + " se rendort.";
-          await speak(step.name + ", rendors-toi."); await pause(800);
-          await speak("Ferme les yeux."); await pause(2500, 500); 
+          await speak(step.name + ", rendormez-vous."); await pause(800);
+          await speak("Fermez les yeux."); await pause(2500, 500); 
       } else {
-          await new Promise(resolve => customAlert(`🗣️ Dites :<br><br><b>« ${step.name}, rendors-toi et ferme les yeux. »</b>`, resolve));
+          await new Promise(resolve => customAlert(`🗣️ Dites :<br><br><b>« ${step.name}, rendormez-vous et fermez les yeux. »</b>`, resolve));
       }
   }
 
@@ -1959,15 +1972,17 @@ function witchPzAction(id) {
 }
 
 // --- RESOLUTION DU JOUR ---
-function killPlayer(id) {
+function killPlayer(id, cause) {
   let p = players.find(x => x.id === id);
   if(!p || !p.alive) return;
   p.alive = false;
+  p.deathDay = state.day;
+  p.deathCause = cause || p.deathCause || 'autre';
   state.deadThisTurn.push(p);
   if(p.role === 'chasseur') state.hq.push(id);
   if(state.lovers.includes(id)) {
       let otherId = state.lovers.find(x => x !== id);
-      if(players.find(x => x.id === otherId && x.alive)) killPlayer(otherId);
+      if(players.find(x => x.id === otherId && x.alive)) killPlayer(otherId, 'amour');
   }
 }
 
@@ -1980,7 +1995,7 @@ function wolfAttack(id) {
       state.elderSurvived = p.id;
       return;
   }
-  killPlayer(id);
+  killPlayer(id, 'loup');
 }
 
 function dawn() {
@@ -1988,7 +2003,7 @@ function dawn() {
   state.deadThisTurn = [];
   state.elderSurvived = null;
   if(state.victim) wolfAttack(state.victim);
-  if(state.pz && state.pz !== state.victim) killPlayer(state.pz);
+  if(state.pz && state.pz !== state.victim) killPlayer(state.pz, 'poison');
   botsDawn();
   saveGame('day');
   resolveDeaths(async () => { 
@@ -2106,7 +2121,7 @@ function performVote(id) {
   let R_DICT = isFamily ? R_FAM : R_STD;
   state.deadThisTurn = []; 
   if(id) {
-      killPlayer(id);
+      killPlayer(id, 'vote');
       let p = players.find(x=>x.id===id);
       let msg = `Choix validé pour <b>${p.name}</b> ! \n\nIl/Elle était...\n<br><span style="font-size:1.8rem;color:var(--accent);display:block;margin-top:10px">${R_DICT[p.role][0]} ${R_DICT[p.role][1]}</span>`;
       let voiceMsg = `C'est fait. ${p.name} a été ${TXT.vocabVote}. Son rôle était ${R_DICT[p.role][1]}.`;
@@ -2181,7 +2196,7 @@ function executeHunter(id) {
 function performHunter(id) {
   let R_DICT = isFamily ? R_FAM : R_STD;
   let before = state.deadThisTurn.length;
-  killPlayer(id);
+  killPlayer(id, 'chasseur');
   playGunshot();
   let t = players.find(x=>x.id===id);
   let msg = `<b>Bingo !</b>\n<b>${t.name}</b> est ${TXT.vocabDead}.\n\nIl/Elle était :\n<br><span style="font-size:1.8rem;color:var(--accent);display:block;margin-top:10px">${R_DICT[t.role][0]} ${R_DICT[t.role][1]}</span>`;
@@ -2222,6 +2237,99 @@ function checkWin() {
   if(wolvesCount === 0) { showWin('village'); return true; }
   if(wolvesCount >= villagersCount) { showWin('loups'); return true; }
   return false;
+}
+
+// --- STATISTIQUES DE FIN DE PARTIE ---
+function pieChart(segments, size) {
+  size = size || 150;
+  let total = segments.reduce((a,s) => a + s.value, 0);
+  if (total <= 0) return `<div style="text-align:center;color:var(--text-muted);font-size:0.9rem;padding:10px;">Pas assez de données.</div>`;
+  let acc = 0;
+  let stops = segments.filter(s => s.value > 0).map(s => {
+    let start = acc/total*360; acc += s.value; let end = acc/total*360;
+    return `${s.color} ${start}deg ${end}deg`;
+  }).join(', ');
+  let legend = segments.filter(s => s.value > 0).map(s => {
+    let pct = Math.round(s.value/total*100);
+    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+              <span style="width:11px;height:11px;border-radius:3px;background:${s.color};flex-shrink:0;"></span>
+              <span style="color:var(--text);font-size:0.88rem;flex:1;">${s.label}</span>
+              <span style="color:var(--text-muted);font-size:0.85rem;font-weight:bold;white-space:nowrap;">${s.value} (${pct}%)</span>
+            </div>`;
+  }).join('');
+  return `<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;">
+            <div style="width:${size}px;height:${size}px;border-radius:50%;background:conic-gradient(${stops});flex-shrink:0;box-shadow:0 4px 14px rgba(0,0,0,0.4);"></div>
+            <div style="min-width:160px;">${legend}</div>
+          </div>`;
+}
+const ROLE_COLORS = { loup:'#dc2626', villageois:'#64748b', voyante:'#7c3aed', sorciere:'#059669', chasseur:'#d97706', petite:'#ec4899', cupidon:'#db2777', voleur:'#0891b2', ancien:'#78716c', boucemissaire:'#a16207' };
+const CAUSE_COLORS = { loup:'#dc2626', vote:'#d97706', poison:'#7c3aed', chasseur:'#f59e0b', amour:'#db2777', autre:'#64748b' };
+function causeLabel(c) {
+  let map = isFamily ? {
+    loup: 'Doudou caché par les Loups Malins', vote: "Envoyé(e) au coin par le village",
+    poison: 'Endormi(e) par la potion', chasseur: 'Visé(e) par le Chasseur',
+    amour: 'Parti(e) le cœur brisé', autre: 'Autre'
+  } : {
+    loup: 'Dévoré(e) par les Loups-Garous', vote: 'Éliminé(e) par le village',
+    poison: 'Empoisonné(e)', chasseur: 'Abattu(e) par le Chasseur',
+    amour: 'Mort(e) le cœur brisé', autre: 'Autre'
+  };
+  return map[c] || map.autre;
+}
+function playerWon(p, team) {
+  if (team === 'draw') return null;
+  if (team === 'amoureux') return state.lovers.includes(p.id);
+  if (team === 'village') return p.role !== 'loup';
+  return p.role === 'loup';
+}
+function buildStatsHTML(team) {
+  let R_DICT = isFamily ? R_FAM : R_STD;
+  // Camembert 1 : répartition des rôles
+  let roleCounts = {};
+  players.forEach(p => { roleCounts[p.role] = (roleCounts[p.role]||0) + 1; });
+  let roleSegs = Object.keys(roleCounts).map(k => ({ label: R_DICT[k][1], value: roleCounts[k], color: ROLE_COLORS[k] || '#64748b' }));
+  // Camembert 2 : causes des éliminations
+  let causeCounts = {};
+  players.filter(p => !p.alive).forEach(p => { let c = p.deathCause || 'autre'; causeCounts[c] = (causeCounts[c]||0) + 1; });
+  let causeSegs = Object.keys(causeCounts).map(k => ({ label: causeLabel(k), value: causeCounts[k], color: CAUSE_COLORS[k] || '#64748b' }));
+
+  let h = `<div style="background:var(--input-bg);padding:20px;border-radius:12px;border:1px solid rgba(150,150,150,0.2);margin-top:20px;">`;
+  h += `<h3 style="color:var(--text);text-align:center;margin-bottom:15px;font-size:1.15rem;">🥧 Répartition des rôles</h3>`;
+  h += pieChart(roleSegs);
+  h += `</div>`;
+
+  if (causeSegs.length) {
+    h += `<div style="background:var(--input-bg);padding:20px;border-radius:12px;border:1px solid rgba(150,150,150,0.2);margin-top:16px;">`;
+    h += `<h3 style="color:var(--text);text-align:center;margin-bottom:15px;font-size:1.15rem;">☠️ Causes des éliminations</h3>`;
+    h += pieChart(causeSegs);
+    h += `</div>`;
+  }
+
+  h += `<div style="background:var(--input-bg);padding:16px;border-radius:12px;border:1px solid rgba(150,150,150,0.2);margin-top:16px;">`;
+  h += `<h3 style="color:var(--text);text-align:center;margin-bottom:14px;font-size:1.15rem;">📊 Statistiques par joueur</h3>`;
+  players.forEach(p => {
+      let won = playerWon(p, team);
+      let campBadge = won === null ? '' : (won ? '<span style="background:rgba(16,185,129,0.18);color:var(--success);padding:2px 8px;border-radius:20px;font-size:0.78rem;font-weight:bold;">🏆 Gagnant</span>' : '<span style="background:rgba(150,150,150,0.15);color:var(--text-muted);padding:2px 8px;border-radius:20px;font-size:0.78rem;">Perdant</span>');
+      let statusTxt = p.alive ? (isFamily ? '🌟 Éveillé(e) jusqu\u2019au bout' : '❤️ Vivant(e) jusqu\u2019au bout')
+                               : `${isFamily?'💤':'💀'} Jour ${p.deathDay || '?'} · ${causeLabel(p.deathCause)}`;
+      let received = (state.statReceived||{})[p.id] || 0;
+      let cast = (state.statCast||{})[p.id] || 0;
+      let voteChips = p.isBot ? `
+              <span style="background:rgba(217,119,6,0.15);color:var(--highlight);padding:3px 9px;border-radius:20px;font-size:0.78rem;">🗳️ ${received} accusation${received>1?'s':''} reçue${received>1?'s':''}</span>
+              <span style="background:rgba(150,150,150,0.15);color:var(--text-muted);padding:3px 9px;border-radius:20px;font-size:0.78rem;">👉 ${cast} vote${cast>1?'s':''} donné${cast>1?'s':''}</span>` : '';
+      h += `<div style="padding:12px 0;border-bottom:1px solid rgba(150,150,150,0.12);">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+                <span style="color:var(--text);font-size:1.05rem;"><b>${p.name}</b>${p.isBot?' 🤖':''}</span>
+                ${campBadge}
+              </div>
+              <div style="color:var(--highlight);font-size:0.9rem;margin-top:3px;">${R_DICT[p.role][0]} ${R_DICT[p.role][1]}</div>
+              <div style="color:var(--text-muted);font-size:0.85rem;margin-top:3px;">${statusTxt}</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">${voteChips}</div>
+            </div>`;
+  });
+  h += `<p style="font-size:0.78rem;color:var(--text-muted);margin-top:12px;">Les votes ne sont comptabilisés que pour les 🤖 Bots (les votes humains se font à l'oral).</p>`;
+  h += `</div>`;
+  return h;
 }
 
 function showWin(team) {
@@ -2270,6 +2378,8 @@ function showWin(team) {
   });
   
   h += `</div>`;
+  h += buildStatsHTML(team);
+  h += `<div style="height:90px;"></div>`;
   $('end-content').innerHTML = h;
   $('end-cta').style.display = 'flex';
 
