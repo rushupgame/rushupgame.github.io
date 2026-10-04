@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>La Nuit des Loups - Édition Ultime</title>
+<title>La Nuit des Loups - Édition Queen Smita</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#02040a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Loup">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -88,7 +94,7 @@ body.theme-family .bg-sky { background: radial-gradient(circle at top, #2e1065, 
 body.theme-family.theme-day .bg-sky { background: linear-gradient(135deg, #fef08a 0%, #86efac 50%, #4ade80 100%); } /* Matin Famille : Jaune et Vert Lumineux */
 
 /* 2. Lueur de Feu Pulsante */
-.fire-glow { position: absolute; bottom: 0; left: -20%; right: -20%; height: 55vh; background: radial-gradient(ellipse at bottom, rgba(225, 29, 72, 0.5) 0%, rgba(217, 119, 6, 0.25) 40%, transparent 70%); animation: pulseFire 4s ease-in-out infinite alternate; transition: opacity 1.5s; mix-blend-mode: screen; }
+.fire-glow { position: absolute; bottom: 0; left: -20%; right: -20%; height: 55vh; transform-origin: 50% 100%; background: radial-gradient(ellipse at bottom, rgba(225, 29, 72, 0.5) 0%, rgba(217, 119, 6, 0.25) 40%, transparent 70%); animation: pulseFire 4s ease-in-out infinite alternate; transition: opacity 1.5s; mix-blend-mode: screen; }
 body.theme-day .fire-glow { opacity: 0; }
 body.theme-family .fire-glow { background: radial-gradient(ellipse at bottom, rgba(217, 70, 239, 0.4) 0%, rgba(162, 28, 175, 0.15) 40%, transparent 70%); }
 @keyframes pulseFire { 0% { opacity: 0.7; transform: scaleY(0.9); } 100% { opacity: 1; transform: scaleY(1.15); } }
@@ -191,6 +197,8 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
 
 .sticky-cta { position:fixed; left:50%; transform:translateX(-50%); bottom:0; width:100%; max-width:520px; z-index:150; background:transparent; padding:18px 16px calc(14px + env(safe-area-inset-bottom)); box-sizing:border-box; display:flex; flex-direction:column; gap:8px; }
 .sticky-cta .btn { margin-top:0; }
+#setup-screen .sticky-cta, #welcome-screen .sticky-cta { background:linear-gradient(to top, rgba(8,8,18,0.97) 68%, rgba(8,8,18,0)); }
+#welcome-screen, #setup-screen { padding-bottom:calc(150px + env(safe-area-inset-bottom, 0px)); }
 
 .config-group { display:flex; flex-direction:column; gap:12px; margin-bottom:16px }
 .config-group input { background:var(--input-bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; color:var(--text); font-size:1.1rem; width:100%; text-align:center; transition:all 0.3s; }
@@ -229,11 +237,125 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
 .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; display:none; align-items:center; justify-content:center; padding:16px; backdrop-filter:blur(10px); }
 .modal-overlay.open { display:flex; animation:fadeIn 0.2s ease; }
 .modal-box { background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); padding:24px; width:100%; max-width:480px; max-height:85vh; overflow-y:auto; box-shadow:0 20px 50px rgba(0,0,0,0.8); color:var(--text); }
+/* --- Historique des parties --- */
+.btn[disabled] { opacity:0.45; pointer-events:none; }
+.hist-card { display:flex; gap:12px; align-items:flex-start; padding:12px; border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:10px; background:var(--surface); }
+.hist-card input[type="checkbox"] { width:26px; height:26px; accent-color:var(--accent); flex-shrink:0; margin-top:2px; cursor:pointer; }
+.hist-main { flex:1; min-width:0; cursor:pointer; }
+.hist-title { font-weight:800; font-size:1rem; line-height:1.3; color:var(--text); }
+.hist-meta { font-size:0.85rem; color:var(--text-muted); margin-top:4px; line-height:1.4; }
+.hist-detail { margin-top:8px; font-size:0.9rem; border-top:1px solid var(--border); padding-top:8px; color:var(--text); }
+.hist-row { display:flex; justify-content:space-between; gap:10px; padding:3px 0; }
+.hist-row span:last-child { color:var(--highlight); font-weight:700; text-align:right; }
+.hist-actions { display:flex; flex-direction:column; gap:8px; position:sticky; bottom:0; background:var(--bg); padding-top:10px; margin-top:6px; }
+.hist-actions .btn { margin-top:0; padding:14px 16px; font-size:1rem; }
 #custom-alert-box { text-align:center; max-width:400px; }
 #custom-alert-text { font-size:1.2rem; line-height:1.6; margin-bottom:25px; white-space:pre-line; color:var(--text); }
 #subtitle-bar { position:fixed; left:0; right:0; bottom:max(14px,env(safe-area-inset-bottom)); display:none; justify-content:center; padding:0 16px; z-index:500; pointer-events:none; }
 #subtitle-text { background:rgba(0,0,0,0.55); color:#fff; padding:10px 18px; border-radius:12px; font-size:0.98rem; text-align:center; max-width:520px; line-height:1.4; box-shadow:0 3px 10px rgba(0,0,0,0.2); }
+
+/* ================================================
+   VIBES (skins de couleurs) — importées de localgame
+   Choix 100% local (localStorage 'lndl-vibe'), jamais partagé.
+   La Vibe est portée par <html data-vibe="..."> (et non par une classe du <body>) car le jeu
+   réécrit document.body.className à chaque changement Jour/Nuit/Famille.
+   "basic" = aucun attribut = couleurs d'origine du jeu.
+   ================================================ */
+
+/* 🖤 Black Pepper */
+html[data-vibe="blackpepper"] body[class] { --v-rgb:230,57,70; --v-main:#e63946; --v-main2:#ff5c6c; --btn-text:#ffffff; --blood:#e63946; --blood-light:#ff5c6c; --accent:#cf333f; --highlight:#bf4551; --border:rgba(230,57,70,0.4); }
+html[data-vibe="blackpepper"] body[class]:not(.theme-day) { --bg:#0a0a0a; --bg-alt:#1a1512; --surface:rgba(26,21,18,0.88); --text:#f5f5f5; --text-muted:#9a9a9a; --input-bg:rgba(10,10,10,0.8); --accent:#e63946; --highlight:#ff5c6c; --border:rgba(230,57,70,0.35); --btn-sec-bg:rgba(255,255,255,0.15); --btn-sec-text:#ffffff; }
+
+/* 🥥 Coconut Shake */
+html[data-vibe="coconut"] body[class] { --v-rgb:201,168,118; --v-main:#c9a876; --v-main2:#b8935f; --btn-text:#1a1400; --blood:#c9a876; --blood-light:#b8935f; --accent:#836d4d; --highlight:#8a6e47; --border:rgba(201,168,118,0.4); }
+html[data-vibe="coconut"] body[class]:not(.theme-day) { --bg:#faf6f0; --bg-alt:#f0e6d8; --surface:rgba(255,255,255,0.8); --text:#3a2f28; --text-muted:#8a7a6b; --input-bg:rgba(255,255,255,0.7); --accent:#8d7653; --highlight:#78603e; --border:rgba(201,168,118,0.35); --btn-sec-bg:#e2e8f0; --btn-sec-text:#3a2f28; }
+
+/* 🍓 Strawberry Spicy */
+html[data-vibe="strawberry"] body[class] { --v-rgb:255,23,68; --v-main:#ff1744; --v-main2:#ff5470; --btn-text:#ffffff; --blood:#ff1744; --blood-light:#ff5470; --accent:#d9143a; --highlight:#bf3f54; --border:rgba(255,23,68,0.4); }
+html[data-vibe="strawberry"] body[class]:not(.theme-day) { --bg:#2a0a0f; --bg-alt:#4a0f1a; --surface:rgba(74,15,26,0.88); --text:#fff0f2; --text-muted:#d99aa5; --input-bg:rgba(42,10,15,0.8); --accent:#ff1744; --highlight:#ff5470; --border:rgba(255,23,68,0.35); --btn-sec-bg:rgba(255,255,255,0.15); --btn-sec-text:#ffffff; }
+
+/* 🍬 Bubblegum Fizz */
+html[data-vibe="bubblegum"] body[class] { --v-rgb:255,79,216; --v-main:#ff4fd8; --v-main2:#ff8ae8; --btn-text:#ffffff; --blood:#ff4fd8; --blood-light:#ff8ae8; --accent:#bf3ba2; --highlight:#99538b; --border:rgba(255,79,216,0.4); }
+html[data-vibe="bubblegum"] body[class]:not(.theme-day) { --bg:#2a0e24; --bg-alt:#4a1a42; --surface:rgba(74,26,66,0.88); --text:#fff0fb; --text-muted:#e0a8d8; --input-bg:rgba(42,14,36,0.8); --accent:#ff4fd8; --highlight:#ff8ae8; --border:rgba(255,79,216,0.35); --btn-sec-bg:rgba(255,255,255,0.15); --btn-sec-text:#ffffff; }
+
+/* 🫐 Blueberry Chill */
+html[data-vibe="blueberry"] body[class] { --v-rgb:59,110,255; --v-main:#3b6eff; --v-main2:#6b93ff; --btn-text:#ffffff; --blood:#3b6eff; --blood-light:#6b93ff; --accent:#3868f2; --highlight:#506ebf; --border:rgba(59,110,255,0.4); }
+html[data-vibe="blueberry"] body[class]:not(.theme-day) { --bg:#050b1f; --bg-alt:#0d1b3d; --surface:rgba(13,27,61,0.88); --text:#eaf0ff; --text-muted:#9ab0d9; --input-bg:rgba(5,11,31,0.8); --accent:#3b6eff; --highlight:#6b93ff; --border:rgba(59,110,255,0.35); --btn-sec-bg:rgba(255,255,255,0.15); --btn-sec-text:#ffffff; }
+
+/* 🍌 Banana Buzz */
+html[data-vibe="banana"] body[class] { --v-rgb:255,214,10; --v-main:#ffd60a; --v-main2:#ffe14d; --btn-text:#1a1400; --blood:#ffd60a; --blood-light:#ffe14d; --accent:#806b05; --highlight:#807026; --border:rgba(255,214,10,0.4); }
+html[data-vibe="banana"] body[class]:not(.theme-day) { --bg:#1f1a00; --bg-alt:#3d3300; --surface:rgba(61,51,0,0.88); --text:#fffbea; --text-muted:#d4c98a; --input-bg:rgba(31,26,0,0.8); --accent:#ffd60a; --highlight:#ffe14d; --border:rgba(255,214,10,0.35); --btn-sec-bg:rgba(255,255,255,0.15); --btn-sec-text:#ffffff; }
+
+/* 🍏 Lime Zest */
+html[data-vibe="lime"] body[class] { --v-rgb:174,242,44; --v-main:#aef22c; --v-main2:#c8ff5e; --btn-text:#1a1400; --blood:#aef22c; --blood-light:#c8ff5e; --accent:#577916; --highlight:#5a732a; --border:rgba(174,242,44,0.4); }
+html[data-vibe="lime"] body[class]:not(.theme-day) { --bg:#0a1f0a; --bg-alt:#163d16; --surface:rgba(22,61,22,0.88); --text:#f3fff0; --text-muted:#a8d99a; --input-bg:rgba(10,31,10,0.8); --accent:#aef22c; --highlight:#c8ff5e; --border:rgba(174,242,44,0.35); --btn-sec-bg:rgba(255,255,255,0.15); --btn-sec-text:#ffffff; }
+
+/* 🥭 Mango Tango */
+html[data-vibe="mango"] body[class] { --v-rgb:255,140,26; --v-main:#ff8c1a; --v-main2:#ffab4d; --btn-text:#1a1400; --blood:#ff8c1a; --blood-light:#ffab4d; --accent:#a65b11; --highlight:#99672e; --border:rgba(255,140,26,0.4); }
+html[data-vibe="mango"] body[class]:not(.theme-day) { --bg:#2a1400; --bg-alt:#4d2600; --surface:rgba(77,38,0,0.88); --text:#fff5e8; --text-muted:#d9b088; --input-bg:rgba(42,20,0,0.8); --accent:#ff8c1a; --highlight:#ffab4d; --border:rgba(255,140,26,0.35); --btn-sec-bg:rgba(255,255,255,0.15); --btn-sec-text:#ffffff; }
+
+/* 🐉 Dragonfruit Zap */
+html[data-vibe="dragonfruit"] body[class] { --v-rgb:217,37,255; --v-main:#d925ff; --v-main2:#e666ff; --btn-text:#ffffff; --blood:#d925ff; --blood-light:#e666ff; --accent:#b81fd9; --highlight:#a147b2; --border:rgba(217,37,255,0.4); }
+html[data-vibe="dragonfruit"] body[class]:not(.theme-day) { --bg:#150826; --bg-alt:#2e0f4d; --surface:rgba(46,15,77,0.88); --text:#faf0ff; --text-muted:#c79fdb; --input-bg:rgba(21,8,38,0.8); --accent:#d925ff; --highlight:#e666ff; --border:rgba(217,37,255,0.35); --btn-sec-bg:rgba(255,255,255,0.15); --btn-sec-text:#ffffff; }
+
+/* 🍫 Cocoa Crunch */
+html[data-vibe="cocoa"] body[class] { --v-rgb:201,131,74; --v-main:#c9834a; --v-main2:#e0a468; --btn-text:#ffffff; --blood:#c9834a; --blood-light:#e0a468; --accent:#976238; --highlight:#926b44; --border:rgba(201,131,74,0.4); }
+html[data-vibe="cocoa"] body[class]:not(.theme-day) { --bg:#1f130a; --bg-alt:#3a2416; --surface:rgba(58,36,22,0.88); --text:#fbf0e6; --text-muted:#c2a68f; --input-bg:rgba(31,19,10,0.8); --accent:#c9834a; --highlight:#e0a468; --border:rgba(201,131,74,0.35); --btn-sec-bg:rgba(255,255,255,0.15); --btn-sec-text:#ffffff; }
+
+/* 🍯 Honey Gold */
+html[data-vibe="honeygold"] body[class] { --v-rgb:255,184,0; --v-main:#ffb800; --v-main2:#ffd54f; --btn-text:#1a1400; --blood:#ffb800; --blood-light:#ffd54f; --accent:#8c6500; --highlight:#806a28; --border:rgba(255,184,0,0.4); }
+html[data-vibe="honeygold"] body[class]:not(.theme-day) { --bg:#2a1a00; --bg-alt:#4d3300; --surface:rgba(77,51,0,0.88); --text:#fff8e6; --text-muted:#e0c17a; --input-bg:rgba(42,26,0,0.8); --accent:#ffb800; --highlight:#ffd54f; --border:rgba(255,184,0,0.35); --btn-sec-bg:rgba(255,255,255,0.15); --btn-sec-text:#ffffff; }
+
+/* ✨ Silver Spark */
+html[data-vibe="silverspark"] body[class] { --v-rgb:174,188,203; --v-main:#aebccb; --v-main2:#e2e9f0; --btn-text:#1a1400; --blood:#aebccb; --blood-light:#e2e9f0; --accent:#68717a; --highlight:#66696c; --border:rgba(174,188,203,0.4); }
+html[data-vibe="silverspark"] body[class]:not(.theme-day) { --bg:#12161c; --bg-alt:#232a33; --surface:rgba(35,42,51,0.88); --text:#f4f7fa; --text-muted:#94a1ac; --input-bg:rgba(18,22,28,0.8); --accent:#aebccb; --highlight:#e2e9f0; --border:rgba(174,188,203,0.35); --btn-sec-bg:rgba(255,255,255,0.15); --btn-sec-text:#ffffff; }
+
+/* 🍈 Melon Splash */
+html[data-vibe="melonsplash"] body[class] { --v-rgb:47,230,166; --v-main:#2fe6a6; --v-main2:#6bffc4; --btn-text:#1a1400; --blood:#2fe6a6; --blood-light:#6bffc4; --accent:#1a7f5b; --highlight:#368062; --border:rgba(47,230,166,0.4); }
+html[data-vibe="melonsplash"] body[class]:not(.theme-day) { --bg:#062018; --bg-alt:#0d3d2c; --surface:rgba(13,61,44,0.88); --text:#eafff6; --text-muted:#8fd9bf; --input-bg:rgba(6,32,24,0.8); --accent:#2fe6a6; --highlight:#6bffc4; --border:rgba(47,230,166,0.35); --btn-sec-bg:rgba(255,255,255,0.15); --btn-sec-text:#ffffff; }
+
+/* 🌶️ Wasabi Crunch */
+html[data-vibe="wasabicrunch"] body[class] { --v-rgb:61,255,122; --v-main:#3dff7a; --v-main2:#85ffad; --btn-text:#1a1400; --blood:#3dff7a; --blood-light:#85ffad; --accent:#1e803d; --highlight:#428056; --border:rgba(61,255,122,0.4); }
+html[data-vibe="wasabicrunch"] body[class]:not(.theme-day) { --bg:#050f05; --bg-alt:#102010; --surface:rgba(16,32,16,0.88); --text:#f0fff2; --text-muted:#9fd9ab; --input-bg:rgba(5,15,5,0.8); --accent:#3dff7a; --highlight:#85ffad; --border:rgba(61,255,122,0.35); --btn-sec-bg:rgba(255,255,255,0.15); --btn-sec-text:#ffffff; }
+
+/* 🍹 Passion Punch */
+html[data-vibe="passionpunch"] body[class] { --v-rgb:224,23,94; --v-main:#e0175e; --v-main2:#ff5c94; --btn-text:#ffffff; --blood:#e0175e; --blood-light:#ff5c94; --accent:#e0175e; --highlight:#bf456f; --border:rgba(224,23,94,0.4); }
+html[data-vibe="passionpunch"] body[class]:not(.theme-day) { --bg:#1a0510; --bg-alt:#33071f; --surface:rgba(51,7,31,0.88); --text:#fff0f5; --text-muted:#d98aab; --input-bg:rgba(26,5,16,0.8); --accent:#e0175e; --highlight:#ff5c94; --border:rgba(224,23,94,0.35); --btn-sec-bg:rgba(255,255,255,0.15); --btn-sec-text:#ffffff; }
+
+/* --- Application générique des variables de Vibe aux effets et composants --- */
+html[data-vibe] body[class]:not(.theme-day) .bg-sky { background: radial-gradient(circle at top, var(--bg-alt), var(--bg)); }
+html[data-vibe] body[class]:not(.theme-day) .fire-glow { background: radial-gradient(ellipse at bottom, rgba(var(--v-rgb),0.5) 0%, rgba(var(--v-rgb),0.18) 40%, transparent 70%); }
+html[data-vibe] body[class] .spark { background: var(--v-main2); box-shadow: 0 0 10px var(--v-main), 0 0 15px var(--v-main); }
+html[data-vibe] body[class].theme-day .spark { background: #fff; }
+html[data-vibe] body[class] .mist-blob,
+html[data-vibe] body[class] .mist-blob.b2,
+html[data-vibe] body[class] .mist-blob.b3,
+html[data-vibe] body[class] .mist-blob.b4 { background: radial-gradient(ellipse at center, rgba(255,255,255,0.75) 0%, rgba(var(--v-rgb),0.5) 40%, rgba(var(--v-rgb),0.18) 70%, transparent 100%); }
+html[data-vibe] body[class] .btn:not(:disabled):not(.btn-secondary) { background: linear-gradient(135deg, var(--v-main2), var(--v-main)); color: var(--btn-text) !important; box-shadow: 0 6px 15px rgba(var(--v-rgb),0.45); }
+html[data-vibe] body[class] .tgt.sel { background: var(--v-main); border-color: var(--v-main); color: var(--btn-text); box-shadow: 0 0 15px rgba(var(--v-rgb),0.55); }
+html[data-vibe] body[class] .story-box { background: var(--surface); }
+html[data-vibe] body[class] .alert-box { background: rgba(var(--v-rgb),0.1); border-color: rgba(var(--v-rgb),0.4); }
+html[data-vibe] body[class] .config-group input:focus { box-shadow: 0 0 10px rgba(var(--v-rgb),0.35); }
+html[data-vibe] body[class]:not(.theme-day) #setup-screen .sticky-cta,
+html[data-vibe] body[class]:not(.theme-day) #welcome-screen .sticky-cta { background: linear-gradient(to top, var(--bg) 68%, transparent); }
+
+/* --- Sélecteur de Vibes --- */
+.vibe-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin:6px 0 18px; }
+.vibe-swatch { display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px 8px; border-radius:var(--radius-sm); border:2px solid transparent; cursor:pointer; background:rgba(150,150,150,0.1); transition:border-color 0.15s, transform 0.1s; }
+.vibe-swatch:active { transform:scale(0.96); }
+.vibe-swatch.active { border-color:var(--highlight); }
+.vibe-swatch-preview { width:100%; height:46px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; border:1px solid rgba(150,150,150,0.3); }
+.vibe-swatch-name { font-size:0.78rem; font-weight:800; color:var(--text); text-align:center; line-height:1.25; }
+
+
+/* iOS/WebKit ne repeint pas toujours un texte modifié sous un backdrop-filter : on le retire sur ces encadrés. */
+#bot-min-msg, #total-recap, #solo-note { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
+
+/* Pastille « Édition Queen Smita » (suit les couleurs de la Vibe choisie) */
+.edition-pill { display:inline-block; margin:8px auto 4px; padding:8px 22px; border-radius:999px; background:rgba(255,255,255,0.08); border:2px solid var(--border); color:var(--highlight); font-family:var(--font-text); font-weight:900; font-style:normal; font-size:0.9rem; letter-spacing:1px; line-height:1.2; box-shadow:0 4px 14px rgba(0,0,0,0.25); }
+body.theme-day .edition-pill { background:rgba(0,0,0,0.05); }
 </style>
+<script>try{var _v=localStorage.getItem('lndl-vibe');if(_v&&_v!=='basic')document.documentElement.setAttribute('data-vibe',_v);}catch(e){}</script>
 </head>
 <body class="theme-night no-header">
 
@@ -264,6 +386,8 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
     <span class="app-logo">🐺</span>
     <span class="app-name" id="app-title-text">La Nuit des Loups</span>
     <button class="grimoire-link" onclick="toggleRules()" aria-label="Ouvrir le Grimoire">📜 Grimoire</button>
+    <button class="grimoire-link" onclick="openVibeModal()" aria-label="Choisir une Vibe">🎨</button>
+    <button class="grimoire-link" onclick="goHome()" aria-label="Retour au choix du mode">🏠</button>
   </div>
 </header>
 
@@ -278,6 +402,7 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
     <h4 style="color:var(--highlight); margin-top:24px; font-size:1.1rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">🎭 Les Rôles de la Partie</h4>
     <div id="rules-roles-list"></div>
 
+    <div id="rules-bots">
     <h4 style="color:var(--highlight); margin-top:24px; font-size:1.1rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">🤖 L'Intelligence des Bots</h4>
     <p style="font-size:1rem;">Vous êtes moins de 4 joueurs ? Aucun problème.</p>
     <ul style="font-size:1rem; padding-left:20px;">
@@ -285,8 +410,34 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
       <li style="margin-bottom:10px"><b>La Nuit :</b> Les Bots jouent tous seuls en silence. L'écran ne vous demandera de prendre le téléphone <b>que</b> si c'est votre tour à vous.</li>
       <li style="margin-bottom:10px"><b>Le Jour :</b> Vous pouvez cliquer sur "🤖 Avis des Bots" pour savoir qui chaque Bot accuse (attention, les Bots Loups mentent pour vous piéger, et ils se souviennent de leurs soupçons d'un jour à l'autre !).</li>
     </ul>
+    </div>
     
     <button class="btn btn-highlight" style="margin-top:20px" onclick="toggleRules()">Fermer le Grimoire</button>
+  </div>
+</div>
+
+<!-- MODAL VIBES (choix du code couleurs, 100% local) -->
+<div class="modal-overlay" id="vibe-modal" onclick="if(event.target===this)closeVibeModal()">
+  <div class="modal-box">
+    <h2 style="margin-bottom:6px">🎨 Choisis ta Vibe</h2>
+    <p style="margin:0 0 6px;text-align:center;font-size:0.85rem;color:var(--text-muted)">Un choix personnel, enregistré sur cet appareil.</p>
+    <div class="vibe-grid" id="vibe-grid"></div>
+    <button class="btn btn-secondary" onclick="closeVibeModal()">Fermer</button>
+  </div>
+</div>
+
+<!-- HISTORIQUE DES PARTIES -->
+<div class="modal-overlay" id="history-modal" onclick="if(event.target===this)closeHistory()">
+  <div class="modal-box">
+    <h2 style="margin-bottom:6px">📜 Historique des parties</h2>
+    <p style="margin:0 0 12px;text-align:center;font-size:0.85rem;color:var(--text-muted)" id="hist-count"></p>
+    <div id="hist-list"></div>
+    <div class="hist-actions">
+      <button class="btn" id="hist-del-btn" onclick="histDeleteSelected()">🗑️ Supprimer la sélection</button>
+      <button class="btn btn-secondary" id="hist-all-btn" onclick="histToggleAll()">☑️ Tout sélectionner</button>
+      <button class="btn btn-secondary" id="hist-clear-btn" onclick="histClearAll()">🧹 Vider tout l'historique</button>
+      <button class="btn btn-secondary" onclick="closeHistory()">Fermer</button>
+    </div>
   </div>
 </div>
 
@@ -321,6 +472,7 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
   <div class="stage" style="text-align:center;">
     <div style="font-size:4rem; margin-bottom:10px; filter:grayscale(1); opacity:0.75;">🐺</div>
     <h2 style="margin-bottom:4px; text-shadow:0 2px 4px rgba(0,0,0,0.6);">La Nuit des Loups</h2>
+    <div class="edition-pill">QUEEN SMITA EDITION</div>
   </div>
 
   <div class="card">
@@ -330,6 +482,7 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
       <div class="role-desc">
         <span class="role-name">🐺 Version Standard (Sombre)</span>
         <span class="role-txt">Trahison, meurtres, et bûcher. Le jeu classique.</span>
+        <span class="role-txt" style="margin-top:6px;font-weight:700;color:var(--highlight);font-size:0.9rem;">👥 Idéal : 8 à 12 joueurs</span><span class="role-txt" style="font-size:0.8rem;">Dès 1 joueur : les bots complètent jusqu'à 4.</span>
       </div>
     </label>
     <label class="role-toggle">
@@ -337,8 +490,22 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
       <div class="role-desc">
         <span class="role-name">🧸 Version Famille (3 ans+)</span>
         <span class="role-txt">Doux et mignon. Les Loups Malins cachent les doudous, on s'endort, et on va au coin !</span>
+        <span class="role-txt" style="margin-top:6px;font-weight:700;color:var(--highlight);font-size:0.9rem;">👥 Idéal : 4 à 8 joueurs</span><span class="role-txt" style="font-size:0.8rem;">Dès 1 joueur : les bots complètent jusqu'à 4.</span>
       </div>
     </label>
+    <label class="role-toggle">
+      <input type="radio" name="ambiance-mode" id="mode-onuw" onchange="updateTheme()">
+      <div class="role-desc">
+        <span class="role-name">🌙 Loup-Garou pour une nuit</span>
+        <span class="role-txt">Une seule nuit, un seul vote. Les cartes s'échangent dans le noir : à qui se fier ?</span>
+        <span class="role-txt" style="margin-top:6px;font-weight:700;color:var(--highlight);font-size:0.9rem;">👥 Idéal : 5 à 7 joueurs</span><span class="role-txt" style="font-size:0.8rem;">Dès 1 joueur : les bots complètent jusqu'à 3.</span>
+      </div>
+    </label>
+  </div>
+
+  <div class="card" id="install-card" style="display:none; text-align:center;">
+    <button class="btn btn-secondary" style="margin-top:0;" onclick="installApp()">📲 Installer l'application</button>
+    <p style="margin:10px 0 0; font-size:0.85rem; color:var(--text-muted);">Plein écran, icône 🐺 « Loup » sur ton écran d'accueil, et jouable sans internet.</p>
   </div>
 
   <div class="sticky-cta">
@@ -362,53 +529,52 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
   </div>
 
   <div class="card">
-    <h2>1. Animation du Jeu</h2>
+    <h2 id="step-1-title"></h2>
+    <div class="step-sub" id="step-1-sub" style="font-size:0.92rem;color:var(--text-muted);line-height:1.5;margin:-4px 0 14px;"></div>
     <label class="role-toggle">
       <input type="radio" name="gm-mode" id="mode-auto" checked onchange="updateGMMode()">
       <div class="role-desc">
         <span class="role-name">🤖 Téléphone au centre (Auto)</span>
-        <span class="role-txt">La voix parle et anime avec bruitages. TOUT LE MONDE JOUE.</span>
+        <span class="role-txt">Le téléphone parle à voix haute et anime la partie. Tout le monde joue : posez-le au centre de la table. (Recommandé)</span>
       </div>
     </label>
-    <div id="voice-inline" style="display:flex; align-items:center; gap:8px; margin:-6px 0 14px 62px;">
+    <div id="voice-inline" style="display:flex; align-items:center; gap:8px; margin:-6px 0 14px 8px;">
       <span style="font-size:0.78rem; color:var(--text-muted); flex-shrink:0;">🔊 Voix :</span>
-      <select id="voice-select" style="flex:1; min-width:0; background:transparent; border:none; border-bottom:1px solid var(--border); padding:4px 2px; color:var(--text-muted); font-size:0.82rem;"></select>
+      <select id="voice-select" style="flex:1; min-width:0; background:transparent; border:none; border-bottom:1px solid var(--border); padding:4px 2px; color:var(--text-muted); font-size:0.82rem;"><option value="m">Voix masculine</option><option value="f">Voix féminine</option></select>
       <button type="button" onclick="testVoice()" style="background:transparent; border:1px solid var(--border); border-radius:6px; color:var(--text-muted); padding:4px 8px; cursor:pointer; font-size:0.75rem; flex-shrink:0; white-space:nowrap;">▶️ Écouter</button>
     </div>
+    <div style="font-size:0.75rem; color:var(--text-muted); margin:-8px 0 14px 8px; line-height:1.4;">💡 Voix plus naturelle : sur iPhone, Réglages › Accessibilité › Contenu énoncé › Voix › Français, puis téléchargez une voix « Améliorée » ou « Premium ». Sur Android, installez les données vocales du moteur Google.</div>
     <label class="role-toggle">
       <input type="radio" name="gm-mode" id="mode-manual" onchange="updateGMMode()">
       <div class="role-desc">
         <span class="role-name">🗣️ Un Humain anime (Manuel)</span>
-        <span class="role-txt">VOUS lisez les textes et cliquez pour les autres (vous ne jouez pas).</span>
+        <span class="role-txt">Une personne lit les textes à voix haute et clique pour les autres. Cette personne ne joue pas.</span>
       </div>
     </label>
   </div>
 
   <div class="card">
-    <h2>2. Les Vrais Joueurs (<span id="p-count">0</span>)</h2>
-    <form id="add-player-form" style="width:100%">
-      <div class="config-group">
-        <input id="p-name" maxlength="20" placeholder="Prénom..." autocomplete="off">
-      </div>
-      <button type="submit" class="btn btn-secondary">➕ Ajouter un humain</button>
-    </form>
+    <h2 id="step-2-title"></h2>
+    <div class="step-sub" id="step-2-sub" style="font-size:0.92rem;color:var(--text-muted);line-height:1.5;margin:-4px 0 14px;"></div>
+    
     <div id="p-list" class="targets"></div>
 
     <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:16px; padding:14px 16px; background:var(--input-bg); border-radius:12px; border:1px solid rgba(150,150,150,0.2);">
       <div>
-        <div style="font-weight:800; color:var(--text);">🤖 Bots additionnels</div>
+        <div style="font-weight:800; color:var(--text);">Combien êtes-vous à jouer ?</div>
         <div style="font-size:0.82rem; color:var(--text-muted);" id="bot-count-hint"></div>
       </div>
       <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
-        <button type="button" onclick="adjustBotCount(-1)" aria-label="Moins de bots" style="width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:1.3rem;font-weight:bold;cursor:pointer;">−</button>
+        <button type="button" onclick="adjustHumans(-1)" aria-label="Moins de joueurs humains" style="width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:1.3rem;font-weight:bold;cursor:pointer;">−</button>
         <span id="bot-count-display" style="font-size:1.4rem;font-weight:900;min-width:22px;text-align:center;color:var(--highlight);">0</span>
-        <button type="button" onclick="adjustBotCount(1)" aria-label="Plus de bots" style="width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:1.3rem;font-weight:bold;cursor:pointer;">+</button>
+        <button type="button" onclick="adjustHumans(1)" aria-label="Plus de joueurs humains" style="width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:1.3rem;font-weight:bold;cursor:pointer;">+</button>
       </div>
     </div>
   </div>
   
   <div class="card">
-    <h2>3. Rôles et Bots</h2>
+    <h2 id="step-3-title"></h2>
+    <div class="step-sub" id="step-3-sub" style="font-size:0.92rem;color:var(--text-muted);line-height:1.5;margin:-4px 0 14px;"></div>
     <div id="advice-box" class="alert-box">Ajoutez 1 joueur minimum. Des Bots s'ajouteront automatiquement.</div>
     
     <div id="deck-recap" style="display:flex; justify-content:space-around; padding:15px; background:var(--input-bg); border-radius:12px; margin-bottom:20px; text-align:center;">
@@ -423,7 +589,7 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
     <label class="role-toggle"><input type="checkbox" id="opt-petite" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-petite">👧 Petite Fille</span><span class="role-txt" id="rt-petite"></span></div></label>
     <label class="role-toggle"><input type="checkbox" id="opt-cupidon" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-cupidon">💘 Cupidon</span><span class="role-txt" id="rt-cupidon"></span></div></label>
     <label class="role-toggle"><input type="checkbox" id="opt-voleur" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-voleur">🃏 Voleur</span><span class="role-txt" id="rt-voleur"></span></div></label>
-    <label class="role-toggle"><input type="checkbox" id="opt-ancien" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-ancien">👴 Ancien</span><span class="role-txt" id="rt-ancien"></span></div></label>
+    <label class="role-toggle"><input type="checkbox" id="opt-ancien" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-ancien">👑 Queen Smita</span><span class="role-txt" id="rt-ancien"></span></div></label>
     <label class="role-toggle"><input type="checkbox" id="opt-boucemissaire" onchange="checkConfig()"><div class="role-desc"><span class="role-name" id="rn-boucemissaire">🐐 Bouc Émissaire</span><span class="role-txt" id="rt-boucemissaire"></span></div></label>
     
     <div id="error-box" style="display:none;color:#fff;text-align:center;font-weight:bold;margin-top:10px;padding:15px;background:var(--accent);border-radius:8px"></div>
@@ -459,7 +625,7 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
     <button class="btn btn-highlight" id="distrib-btn" onclick="revealRole()">👁️ Découvrir mon rôle</button>
   </div>
   <div class="sticky-cta" id="distrib-cta-post" style="display:none;">
-    <button class="btn btn-secondary" onclick="nextDistrib()">🔒 Cacher et passer au suivant</button>
+    <button class="btn" onclick="nextDistrib()">🔒 Cacher et passer au suivant</button>
   </div>
 </div>
 
@@ -471,6 +637,7 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
     <h2 style="color:var(--accent);font-size:2.5rem;text-shadow:0 2px 4px rgba(0,0,0,0.5);" id="ui-night-title">🌙 La Nuit</h2>
     <div id="night-instruction" class="info-box" style="border-color:rgba(255,255,255,0.2);background:var(--input-bg);"></div>
     <div id="night-status" style="font-size:1.8rem;text-align:center;margin:30px 0;font-weight:900;color:var(--highlight);font-family:var(--font-title);line-height:1.4; text-shadow:0 1px 2px rgba(0,0,0,0.25);">Attente...</div>
+    <button class="btn btn-secondary" id="intro-skip" style="display:none;" onclick="skipIntro()">⏭️ Passer l'intro</button>
   </div>
 
   <div id="night-action-trigger" class="sticky-cta" style="display:none;text-align:center;">
@@ -511,9 +678,12 @@ h3 { font-family:var(--font-title); margin:0 0 12px; font-size:1.3rem; color:var
 <!-- ==============================================
      7. FIN 
      ============================================== -->
+<div id="onuw-screen" class="screen"><div class="stage" id="onu-content" style="text-align:center"></div></div>
+
 <div id="end-screen" class="screen">
   <div class="stage" id="end-content"></div>
   <div class="sticky-cta" id="end-cta" style="display:none;">
+    <button class="btn btn-secondary" onclick="openHistory()">📜 Historique des parties</button>
     <button class="btn" onclick="location.reload()">🔄 Rejouer une Partie</button>
   </div>
 </div>
@@ -530,7 +700,7 @@ const R_STD = {
   petite:['👧','Petite Fille','Le but de la Petite Fille est de gagner avec les villageois en espionnant les loups-garous.', 'Entrouvrez physiquement les yeux pendant le tour des loups. Ne vous faites pas prendre !'],
   cupidon:['💘','Cupidon','Le but de Cupidon est de lier deux joueurs, puis de gagner avec son camp (ou seul si Villageois + Loup).', 'Désignez deux Amoureux (1ère nuit). Si l\'un meurt, l\'autre se suicide.'],
   voleur:['🃏','Voleur','Le but du Voleur est de gagner avec le camp de son nouveau rôle.', 'Échangez votre rôle avec l\'une des 2 cartes au centre (1ère nuit).'],
-  ancien:['👴','Ancien','Le but de l\'Ancien est de gagner avec les villageois en résistant aux loups-garous.', 'Vous survivez à la première attaque des loups (pas au vote, ni à la sorcière).'],
+  ancien:['👑','Queen Smita','Le but de Queen Smita est de gagner avec les villageois en résistant aux loups-garous.', 'Vous survivez à la première attaque des loups (pas au vote, ni à la sorcière).'],
   boucemissaire:['🐐','Bouc Émissaire','Le but du Bouc Émissaire est de gagner avec les villageois sans se faire accuser.', 'En cas d\'égalité au vote, c\'est vous qui êtes brûlé(e) à la place du village.']
 };
 
@@ -543,7 +713,7 @@ const R_FAM = {
   petite:['👧','Petite Filoute','Le but de la Filoute est d\'espionner les Loups Malins en cachette.', 'Fais semblant de dormir, mais ouvre un tout petit peu les yeux pendant les loups !'],
   cupidon:['👼','Ange des Câlins','Le but de l\'Ange est de lier deux amis pour qu\'ils gagnent ensemble.', 'Tu choisis deux amis. Ils deviennent les Meilleurs Amis : ils font tout ensemble.'],
   voleur:['🤡','Petit Farceur','Le but du Farceur est de gagner avec son nouveau costume.', 'La première nuit, tu peux prendre un autre costume au milieu de la table.'],
-  ancien:['👴','Papi/Mamie','Le but est d\'aider les Amis en résistant très fort aux farces.', 'Tu résistes à la première farce des Loups Malins (mais pas au coin, ni à la potion).'],
+  ancien:['👑','Queen Smita','Le but de Queen Smita est d\'aider les Amis en résistant très fort aux farces.', 'Tu résistes à la première farce des Loups Malins (mais pas au coin, ni à la potion).'],
   boucemissaire:['🐐','Petit Bouc','Le but est de gagner avec les Amis sans aller au coin.', 'Si personne ne se met d\'accord au vote, c\'est toi qui vas au coin à la place de tout le monde.']
 };
 
@@ -706,7 +876,8 @@ let timerInterval = null;
 let activeRolesConfig = []; 
 let isAuto = true;
 let isFamily = false;
-let chosenVoiceURI = null;
+let isOneNight = false;
+let chosenGender = 'm';
 
 // Force hide subtitle to clear stuck subtitles
 function forceHideSubtitle() {
@@ -717,6 +888,7 @@ function forceHideSubtitle() {
 // --- GESTION DU THEME (Standard vs Family) ---
 function updateTheme() {
     isFamily = $('mode-fam').checked;
+    isOneNight = $('mode-onuw').checked;
     let onWelcome = $('welcome-screen').classList.contains('active');
     
     if(isFamily) {
@@ -735,10 +907,16 @@ function updateTheme() {
         active_TIPS_JOUR = TIPS_JOUR_FAM;
         
         TXT = {
-            nightIntro1: "C'est l'heure du dodo dans la forêt magique.",
-            nightIntro2: "Les amis doivent trouver les Loups Malins.",
-            nightIntro3: "Les Loups Malins adorent cacher les doudous.",
-            nightIntro4: "Tout le monde ferme les yeux et fait semblant de dormir. Chut !",
+            introLines: [
+                "Le soleil se couche sur la forêt magique... C'est bientôt l'heure du dodo !",
+                "Je suis le Maître de l'Histoire. Ce soir, c'est moi qui vous guide. Écoutez bien ma voix.",
+                "Mais attention... Parmi vous, il y a des Loups Malins. Ils adorent faire des farces, et cacher les doudous des amis !",
+                "Le jeu est tout simple. Les Amis doivent trouver les Loups Malins. Et les Loups Malins doivent cacher les doudous, sans se faire attraper.",
+                "Quand la nuit arrive, tout le monde ferme bien les yeux, et fait semblant de dormir. Chut, pas un bruit ! J'appelle d'abord les Loups Malins, puis les amis qui ont un pouvoir magique. Tu ouvres les yeux seulement quand j'appelle ton rôle.",
+                "Le matin, tout le monde se réveille, et je vous dis qui a perdu son doudou. Puis vous discutez ensemble pour trouver qui a fait la farce. Quand je compte jusqu'à trois, vous montrez du doigt celui que vous croyez. Il ira au coin.",
+                "Une seule règle : tu peux tout dire, même faire semblant. Mais tu ne montres jamais ton rôle à personne. C'est ton secret !"
+            ],
+            introEnd: "Allez... c'est l'heure du dodo. Tout le monde ferme les yeux, et fait semblant de dormir. Chut !",
             nightFalls: "La lune se lève. Tout le monde fait un gros dodo.",
             dayBreaks: "Le soleil brille ! Tout le monde se réveille et s'étire !",
             
@@ -790,10 +968,16 @@ function updateTheme() {
         active_TIPS_JOUR = TIPS_JOUR_STD;
         
         TXT = {
-            nightIntro1: "Bienvenue dans la Nuit des Loups. Je serai votre maître du jeu.",
-            nightIntro2: "Le but des villageois est d'éliminer tous les loups au bûcher.",
-            nightIntro3: "Les loups, eux, doivent dévorer le village dans l'ombre.",
-            nightIntro4: "La nuit, tout le monde ferme les yeux. Ne touchez le téléphone que si j'appelle votre rôle.",
+            introLines: [
+                "Le soleil se couche... et l'ombre s'étend sur la place du village.",
+                "Je suis votre Maître du Jeu. À partir de maintenant, ma voix est la seule en qui vous pouvez avoir confiance. C'est moi qui guiderai vos nuits, et qui arbitrerai vos jours.",
+                "Regardez bien vos voisins, une dernière fois... Car parmi vous, se cachent des loups-garous.",
+                "Deux camps vont s'affronter. Les villageois doivent utiliser la journée pour démasquer les loups, et les éliminer. Les loups, eux, vont dévorer le village dans l'ombre, nuit après nuit.",
+                "Quand la nuit tombe, tout le monde ferme les yeux, et plus un bruit. Je réveillerai d'abord les loups, puis ceux qui ont un pouvoir magique. Vous n'ouvrirez les yeux que lorsque j'appellerai votre rôle.",
+                "Au petit matin, je vous annoncerai ce qui s'est passé pendant la nuit. Ceux qui sont morts quittent le jeu, sans un mot. Ensuite, place au débat : accusez, bluffez, enquêtez. Puis je vous appellerai à voter. Au compte de trois, vous pointerez du doigt votre suspect, et le condamné sera éliminé.",
+                "Une dernière chose. Vous pouvez tout dire, même mentir. Mais ne montrez jamais votre rôle avant votre mort. Et n'oubliez pas : mes décisions sont irrévocables."
+            ],
+            introEnd: "Maintenant... que le village s'endorme. Tout le monde ferme les yeux, et plus un bruit.",
             nightFalls: "La nuit tombe sur le village. Tout le monde ferme les yeux, et se tait.",
             dayBreaks: "Le soleil se lève sur le village. Tout le monde se réveille, et ouvre les yeux.",
             
@@ -829,8 +1013,25 @@ function updateTheme() {
         let rolesHTML = buildRolesSummaryHTML(R_STD);
         $('rules-roles-list').innerHTML = rolesHTML;
     }
+    syncOneNightUI();
+    syncMenuAmbience();
     checkConfig(); 
 }
+
+// Ambiance sonore dès l'écran d'accueil (le son démarre au premier toucher, exigé par le navigateur)
+function syncMenuAmbience() {
+    if(players.length > 0) return;
+    startNightAmbience();
+}
+// Les navigateurs interdisent tout son avant un premier geste de l'utilisateur : on tente de lancer
+// l'ambiance dès le chargement, puis au tout premier toucher / clic / touche (sans aucun message à l'écran).
+function unlockAudio() {
+    try { audioCtx.resume(); } catch(e) {}
+    try { if(audioCtx.state === 'running') ['pointerdown','touchstart','touchend','click','keydown'].forEach(ev => window.removeEventListener(ev, unlockAudio, true)); } catch(e) {}
+}
+['pointerdown', 'touchstart', 'touchend', 'click', 'keydown'].forEach(ev => window.addEventListener(ev, unlockAudio, true));
+window.addEventListener('DOMContentLoaded', unlockAudio);
+window.addEventListener('load', unlockAudio);
 
 window.addEventListener('DOMContentLoaded', updateTheme);
 
@@ -839,6 +1040,7 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 let currentAmbienceLoops = [];
 let ambienceBaseGain = null;
 let ambienceBaseVolume = 0;
+let ambienceKind = null;
 
 function duckAmbience(active) {
     if(!ambienceBaseGain) return;
@@ -848,7 +1050,11 @@ function duckAmbience(active) {
 }
 
 function startNightAmbience() {
+    // Si l'ambiance de nuit joue déjà (lancée dès l'accueil), on ne la coupe pas
+    let kind = isFamily ? 'night-fam' : 'night-std';
+    if(ambienceKind === kind && currentAmbienceLoops.length) return;
     stopAmbience();
+    ambienceKind = kind;
     try { if(audioCtx.state === 'suspended') audioCtx.resume(); } catch(e){}
     
     let bufferSize = audioCtx.sampleRate * 2;
@@ -869,7 +1075,7 @@ function startNightAmbience() {
     
     if(!isFamily) {
         let wolfInterval = setInterval(() => {
-            if(Math.random() > 0.4) {
+            if(audioCtx.state === 'running' && Math.random() > 0.4) {
                 let osc = audioCtx.createOscillator();
                 let wGain = audioCtx.createGain();
                 osc.type = 'sine'; osc.connect(wGain); wGain.connect(audioCtx.destination);
@@ -889,6 +1095,7 @@ function startNightAmbience() {
     } else {
         let notes = [261.63, 293.66, 329.63, 392.00, 440.00]; 
         let lullabyInterval = setInterval(() => {
+            if(audioCtx.state !== 'running') return;
             let osc = audioCtx.createOscillator();
             let lGain = audioCtx.createGain();
             osc.type = 'sine'; osc.connect(lGain); lGain.connect(audioCtx.destination);
@@ -905,6 +1112,7 @@ function startNightAmbience() {
 
 function startDayAmbience() {
     stopAmbience();
+    ambienceKind = 'day';
     try { if(audioCtx.state === 'suspended') audioCtx.resume(); } catch(e){}
     
     let bufferSize = audioCtx.sampleRate * 2;
@@ -923,6 +1131,7 @@ function startDayAmbience() {
     ambienceBaseVolume = gain.gain.value;
 
     let birdInterval = setInterval(() => {
+        if(audioCtx.state !== 'running') return;
         let osc = audioCtx.createOscillator();
         let bGain = audioCtx.createGain();
         osc.type = 'sine'; osc.connect(bGain); bGain.connect(audioCtx.destination);
@@ -948,6 +1157,7 @@ function stopAmbience() {
     });
     currentAmbienceLoops = [];
     ambienceBaseGain = null;
+    ambienceKind = null;
 }
 
 window.currentUtterance = null; 
@@ -971,19 +1181,11 @@ function speak(texte) {
         let u = new SpeechSynthesisUtterance(texte);
         u.lang = 'fr-FR';
         
-        let voices = window.speechSynthesis.getVoices();
-        let frVoices = voices.filter(v => v.lang.startsWith('fr'));
-        let bestVoice = chosenVoiceURI ? voices.find(v => v.voiceURI === chosenVoiceURI) : null;
-        if(!bestVoice) {
-            bestVoice = frVoices.find(v => /premium|enhanced|neural|natural/i.test(v.name))
-                     || frVoices.find(v => !v.localService)
-                     || frVoices.find(v => v.name.includes('Google') || v.name.includes('Thomas') || v.name.includes('Aurélie'))
-                     || frVoices[0];
-        }
-        if(bestVoice) u.voice = bestVoice;
+        let vp = pickVoice(chosenGender);
+        if(vp.voice) u.voice = vp.voice;
 
-        u.rate = 0.95 + (Math.random() * 0.08 - 0.04);
-        u.pitch = (isFamily ? 1.2 : 0.95) + (Math.random() * 0.08 - 0.04); 
+        u.rate = 0.97 + (Math.random() * 0.03 - 0.015);
+        u.pitch = Math.min(2, Math.max(0.5, (isFamily ? 1.1 : 1.0) + vp.pitchShift + (Math.random() * 0.03 - 0.015))); 
         window.currentUtterance = u;
         
         // Timeout de sécurité au cas où l'API ne déclenche pas le onend (bug Chrome fréquent)
@@ -1002,6 +1204,7 @@ function speak(texte) {
             forceHideSubtitle();
             resolve();
         };
+        window.currentFinish = finish;
         u.onend = finish;
         u.onerror = finish; 
         window.speechSynthesis.speak(u);
@@ -1012,24 +1215,44 @@ function speak(texte) {
 function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 function pause(base, jitter=250) { return wait(Math.max(150, base + (Math.random()*jitter*2 - jitter))); }
 
-function populateVoiceList() {
-    let voices = window.speechSynthesis.getVoices();
-    let frVoices = voices.filter(v => v.lang.toLowerCase().startsWith('fr'));
-    let sel = $('voice-select');
-    if(!sel || frVoices.length === 0) return;
-    sel.innerHTML = frVoices.map(v => `<option value="${v.voiceURI}">${v.name}${v.localService ? '' : ' (réseau)'}</option>`).join('');
-    if(!chosenVoiceURI || !frVoices.some(v => v.voiceURI === chosenVoiceURI)) {
-        let best = frVoices.find(v => /premium|enhanced|neural|natural/i.test(v.name))
-                || frVoices.find(v => !v.localService)
-                || frVoices.find(v => v.name.includes('Google') || v.name.includes('Thomas') || v.name.includes('Aurélie'))
-                || frVoices[0];
-        if(best) { chosenVoiceURI = best.voiceURI; sel.value = best.voiceURI; }
-    } else {
-        sel.value = chosenVoiceURI;
-    }
+// --- VOIX : masculine / féminine ---
+const FEMALE_RE = /am[ée]lie|aur[ée]lie|audrey|marie|julie|hortense|denise|[ée]lo[ïi]se|vivienne|brigitte|sylvie|caroline|ariane|\bflo\b|sandy|shelley|grandma|jeanne|c[ée]line|louise|charlotte|l[ée]a\b|chlo[ée]|female|femme|f[ée]minin|-x-(fra|frc|vlf)\b|fr-fr-(standard|wavenet|neural2|news|studio|chirp3-hd)-[ace]\b|google fran[cç]ais/i;
+const MALE_RE = /thomas|\bpaul\b|henri|r[ée]my|j[ée]r[ôo]me|antoine|\bjean\b|guillaume|claude|daniel|jacques|nicolas|eddy|rocko|grandpa|g[ée]rard|alain|bruno|\bmale\b|homme|masculin|-x-(frb|frd)\b|fr-fr-(standard|wavenet|neural2|news|studio|chirp3-hd)-[bd]\b/i;
+function voiceGender(v) {
+    let s = v.name + ' ' + v.voiceURI;
+    if(FEMALE_RE.test(s)) return 'f';
+    if(MALE_RE.test(s)) return 'm';
+    return null;
 }
-window.speechSynthesis.onvoiceschanged = populateVoiceList;
-window.addEventListener('DOMContentLoaded', populateVoiceList);
+function voiceScore(v) {
+    return (/premium|enhanced|am[ée]lior|neural|natural|naturel|online|siri/i.test(v.name + ' ' + v.voiceURI) ? 6 : 0)
+         + (!v.localService ? 3 : 0)
+         + (/google|thomas|am[ée]lie|aur[ée]lie|audrey/i.test(v.name) ? 1 : 0)
+         - (/compact|espeak|robot/i.test(v.name + ' ' + v.voiceURI) ? 4 : 0);
+}
+// Renvoie la meilleure voix française du genre demandé.
+// Priorité : vraie voix du bon genre en français de France > vraie voix du bon genre d'un autre
+// français (hors Maghreb) > voix de France de genre inconnu, avec hauteur ajustée > voix de l'autre genre très ajustée.
+function pickVoice(g) {
+    let norm = v => v.lang.toLowerCase().replace('_', '-');
+    let all = (window.speechSynthesis.getVoices() || []).filter(v => norm(v).startsWith('fr'));
+    if(!all.length) return { voice: null, pitchShift: 0 };
+    let maghreb = v => /^fr-(dz|ma|tn|ly|eg)/.test(norm(v)) || /alg[ée]ri|maroc|morocc|tunis|arab|africa|afrique/i.test(v.name);
+    let ok = all.filter(v => !maghreb(v));
+    if(!ok.length) ok = all;
+    let isFR = v => norm(v) === 'fr-fr';
+    let best = list => list.slice().sort((a, b) => voiceScore(b) - voiceScore(a))[0];
+    let other = g === 'm' ? 'f' : 'm';
+    let tiers = [
+        [ok.filter(v => isFR(v) && voiceGender(v) === g), 0],
+        [ok.filter(v => voiceGender(v) === g), 0],
+        [ok.filter(v => isFR(v) && voiceGender(v) === null), g === 'f' ? 0.6 : -0.35],
+        [ok.filter(v => voiceGender(v) === null), g === 'f' ? 0.6 : -0.35],
+        [ok.filter(v => voiceGender(v) === other), g === 'f' ? 0.85 : -0.45]
+    ];
+    for(let [list, shift] of tiers) if(list.length) return { voice: best(list), pitchShift: shift };
+    return { voice: best(ok), pitchShift: g === 'f' ? 0.7 : -0.3 };
+}
 
 function updateGMMode() {
     let auto = $('mode-auto').checked;
@@ -1042,11 +1265,10 @@ function testVoice() {
     window.speechSynthesis.cancel();
     let u = new SpeechSynthesisUtterance(isFamily ? "Bonjour les amis, c'est l'heure de l'histoire !" : "Bienvenue dans la Nuit des Loups. Je serai votre maître du jeu.");
     u.lang = 'fr-FR';
-    let voices = window.speechSynthesis.getVoices();
-    let v = voices.find(x => x.voiceURI === chosenVoiceURI);
-    if(v) u.voice = v;
-    u.rate = 0.95;
-    u.pitch = isFamily ? 1.2 : 0.95;
+    let vp = pickVoice(chosenGender);
+    if(vp.voice) u.voice = vp.voice;
+    u.rate = 0.97;
+    u.pitch = Math.min(2, Math.max(0.5, (isFamily ? 1.1 : 1.0) + vp.pitchShift));
     window.speechSynthesis.speak(u);
 }
 
@@ -1058,12 +1280,264 @@ document.body.addEventListener('click', () => {
 });
 
 
+// --- LOUP-GAROU POUR UNE NUIT ---
+const ONU = {
+  loup:['🐺','Loup-garou',"Faites en sorte qu'aucun loup ne soit éliminé. Vous vous reconnaissez entre loups."],
+  sbire:['🦹','Sbire',"Vous connaissez les loups, qui ne vous connaissent pas. Protégez-les : si un loup meurt, vous perdez."],
+  voyante:['🔮','Voyante',"Regardez la carte d'un joueur, ou deux cartes du centre."],
+  voleur:['🥷','Voleur',"Échangez votre carte avec celle d'un autre joueur, puis regardez votre nouvelle carte."],
+  noiseuse:['🌀','Noiseuse',"Échangez les cartes de deux autres joueurs, sans les regarder."],
+  soulard:['🍺','Soûlard',"Échangez votre carte avec une carte du centre, sans la regarder."],
+  insomniaque:['😵‍💫','Insomniaque',"À la fin de la nuit, vous regardez votre carte pour savoir si elle a changé."],
+  chasseur:['🏹','Chasseur',"Si vous êtes éliminé, la personne que vous désignez au vote meurt avec vous."],
+  tanneur:['🪢','Tanneur',"Vous gagnez seul si vous êtes éliminé !"],
+  villageois:['🧑‍🌾','Villageois',"Aucun pouvoir. Trouvez un loup parmi vous."]
+};
+const ONU_ORDER = ['loup','sbire','voyante','voleur','noiseuse','soulard','insomniaque'];
+const ONU_CALL = {loup:['Les loups-garous','ouvrez','fermez'], sbire:['Le sbire','ouvre','ferme'], voyante:['La voyante','ouvre','ferme'], voleur:['Le voleur','ouvre','ferme'], noiseuse:['La noiseuse','ouvre','ferme'], soulard:['Le soûlard','ouvre','ferme'], insomniaque:["L'insomniaque",'ouvre','ferme']};
+let onu = {center:[]}, onuResolve = null, onuOpts = [];
+const onuName = r => ONU[r][0] + ' ' + ONU[r][1];
+const onuRand = a => a[Math.floor(Math.random() * a.length)];
+function onuCenter(faces) {
+  let card = i => `<div style="width:66px;height:92px;border-radius:10px;border:2px solid var(--border);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:${faces ? '1.7rem' : '2.2rem'}">${faces ? ONU[onu.center[i]][0] + '<span style="font-size:0.6rem;font-weight:700">' + ONU[onu.center[i]][1] + '</span>' : '🂠'}<span style="font-size:0.65rem;color:var(--text-muted)">n°${i+1}</span></div>`;
+  return `<div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:6px">Cartes du centre</div><div style="display:flex;gap:10px;justify-content:center;margin-bottom:18px">${[0,1,2].map(card).join('')}</div>`;
+}
+function onuAsk(html, opts) {
+  if(onu.center.length === 3) html = onuCenter(false) + html;
+  return new Promise(res => {
+    onuResolve = res; onuOpts = opts;
+    $('onu-content').innerHTML = html + '<div class="targets" style="margin-top:20px">' + opts.map((o, i) => `<button class="tgt" onclick="onuPick(${i})">${o[0]}</button>`).join('') + '</div>';
+    showScreen('onuw-screen');
+  });
+}
+function onuPick(i) { let r = onuResolve; if(!r) return; onuResolve = null; r(onuOpts[i][1]); }
+const onuInfo = (html, label) => onuAsk(html, [[label || 'OK', 1]]);
+const onuPass = p => players.filter(x => !x.isBot).length === 1 ? Promise.resolve(1) : onuInfo(`<div class="info-box">📱 Passe l'appareil à</div><h2 style="font-size:2.4rem;margin:24px 0">${p.name}</h2>`, `Je suis ${p.name}`);
+const onuOpt = list => list.map(x => [x.name, x.id]);
+const onuById = id => players.find(x => x.id === id);
+const onuSwap = (a, b) => { let t = a.role; a.role = b.role; b.role = t; };
+function onuSleep() { $('onu-content').innerHTML = (onu.center.length === 3 ? onuCenter(false) : '') + '<div style="font-size:4rem;margin-top:20px">🌙</div><h2>Tout le monde dort...</h2>'; showScreen('onuw-screen'); }
+
+async function startOneNight() {
+  let n = players.length;
+  let order = ['loup','loup','voyante','voleur','noiseuse','villageois','insomniaque','sbire','chasseur','soulard','tanneur','villageois','villageois'];
+  let deck = order.slice(0, n + 3).sort(() => Math.random() - 0.5);
+  players.forEach((p, i) => { p.role = p.orig = deck[i]; p.info = {}; p.claim = ''; });
+  onu = { center: deck.slice(n) };
+  let humans = players.filter(p => !p.isBot);
+  for(let p of humans) {
+    await onuPass(p);
+    await onuInfo(onuRoleCard(p.orig), "🔒 J'ai compris, cacher ma carte");
+  }
+  startNightAmbience();
+  await onuIntro();
+  onuSleep(); await pause(2500);
+  for(let r of ONU_ORDER) {
+    if(!players.some(p => p.orig === r) && !onu.center.includes(r)) continue;
+    let [nm, o, c] = ONU_CALL[r], acting = players.filter(p => p.orig === r);
+    onuSleep();
+    await speak(`${nm}, ${o} les yeux.`);
+    for(let p of acting) { if(p.isBot) onuBotNight(p); else await onuHumanNight(p); }
+    onuSleep();
+    await pause(acting.some(p => !p.isBot) ? 600 : 3500, 400);
+    await speak(`${nm}, ${c} les yeux.`); await pause(1200);
+  }
+  players.forEach(p => { if(p.isBot && !p.claim) p.claim = `${ONU[(p.orig === 'loup' || p.orig === 'sbire' || p.orig === 'tanneur') ? 'villageois' : p.orig][1]} : rien de spécial à signaler.`; });
+  await onuDay();
+}
+
+async function onuHumanNight(p) {
+  await onuPass(p);
+  let r = p.orig, others = players.filter(x => x.id !== p.id);
+  let ctr = async (txt, skip) => { let l = [0,1,2].filter(i => i !== skip).map(i => [`Carte du centre n°${i+1}`, i]); return onuAsk(txt, l); };
+  if(r === 'loup') {
+    let mates = others.filter(x => x.orig === 'loup');
+    if(mates.length) await onuInfo(`🐺 Ton complice loup : <b>${mates.map(x => x.name).join(', ')}</b>`);
+    else { let i = await ctr('🐺 Tu es le seul loup. Regarde une carte du centre :'); await onuInfo(`Carte n°${i+1} : <b>${onuName(onu.center[i])}</b>`); }
+  } else if(r === 'sbire') {
+    let w = players.filter(x => x.orig === 'loup');
+    await onuInfo(w.length ? `🦹 Les loups sont : <b>${w.map(x => x.name).join(', ')}</b>` : "🦹 Il n'y a aucun loup parmi les joueurs (ils sont au centre).");
+  } else if(r === 'voyante') {
+    if(await onuAsk('🔮 Que veux-tu voir ?', [['Un joueur', 'p'], ['2 cartes du centre', 'c']]) === 'p') {
+      let t = onuById(await onuAsk('Quel joueur ?', onuOpt(others)));
+      await onuInfo(`<b>${t.name}</b> est : <b>${onuName(t.role)}</b>`);
+    } else {
+      let a = await ctr('Première carte :'), b = await ctr('Deuxième carte :', a);
+      await onuInfo(`Carte n°${a+1} : <b>${onuName(onu.center[a])}</b><br>Carte n°${b+1} : <b>${onuName(onu.center[b])}</b>`);
+    }
+  } else if(r === 'voleur') {
+    let t = onuById(await onuAsk('🥷 Avec qui échanges-tu ta carte ?', onuOpt(others)));
+    onuSwap(p, t);
+    await onuInfo(`Tu as volé la carte de <b>${t.name}</b>. Ta nouvelle carte : <b>${onuName(p.role)}</b>`);
+  } else if(r === 'noiseuse') {
+    let a = onuById(await onuAsk('🌀 Premier joueur à échanger :', onuOpt(others)));
+    let b = onuById(await onuAsk('Deuxième joueur :', onuOpt(others.filter(x => x.id !== a.id))));
+    onuSwap(a, b);
+    await onuInfo(`Tu as échangé les cartes de <b>${a.name}</b> et <b>${b.name}</b>.`);
+  } else if(r === 'soulard') {
+    let i = await ctr('🍺 Avec quelle carte du centre échanges-tu ?');
+    let t = p.role; p.role = onu.center[i]; onu.center[i] = t;
+    await onuInfo("Échange fait ! Tu ne sais pas ce que tu es devenu…");
+  } else if(r === 'insomniaque') {
+    await onuInfo(`😵‍💫 Ta carte à la fin de la nuit : <b>${onuName(p.role)}</b>`);
+  }
+}
+
+function onuBotNight(p) {
+  let r = p.orig, others = players.filter(x => x.id !== p.id);
+  if(r === 'loup' || r === 'sbire') p.info.wolves = players.filter(x => x.orig === 'loup' && x.id !== p.id).map(x => x.id);
+  if(r === 'voyante') {
+    if(Math.random() < 0.7) { let t = onuRand(others); p.info.saw = [t.id, t.role]; p.claim = `Voyante : j'ai vu que ${t.name} est ${ONU[t.role][1]}.`; }
+    else { let i = Math.floor(Math.random() * 3); p.claim = `Voyante : j'ai vu ${ONU[onu.center[i]][1]} au centre.`; }
+  } else if(r === 'voleur') {
+    let t = onuRand(others); onuSwap(p, t);
+    p.claim = `Voleur : j'ai pris la carte de ${t.name}, je suis ${ONU[p.role === 'loup' ? 'villageois' : p.role][1]}.`;
+  } else if(r === 'noiseuse') {
+    let a = onuRand(others), b = onuRand(others.filter(x => x.id !== a.id)); onuSwap(a, b);
+    p.claim = `Noiseuse : j'ai échangé les cartes de ${a.name} et ${b.name}.`;
+  } else if(r === 'soulard') {
+    let i = Math.floor(Math.random() * 3), t = p.role; p.role = onu.center[i]; onu.center[i] = t;
+    p.claim = `Soûlard : j'ai échangé avec le centre, je ne sais plus ce que je suis.`;
+  } else if(r === 'insomniaque') {
+    p.claim = `Insomniaque : à la fin de la nuit, je suis ${ONU[p.role === 'loup' ? 'villageois' : p.role][1]}.`;
+  }
+}
+
+async function onuDay() {
+  startDayAmbience();
+  let humans = players.filter(p => !p.isBot), t = humans.length > 1 ? 300 : 180;
+  let bots = players.filter(p => p.isBot);
+  let html = `<h2>☀️ Le village se réveille</h2><div id="onu-timer" style="font-size:2.4rem;font-weight:900;color:var(--highlight)">${Math.floor(t/60)}:00</div>`
+    + `<p style="color:var(--text-muted)">Discutez : dites ce que vous avez fait, accusez, bluffez. Vous pouvez mentir !</p>`
+    + bots.map(b => `<div class="info-box" style="text-align:left"><b>${b.name}</b> : « ${b.claim} »</div>`).join('');
+  let wait = onuAsk(html, [['🗳️ Passer au vote', 1]]);
+  let iv = setInterval(() => { t--; let e = $('onu-timer'); if(e) e.textContent = Math.floor(t/60) + ':' + String(t % 60).padStart(2, '0'); if(t <= 0) onuPick(0); }, 1000);
+  speak("Le jour se lève. Tout le monde ouvre les yeux. Discutez !");
+  await wait; clearInterval(iv);
+  await onuVote();
+}
+
+async function onuVote() {
+  playBell();
+  let votes = {}, humans = players.filter(p => !p.isBot);
+  for(let p of humans) {
+    if(humans.length > 1) await onuPass(p);
+    votes[p.id] = await onuAsk(`🗳️ <b>${p.name}</b>, qui veux-tu éliminer ?`, onuOpt(players.filter(x => x.id !== p.id)));
+  }
+  // Bots : les loups et le sbire protègent les loups, la voyante suit ce qu'elle a vu, les autres suivent les accusations
+  let accused = players.filter(x => x.isBot && x.info.saw && x.info.saw[1] === 'loup').map(x => x.info.saw[0]);
+  players.filter(b => b.isBot).forEach(b => {
+    let others = players.filter(x => x.id !== b.id), team = (b.orig === 'loup' || b.orig === 'sbire');
+    let wolfIds = team ? players.filter(x => x.orig === 'loup').map(x => x.id) : [];
+    if(b.info.saw && b.info.saw[1] === 'loup' && !team) { votes[b.id] = b.info.saw[0]; return; }
+    let pool = others.filter(x => !wolfIds.includes(x.id));
+    if(!pool.length) pool = others;
+    let acc = pool.filter(x => accused.includes(x.id));
+    votes[b.id] = (acc.length && !team && Math.random() < 0.75 ? onuRand(acc) : onuRand(pool)).id;
+  });
+  // Décompte : tous les joueurs qui ont le plus de voix (au moins 2) meurent
+  let cnt = {}; Object.values(votes).forEach(id => cnt[id] = (cnt[id] || 0) + 1);
+  let max = Math.max(0, ...Object.values(cnt));
+  let dead = new Set(max >= 2 ? Object.keys(cnt).filter(id => cnt[id] === max) : []);
+  players.filter(p => dead.has(p.id) && p.role === 'chasseur').forEach(h => dead.add(votes[h.id]));
+  let D = players.filter(p => dead.has(p.id));
+  let wolfPresent = players.some(p => p.role === 'loup');
+  let tanDead = D.some(p => p.role === 'tanneur');
+  let villageWins = wolfPresent ? D.some(p => p.role === 'loup') : D.length === 0;
+  let wolfWins = wolfPresent ? (!D.some(p => p.role === 'loup') && !tanDead) : (players.some(p => p.role === 'sbire') && D.some(p => p.role !== 'sbire') && !tanDead);
+  let win = p => p.role === 'tanneur' ? tanDead : (p.role === 'loup' || p.role === 'sbire') ? wolfWins : villageWins;
+  let teams = [villageWins && 'le Village', wolfWins && 'les Loups', tanDead && 'le Tanneur'].filter(Boolean);
+  let title = teams.length ? '🏆 Victoire : ' + teams.join(' et ') + ' !' : (!wolfPresent ? "💀 Aucun loup parmi vous : le village a éliminé un innocent !" : '💀 Personne ne gagne');
+  let subtitle = max < 2 ? "Personne n'a reçu 2 voix : personne n'est éliminé." : `Éliminé(s) : ${D.map(p => p.name).join(', ')}.`;
+  let humansWin = humans.some(win);
+  histRecordOnu(title, subtitle, dead, win);
+  startNightAmbience();
+  let rows = players.map(p => `<div class="info-box" style="text-align:left;${win(p) ? 'border-color:var(--highlight)' : ''}"><b>${p.name}</b> ${dead.has(p.id) ? '💀' : ''} ${win(p) ? '🏆' : ''}<br><span style="font-size:0.85rem;color:var(--text-muted)">Au début : ${onuName(p.orig)}<br>À la fin : ${onuName(p.role)}<br>Voix reçues : ${cnt[p.id] || 0}</span></div>`).join('');
+  $('onu-content').innerHTML = `<h2>${title}</h2><p>${subtitle}</p>${rows}${onuCenter(true)}<button class="btn btn-secondary" onclick="openHistory()">📜 Historique des parties</button><button class="btn" onclick="location.reload()">🔄 Rejouer</button>`;
+  showScreen('onuw-screen');
+  speak(`Le vote est terminé. ${subtitle} ${title.replace(/[^\p{L}\p{N} !.,']/gu, '')}`);
+}
+
+const ONU_BUT = {
+  loup:'Gagner avec les loups : ne pas être éliminé.', sbire:'Gagner avec les loups, même si vous êtes éliminé.',
+  voyante:'Gagner avec le village : éliminer un loup.', voleur:'Gagner avec le village… ou avec votre nouvelle carte !',
+  noiseuse:'Gagner avec le village : éliminer un loup.', soulard:'Gagner avec le village : éliminer un loup.',
+  insomniaque:'Gagner avec le village : éliminer un loup.', chasseur:'Gagner avec le village : éliminer un loup.',
+  tanneur:'Gagner seul : se faire éliminer.', villageois:'Gagner avec le village : éliminer un loup.'
+};
+const ONU_DETAIL = {
+  loup:{but:"Ne pas te faire éliminer, ni toi ni ton complice.", pouv:"Tu découvres l'autre loup. Si tu es seul, tu peux regarder une carte du centre.", part:"Tu n'es loup que si ta carte finale est « Loup » : si le Voleur ou la Noiseuse touche à ta carte, tu changes de camp sans le savoir.", when:"En premier, au tout début de la nuit, quand le Maître du Jeu appelle les loups."},
+  sbire:{but:"Faire gagner les loups : aucun loup ne doit être éliminé. Tu gagnes même si tu meurs.", pouv:"Tu découvres qui sont les loups. Eux ne savent pas qui tu es.", part:"Tu n'es pas un loup. S'il n'y a aucun loup parmi les joueurs, tu gagnes si quelqu'un d'autre que toi est éliminé.", when:"En deuxième, juste après les loups."},
+  voyante:{but:"Aider le village à éliminer un loup.", pouv:"Tu regardes la carte d'un joueur, OU deux cartes du centre.", part:"Ce que tu vois est vrai à cet instant, mais le Voleur ou la Noiseuse peuvent encore échanger des cartes après toi.", when:"En troisième, après le Sbire et avant le Voleur."},
+  voleur:{but:"Aider le village… ou gagner avec ta nouvelle carte, car tu changes peut-être de camp !", pouv:"Tu échanges ta carte avec celle d'un autre joueur, puis tu regardes ta nouvelle carte : tu deviens ce rôle.", part:"Le joueur volé devient Voleur sans le savoir. Tu n'utilises pas le pouvoir de ta nouvelle carte.", when:"En quatrième, après la Voyante et avant la Noiseuse."},
+  noiseuse:{but:"Aider le village à éliminer un loup.", pouv:"Tu échanges les cartes de deux AUTRES joueurs, sans les regarder.", part:"Tu ne sais pas ce que tu déplaces : tu sèmes le doute pour tout le monde, toi compris.", when:"En cinquième, après le Voleur et avant le Soûlard."},
+  soulard:{but:"Aider le village… sans savoir quelle est ta vraie carte !", pouv:"Tu échanges ta carte avec une carte du centre, sans la regarder.", part:"Tu ne sais plus ce que tu es : tu rejoins le camp de ta nouvelle carte, loups compris.", when:"En sixième, après la Noiseuse et avant l'Insomniaque."},
+  insomniaque:{but:"Aider le village à éliminer un loup.", pouv:"À la fin de la nuit, tu regardes ta carte pour savoir si elle a changé.", part:"Tu agis en dernier : tu es le mieux placé pour connaître ton rôle final.", when:"En septième et dernier, après toutes les autres actions."},
+  chasseur:{but:"Aider le village à éliminer un loup.", pouv:"Si tu es éliminé, la personne que tu as désignée au vote meurt avec toi.", part:"Ton pouvoir n'agit qu'à ta mort : désigne un joueur qui te semble être un loup.", when:"Aucune action la nuit. Ton pouvoir joue au moment du vote."},
+  tanneur:{but:"Te faire éliminer ! Tu gagnes seul.", pouv:"Aucun pouvoir.", part:"Si tu meurs en même temps qu'un loup, le village gagne aussi. Fais-toi accuser, mais pas trop évidemment.", when:"Aucune action la nuit : tu dors. Tu agis au débat, en attirant les soupçons."},
+  villageois:{but:"Éliminer un loup avec le village.", pouv:"Aucun pouvoir.", part:"Ton rôle a peut-être changé pendant la nuit sans que tu le saches. Ta force : ton écoute et ton vote.", when:"Aucune action la nuit : tu dors. Tu agis au débat et au vote."}
+};
+function onuRoleCard(r) {
+  let d = ONU_DETAIL[r], line = (i, t, x) => `<div style="text-align:left;margin:10px 0;padding:10px 12px;border-radius:10px;background:var(--surface);border:1px solid var(--border)"><div style="font-weight:800;font-size:0.85rem;color:var(--highlight)">${i} ${t}</div><div style="font-size:0.95rem;line-height:1.45;margin-top:3px">${x}</div></div>`;
+  return `<div style="font-size:3.4rem">${ONU[r][0]}</div><h2 style="margin:4px 0 12px">${ONU[r][1]}</h2>`
+    + line('🎯', 'Ton but', d.but) + line('⚡', 'Ton pouvoir', d.pouv) + line('⭐', 'Ta particularité', d.part) + line('⏰', 'Quand tu agis', d.when)
+    + `<div style="font-size:0.78rem;color:var(--text-muted);margin-top:8px">Déroulé : 🌙 une nuit (chacun son tour) → ☀️ débat → 🗳️ un seul vote</div>`;
+}
+const ONU_INTRO = [
+  "Le village est paisible... en apparence. Mais cette nuit, des loups-garous se sont glissés parmi vous.",
+  "Je suis votre Maître du Jeu. Cette fois, tout se joue en une seule nuit, et un seul vote.",
+  "Chacun a reçu une carte, et trois autres sont restées face cachée au centre. Attention : pendant la nuit, certains vont échanger des cartes. Vous ne serez peut-être plus celui que vous croyez.",
+  "Quand je l'ordonne, tout le monde ferme les yeux. J'appelle les rôles un par un, et seuls ceux que j'appelle ouvrent les yeux, et agissent.",
+  "Au matin, vous discutez quelques minutes. Dites ce que vous savez, accusez, bluffez : vous avez le droit de mentir. Puis on vote une seule fois, tous ensemble.",
+  "Le village gagne s'il élimine au moins un loup. Les loups gagnent si aucun d'eux n'est éliminé. Et le tanneur, lui, gagne s'il se fait éliminer.",
+  "Maintenant... que le village s'endorme. Tout le monde ferme les yeux."
+];
+async function onuIntro() {
+  let skip = false;
+  $('onu-content').innerHTML = '<div style="font-size:4rem;margin-top:30px">🌙</div><h2>Une seule nuit...</h2><button class="btn btn-secondary" id="onu-skip" style="margin-top:30px">⏭️ Passer l\'intro</button>';
+  showScreen('onuw-screen');
+  $('onu-skip').onclick = () => { skip = true; window.speechSynthesis.cancel(); if(window.currentFinish) window.currentFinish(); forceHideSubtitle(); };
+  for(let l of ONU_INTRO) { if(skip) break; await speak(l); if(!skip) await pause(700, 200); }
+  if(skip) await speak("Que le village s'endorme.");
+}
+
+let rulesBotsOrig = null;
+function syncOneNightUI() {
+  document.querySelectorAll('#setup-screen .card').forEach(c => {
+    let h = c.querySelector('h2');
+    if(h && (h.id === 'step-3-title' || /Conseil de rôles/.test(h.textContent))) c.style.display = isOneNight ? 'none' : '';
+  });
+  let rb = $('rules-bots'); if(rb && rulesBotsOrig === null) rulesBotsOrig = rb.innerHTML;
+  if(!isOneNight) { if(rb && rulesBotsOrig !== null) rb.innerHTML = rulesBotsOrig; return; }
+  $('intro-desc').innerHTML = `Une seule nuit, un seul vote ! <br><br><b>Le but du jeu :</b><br>Si vous êtes du <b>Village</b>, éliminez au moins un <b>Loup</b>.<br>Si vous êtes un <b>Loup</b> (ou le Sbire), ne vous faites pas éliminer.<br>Le <b>Tanneur</b>, lui, veut mourir !<br><br>Les cartes s'échangent pendant la nuit : votre rôle de départ n'est peut-être plus le vôtre. L'application gère la nuit, le débat et le vote.`;
+  $('rules-general-list').innerHTML = `<p style="font-size:1rem; line-height:1.65;">
+    <b>🃏 Les cartes :</b> chaque joueur reçoit une carte secrète. 3 cartes restent face cachée au centre. Une carte du centre peut être un loup !<br><br>
+    <b>🌙 La Nuit (une seule) :</b> les rôles sont appelés dans l'ordre : Loups, Sbire, Voyante, Voleur, Noiseuse, Soûlard, Insomniaque. Seuls ceux qui sont appelés agissent. Certains échangent des cartes : on peut changer de rôle sans le savoir !<br><br>
+    <b>☀️ Le Jour :</b> on discute (5 minutes, 3 si un seul humain). On dit ce qu'on a fait ou vu, et on a le droit de mentir.<br><br>
+    <b>🗳️ Le vote (unique) :</b> chacun désigne un joueur. Celui qui a le plus de voix (2 minimum) est éliminé, en cas d'égalité tous les ex æquo le sont. Si personne n'a 2 voix, personne ne meurt. Un Chasseur éliminé emporte avec lui le joueur qu'il a désigné.<br><br>
+    <b>🏆 Victoire (selon la carte finale) :</b> le <b>Village</b> gagne si au moins un loup est éliminé (ou si personne ne meurt quand il n'y a aucun loup parmi les joueurs). Les <b>Loups</b> et le <b>Sbire</b> gagnent si aucun loup n'est éliminé. Le <b>Tanneur</b> gagne seul s'il est éliminé.
+  </p>`;
+  $('rules-roles-list').innerHTML = ['loup','sbire','voyante','voleur','noiseuse','soulard','insomniaque','chasseur','tanneur','villageois'].map(k => `<div style="display:flex; gap:12px; align-items:flex-start; padding:10px 0; border-bottom:1px solid rgba(150,150,150,0.15);"><span style="font-size:1.5rem; flex-shrink:0; line-height:1.3;">${ONU[k][0]}</span><div><div style="font-weight:800; color:var(--text); font-size:1.02rem;">${ONU[k][1]}</div><div style="font-size:0.9rem; color:var(--text-muted); line-height:1.45; margin-top:2px;"><b>But :</b> ${ONU_BUT[k]}<br><i>${ONU[k][2]}</i><br><b>Quand :</b> ${ONU_DETAIL[k].when}</div></div></div>`).join('') + `<p style="font-size:0.85rem; color:var(--text-muted);">Les rôles en jeu dépendent du nombre de joueurs (3 cartes de plus que de joueurs).</p>`;
+  if(rb) rb.innerHTML = `<h4 style="color:var(--highlight); margin-top:24px; font-size:1.1rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">🤖 Les Bots</h4><ul style="font-size:1rem; padding-left:20px;"><li style="margin-bottom:10px">Les bots complètent la partie (3 joueurs minimum) et jouent leur rôle tout seuls pendant la nuit.</li><li style="margin-bottom:10px">Le jour, chaque bot annonce ce qu'il a fait. Les loups et le sbire mentent, et protègent les loups au vote.</li></ul>`;
+}
+
 // --- UTILITAIRES ---
 function $(id) { return document.getElementById(id); }
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   $(id).classList.add('active');
   document.body.classList.toggle('no-header', id === 'welcome-screen');
+  if(id === 'setup-screen' && $('wiz-row')) wizGo(0);
+}
+function goHome() {
+  if($('rules-modal').classList.contains('open')) toggleRules();
+  let cur = document.querySelector('.screen.active');
+  if(!cur || cur.id === 'welcome-screen' || cur.id === 'setup-screen') { showScreen('welcome-screen'); return; }
+  // En pleine partie : on confirme, puis on repart de zéro (coupe voix, sons et minuteurs)
+  customConfirm("Retourner au choix du mode ?<br><span style='font-size:0.85rem;color:var(--text-muted)'>La partie en cours sera abandonnée.</span>", () => {
+    try { window.speechSynthesis.cancel(); } catch(e) {}
+    location.reload();
+  });
 }
 function toggleRules() { $('rules-modal').classList.toggle('open'); }
 
@@ -1086,7 +1560,40 @@ function customConfirm(msg, onYes, onNo) {
 }
 
 // --- PETITS EFFETS SONORES PONCTUELS ---
+// --- RETOUR HAPTIQUE ---
+// Android : navigator.vibrate. iPhone : pas de vibrate dans Safari, on déclenche le "tick" natif d'un
+// <input type="checkbox" switch> caché (iOS 17.4+, nécessite un geste de l'utilisateur).
+// Désactivable : localStorage.setItem('lndl-haptic','off')
+var hapticOn = true; try { hapticOn = localStorage.getItem('lndl-haptic') !== 'off'; } catch(e) {}
+var _hapLbl = null;
+function _hapTick() {
+  try {
+    if(!_hapLbl) {
+      let w = document.createElement('div'); w.style.display = 'none'; w.setAttribute('aria-hidden', 'true');
+      _hapLbl = document.createElement('label');
+      let i = document.createElement('input'); i.type = 'checkbox'; i.setAttribute('switch', ''); i.tabIndex = -1;
+      _hapLbl.appendChild(i); w.appendChild(_hapLbl); document.body.appendChild(w);
+    }
+    _hapLbl.click();
+  } catch(e) {}
+}
+const HAPTIC_PATTERNS = { tap:[8], reveal:[20,50,20], death:[70,50,140], shot:[140], bell:[30,60,30], win:[30,60,30,60,120] };
+function haptic(kind) {
+  if(!hapticOn) return;
+  let pat = HAPTIC_PATTERNS[kind] || [10];
+  try { if(navigator.vibrate) { navigator.vibrate(pat); return; } } catch(e) {}
+  // iPhone : un tick au moment de l'événement, puis les suivants (au mieux, hors geste ils peuvent être ignorés)
+  let t = 0;
+  pat.forEach((d, i) => { if(i % 2 === 0) setTimeout(_hapTick, t); t += d; });
+}
+document.addEventListener('click', e => {
+  if(!e.isTrusted) return;
+  let el = e.target && e.target.closest ? e.target.closest('button, [onclick], label, summary') : null;
+  if(el && !el.disabled) haptic('tap');
+}, true);
+
 function playBell() {
+  haptic('bell');
   try {
     ensureAudioContext();
     let now = audioCtx.currentTime;
@@ -1100,6 +1607,7 @@ function playBell() {
   } catch(e) {}
 }
 function playGunshot() {
+  haptic('shot');
   try {
     ensureAudioContext();
     let now = audioCtx.currentTime;
@@ -1115,6 +1623,7 @@ function playGunshot() {
   } catch(e) {}
 }
 function playChime() {
+  haptic('reveal');
   try {
     ensureAudioContext();
     let now = audioCtx.currentTime;
@@ -1133,7 +1642,7 @@ function playChime() {
 const SAVE_KEY = 'lndl-save-v1';
 function saveGame(phase) {
   try {
-    let payload = { phase, players, state, extraCards, activeRolesConfig, distribIdx, isAuto, isFamily, pNames, chosenVoiceURI, savedAt: Date.now() };
+    let payload = { phase, players, state, extraCards, activeRolesConfig, distribIdx, isAuto, isFamily, pNames, chosenGender, savedAt: Date.now() };
     localStorage.setItem(SAVE_KEY, JSON.stringify(payload));
   } catch(e) {}
 }
@@ -1173,7 +1682,8 @@ function resumeGame() {
   isAuto = save.isAuto;
   isFamily = save.isFamily;
   pNames = save.pNames;
-  chosenVoiceURI = save.chosenVoiceURI || null;
+  chosenGender = save.chosenGender || 'm';
+  $('voice-select').value = chosenGender;
 
   $('mode-fam').checked = isFamily;
   $('mode-std').checked = !isFamily;
@@ -1192,67 +1702,171 @@ function resumeGame() {
 function resumeToDay() {
   document.body.className = isFamily ? 'theme-family theme-day' : 'theme-day';
   $('app-title-text').textContent = "☀️ Le Jour se lève";
+  startDayAmbience();
   resolveDeaths(async () => { showDay(); });
 }
 
 // --- SETUP ---
-$('add-player-form').addEventListener('submit', function(e) {
-  e.preventDefault(); 
-  let v = $('p-name').value.trim();
-  if(v !== '') {
-    if(pNames.map(n=>n.toLowerCase()).includes(v.toLowerCase())) {
-        customAlert(`Le nom <b>${v}</b> est déjà utilisé !`);
-    } else {
-      pNames.push(v);
-      $('p-name').value = '';
-      renderPList();
-      checkConfig();
-    }
-  }
-});
 
 $('voice-select').addEventListener('change', function() {
-    chosenVoiceURI = this.value;
+    chosenGender = this.value;
 });
 
-function renderPList() {
-  $('p-count').textContent = pNames.length;
-  $('p-list').innerHTML = pNames.map((n,i) => `<div class="tgt"><span>👤 ${n}</span><button type="button" onclick="pNames.splice(${i},1);renderPList();checkConfig()">Retirer</button></div>`).join('');
-  try { localStorage.setItem('lndl-playernames', JSON.stringify(pNames)); } catch(e) {}
-  renderBotCount();
-}
-
-// --- NOMBRE DE BOTS ---
-let botCount = 4;
+// --- JOUEURS : nombre d'humains, prénoms, puis bots (minimum automatique + bots en plus) ---
+let slots = ['', '', '', ''], dupNames = false, botCount = 0, humanCount = 4, extraBots = 0;
 const BOT_COUNT_MAX = 12;
-function minBotsNeeded() { return Math.max(0, 4 - pNames.length); }
-function adjustBotCount(delta) {
-  let min = minBotsNeeded();
-  botCount = Math.min(BOT_COUNT_MAX, Math.max(min, botCount + delta));
-  renderBotCount();
-  checkConfig();
+function totalLimits() { return isOneNight ? [3, 10] : [4, 16]; }
+function rebuildPNames() {
+  if(players.length) return; // partie lancée : on ne touche plus aux noms
+  let seen = new Set(); dupNames = false; pNames = [];
+  slots.forEach(x => { let v = x.trim(); if(!v) return; let k = v.toLowerCase(); if(seen.has(k)) { dupNames = true; return; } seen.add(k); pNames.push(v); });
 }
+function updateSlotIcons() {
+  let seen = new Set();
+  slots.forEach((v, i) => { let ic = $('slot-ico-' + i); if(!ic) return; let t = v.trim(), k = t.toLowerCase();
+    if(!t) ic.textContent = '✏️'; else if(seen.has(k)) ic.textContent = '⚠️'; else { ic.textContent = '👤'; seen.add(k); } });
+}
+function renderSlots() {
+  $('p-list').innerHTML = slots.map((v, i) => `<div class="tgt" style="padding:8px 12px;gap:10px;justify-content:flex-start"><span id="slot-ico-${i}" style="font-size:1.3rem;min-width:26px;text-align:center"></span><input class="slot-input" maxlength="20" autocomplete="off" value="${v.replace(/"/g, '&quot;')}" placeholder="Prénom du joueur ${i+1}" oninput="slotInput(${i}, this.value)" style="flex:1;min-width:0;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--input-bg);color:var(--text);font-size:1rem;"></div>`).join('');
+  updateSlotIcons();
+}
+function saveNames() { try { localStorage.setItem('lndl-playernames', JSON.stringify(slots.map(x => x.trim()).filter(Boolean))); localStorage.setItem('lndl-humans', String(humanCount)); } catch(e) {} }
+function slotInput(i, v) { slots[i] = v; rebuildPNames(); updateSlotIcons(); saveNames(); checkConfig(); }
+function renderPList() { slots = pNames.slice(); humanCount = Math.max(1, slots.length); renderBotCount(); renderSlots(); }
+function adjustHumans(d) { humanCount += d; renderBotCount(); checkConfig(); }
+function adjustExtra(d) { extraBots += d; renderBotCount(); checkConfig(); }
 function renderBotCount() {
-  let min = minBotsNeeded();
-  if(botCount < min) botCount = min;
-  if(botCount > BOT_COUNT_MAX) botCount = BOT_COUNT_MAX;
-  $('bot-count-display').textContent = botCount;
-  $('bot-count-hint').textContent = min > 0
-      ? `Minimum ${min} pour atteindre 4 joueurs au total`
-      : (botCount > 0 ? `Pour pimenter la partie` : `Optionnel`);
+  if(players.length) return;
+  let [mn, mx] = totalLimits();
+  humanCount = Math.min(mx, Math.max(1, humanCount));
+  while(slots.length > humanCount) { let k = slots.map(x => x.trim()).lastIndexOf(''); slots.splice(k < 0 ? slots.length - 1 : k, 1); }
+  let changed = false; while(slots.length < humanCount) { slots.push(''); changed = true; }
+  if(changed || $('p-list').children.length !== slots.length) renderSlots();
+  rebuildPNames();
+  let minBots = Math.max(0, mn - humanCount);
+  extraBots = Math.max(0, Math.min(extraBots, mx - humanCount - minBots));
+  botCount = minBots + extraBots;
+  let total = humanCount + botCount, pl = (n, w) => n + ' ' + w + (n > 1 ? 's' : '');
+  $('bot-count-display').textContent = humanCount;
+  $('bot-count-hint').textContent = `${pl(humanCount, 'humain')} + ${pl(botCount, 'bot')} = ${total} joueurs`;
+  $('bot-min-msg').innerHTML = minBots > 0
+      ? `🤖 Il manque des joueurs : l'app ajoute <b>${pl(minBots, 'bot')}</b> pour atteindre le minimum de <b>${mn} joueurs</b>. Vous n'avez rien à faire.`
+      : `✅ Le minimum de ${mn} joueurs est atteint : aucun bot n'est nécessaire.`;
+  $('total-recap').innerHTML = `📋 Il y aura au total <b>${total} joueurs</b>, dont <b>${pl(humanCount, 'humain')}</b> et <b>${pl(botCount, 'bot')}</b>.`;
+  let note = $('solo-note');
+  if(humanCount <= 2) {
+    let solo = humanCount === 1, li = t => `<li style="margin:4px 0">${t}</li>`, items;
+    if(isOneNight) items = solo
+      ? [`Les bots jouent toutes les autres cartes : ils agissent seuls pendant la nuit et annoncent ce qu'ils ont fait au débat.`, `Pas besoin de passer le téléphone : tout se joue sur votre écran, en secret.`, `Vous votez une seule fois, comme les bots.`]
+      : [`Vous vous passez le téléphone pour découvrir votre carte et agir en secret, chacun votre tour.`, `Les bots jouent les autres cartes et agissent seuls pendant la nuit.`, `Chaque joueur, humain ou bot, vote une seule fois.`];
+    else items = solo
+      ? [`L'app joue tous les autres joueurs : les bots agissent la nuit, débattent et votent seuls.`, `<b>Vous ne pouvez pas être la toute première victime</b>, pour ne pas finir la partie tout de suite.`, `Vous donnez votre voix à la fin : le joueur qui a le plus de voix est éliminé.`, `<b>La partie s'arrête si vous êtes éliminé</b>, puisqu'il n'y a plus d'humain en jeu.`]
+      : [`Vous vous passez le téléphone pour découvrir vos rôles et agir en secret.`, `Les bots agissent la nuit, débattent et votent seuls : vous ajoutez vos deux voix au vote.`, `<b>La partie s'arrête quand vous êtes tous les deux éliminés</b>.`];
+    note.innerHTML = `<div style="font-weight:800;margin-bottom:4px">🎮 ${solo ? 'Partie en solo' : 'Partie à deux'} : le jeu s'adapte</div><ul style="margin:0;padding-left:20px">${items.map(li).join('')}</ul>`;
+    note.style.display = 'block';
+  } else note.style.display = 'none';
+  $('extra-bots-display').textContent = extraBots;
+  $('extra-bots-hint').textContent = extraBots > 0 ? `${pl(extraBots, 'bot')} en plus du minimum` : 'Optionnel : pour jouer avec plus de monde';
+  saveNames();
+  // Force le repaint des textes mis à jour (WebKit/iOS)
+  ['bot-count-hint', 'bot-min-msg', 'total-recap', 'extra-bots-hint'].forEach(id => {
+    let el = $(id); if(!el) return;
+    el.style.transform = 'translateZ(0)'; void el.offsetHeight; el.style.transform = '';
+  });
 }
+// Mise en page : nombre d'humains → prénoms → message sur les bots → bots en plus
+(function() {
+  let st = $('bot-count-display').parentElement.parentElement; st.style.marginTop = '0'; st.style.marginBottom = '14px';
+  $('p-list').parentNode.insertBefore(st, $('p-list'));
+  let btn = 'width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:1.3rem;font-weight:bold;cursor:pointer;';
+  $('p-list').insertAdjacentHTML('afterend', `<div id="bot-min-msg" class="info-box" style="margin-top:14px;font-size:0.93rem;line-height:1.5;"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding:14px 16px;background:var(--input-bg);border-radius:12px;border:1px solid rgba(150,150,150,0.2);">
+      <div><div style="font-weight:800;color:var(--text);">Ajouter des bots en plus ? (facultatif)</div><div style="font-size:0.82rem;color:var(--text-muted);" id="extra-bots-hint"></div></div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+        <button type="button" onclick="adjustExtra(-1)" aria-label="Moins de bots" style="${btn}">−</button>
+        <span id="extra-bots-display" style="font-size:1.4rem;font-weight:900;min-width:22px;text-align:center;color:var(--highlight);">0</span>
+        <button type="button" onclick="adjustExtra(1)" aria-label="Plus de bots" style="${btn}">+</button>
+      </div></div>
+    <div id="total-recap" class="info-box" style="margin-top:12px;font-weight:700;font-size:0.93rem;line-height:1.5;"></div>
+    <div id="solo-note" class="info-box" style="display:none;margin-top:12px;font-size:0.9rem;line-height:1.55;text-align:left;"></div>`);
+})();
+
+
+// --- CONFIGURATEUR GUIDÉ : étapes claires, bandeau de mode, récapitulatif ---
+function renderStepTitles() {
+  let n = isOneNight ? 2 : 3, set = (i, t, d) => { $('step-' + i + '-title').textContent = `Étape ${i}/${n} · ${t}`; $('step-' + i + '-sub').innerHTML = d; };
+  set(1, 'Qui anime la partie ?', "C'est la voix qui raconte la nuit et le jour. Le plus simple : choisissez « Téléphone au centre » et posez-le au milieu de la table.");
+  set(2, 'Qui joue ?', "Indiquez combien vous êtes, écrivez les prénoms, et c'est tout. <b>Vous n'avez rien à calculer</b> : l'app ajoute seule les bots dont il manque.");
+  if(!isOneNight) set(3, 'Quels pouvoirs spéciaux ?', "Cochez les rôles que vous voulez dans la partie. Les loups et les villageois sont ajoutés automatiquement. <b>Pas sûr ? Gardez la Voyante</b> : c'est le choix conseillé pour débuter.");
+}
+function updateFinalRecap(disabled, reason) {
+  if(!$('final-recap-body')) return;
+  let manual = $('mode-manual') && $('mode-manual').checked, h = humanCount, b = botCount, pl = (k, w) => k + ' ' + w + (k > 1 ? 's' : '');
+  let mode = isOneNight ? '🌙 Loup-Garou pour une nuit' : isFamily ? '🧸 Famille' : '🐺 Standard';
+  let roles = [...document.querySelectorAll('input[id^="opt-"]:checked')].map(i => { let e = $('rn-' + i.id.slice(4)); return e ? e.textContent.trim() : ''; }).filter(Boolean);
+  let rows = [
+    ['Mode', mode],
+    ['Animation', manual ? "Un humain lit les textes (il ne joue pas)" : 'Voix du téléphone (' + ($('voice-select').value === 'f' ? 'féminine' : 'masculine') + ')'],
+    ['Joueurs', `<b>${h + b}</b> au total : ${pl(h, 'humain')}${pNames.length === h && h ? ' (' + pNames.join(', ') + ')' : ''} + ${pl(b, 'bot')}`],
+    isOneNight ? ['Cartes', `${h + b + 3} cartes : 1 par joueur + 3 au centre. Rôles choisis automatiquement.`] : ['Rôles spéciaux', roles.length ? roles.join(', ') : 'Aucun (loups et villageois uniquement)']
+  ];
+  $('final-recap-body').innerHTML = rows.map(r => `<div style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid rgba(150,150,150,0.15);font-size:0.93rem"><div style="width:96px;flex-shrink:0;color:var(--text-muted)">${r[0]}</div><div style="flex:1;min-width:0">${r[1]}</div></div>`).join('')
+    + `<div style="margin-top:12px;padding:10px 12px;border-radius:10px;font-weight:700;background:var(--input-bg);border:1px solid ${disabled ? 'var(--accent)' : 'var(--highlight)'}">${disabled ? '⚠️ Il reste à faire : ' + (reason || 'compléter la configuration') : '✅ Tout est prêt ! Appuyez sur « Lancer l\'Histoire » en bas de l\'écran.'}</div>`;
+}
+(function() {
+  let setup = $('setup-screen');
+  let cta = $('start-btn').closest('.sticky-cta');
+  cta.insertAdjacentHTML('beforebegin', '<div class="card" id="final-recap"><h2>✅ Votre partie en un coup d\'œil</h2><div id="final-recap-body"></div></div>');
+  // sous-titres des points ② et ③ dans l'étape 2
+  $('p-list').insertAdjacentHTML('beforebegin', '<div style="font-weight:800;margin:4px 0 8px">Le prénom de chaque joueur humain</div>');
+  $('bot-min-msg') ? 0 : 0;
+})();
+
+
+// --- ASSISTANT DE CONFIGURATION : un écran par étape, avec Retour / Suivant ---
+let wizPage = 0;
+const wizLast = () => isOneNight ? 2 : 3;
+(function() {
+  [...$('setup-screen').children].forEach(c => {
+    if(c.classList.contains('story-box')) c.dataset.wpage = '0';
+    else if(c.querySelector('#step-1-title')) c.dataset.wpage = '1';
+    else if(c.querySelector('#step-2-title')) c.dataset.wpage = '2';
+    else if(c.querySelector('#step-3-title') || c.querySelector('#setup-role-advice')) c.dataset.wpage = '3';
+    else if(c.id === 'final-recap') c.dataset.wpage = 'last';
+  });
+  let start = $('start-btn'), hint = $('start-btn-hint'), cta = start.closest('.sticky-cta');
+  cta.innerHTML = '<div id="wiz-dots" style="text-align:center;font-size:0.8rem;letter-spacing:4px;color:var(--text-muted);margin-bottom:8px"></div><div id="wiz-row" style="display:flex;gap:10px"><button type="button" class="btn btn-secondary" id="wiz-back" onclick="wizBack()" style="flex:1;width:auto;white-space:nowrap;padding-left:8px;padding-right:8px">← Retour</button><button type="button" class="btn" id="wiz-next" onclick="wizNext()" style="flex:2;width:auto;white-space:nowrap">Suivant →</button></div>';
+  $('wiz-row').appendChild(start); start.style.flex = '2'; start.style.width = 'auto'; start.style.fontSize = '0.95rem';
+  cta.appendChild(hint);
+})();
+function wizUpdate() {
+  let last = wizLast(); wizPage = Math.min(wizPage, last);
+  [...$('setup-screen').children].forEach(c => {
+    let t = c.dataset.wpage; if(t === undefined || t === 'all') return;
+    c.style.display = (t === 'all' || (t === 'last' ? wizPage === last : +t === wizPage)) ? '' : 'none';
+  });
+  let hint = $('start-btn-hint'), next = $('wiz-next'), start = $('start-btn');
+  next.style.display = wizPage < last ? '' : 'none';
+  start.style.display = wizPage === last ? '' : 'none';
+  let namesOk = pNames.length === humanCount && !dupNames, block = wizPage === 2 && last !== 2 && !namesOk;
+  next.disabled = block;
+  if(wizPage !== last) {
+    hint.style.display = block ? 'block' : 'none';
+    if(block) hint.textContent = dupNames ? 'Deux joueurs ont le même prénom' : (humanCount > 1 ? `Renseignez le prénom des ${humanCount} joueurs pour continuer` : 'Renseignez votre prénom pour continuer');
+  }
+  $('wiz-dots').textContent = Array.from({length: last + 1}, (_, i) => i === wizPage ? '●' : '○').join(' ');
+}
+function wizGo(n) { wizPage = n; if(n === 2) renderBotCount(); wizUpdate(); window.scrollTo(0, 0); $('setup-screen').scrollTop = 0; }
+function wizNext() { if(!$('wiz-next').disabled) wizGo(wizPage + 1); }
+function wizBack() { if(wizPage === 0) showScreen('welcome-screen'); else wizGo(wizPage - 1); }
 
 function loadSavedPlayerNames() {
-  if(pNames.length) return;
+  if(slots.some(x => x.trim())) return;
   try {
-    let raw = localStorage.getItem('lndl-playernames');
-    if(raw) {
-      let saved = JSON.parse(raw);
-      if(Array.isArray(saved) && saved.length) {
-        pNames = saved.slice(0, 20);
-        renderPList();
-        checkConfig();
-      }
+    let saved = JSON.parse(localStorage.getItem('lndl-playernames') || '[]'), h = parseInt(localStorage.getItem('lndl-humans'), 10);
+    if(Array.isArray(saved) && saved.length) {
+      slots = saved.slice(0, 16); humanCount = Math.max(h || 4, slots.length);
+      renderBotCount(); renderSlots(); checkConfig();
     }
   } catch(e) {}
 }
@@ -1268,7 +1882,7 @@ function renderRoleAdvice(total) {
         { max: 5, label: `1 à 5 joueurs`, txt: `Restez simple : gardez uniquement la ${nm('voyante')} (voire aucun rôle spécial). Avec si peu de monde, chaque rôle en plus dilue le ${nm('loup')} et casse l'équilibre.` },
         { max: 8, label: `6 à 8 joueurs`, txt: `C'est le format idéal pour la ${nm('voyante')} et le ${nm('chasseur')}. La ${nm('sorciere')} est un bon plus si vous voulez plus de tension.` },
         { max: 11, label: `9 à 11 joueurs`, txt: `Ajoutez la ${nm('sorciere')} et ${nm('cupidon')} en plus de la ${nm('voyante')} et du ${nm('chasseur')} : assez de monde pour varier les nuits sans perdre le fil.` },
-        { max: 14, label: `12 à 14 joueurs`, txt: `Le groupe est assez grand pour le ${nm('voleur')} et l'${nm('ancien')} sans trop affaiblir les ${nm('loup')}s : ça ajoute de belles surprises.` },
+        { max: 14, label: `12 à 14 joueurs`, txt: `Le groupe est assez grand pour le ${nm('voleur')} et ${nm('ancien')} sans trop affaiblir les ${nm('loup')}s : ça ajoute de belles surprises.` },
         { max: Infinity, label: `15 joueurs et +`, txt: `Grande tablée : tous les rôles peuvent être activés, y compris la ${nm('petite')} et le ${nm('boucemissaire')}, pour garder tout le monde impliqué.` }
     ];
     let h = `<div style="display:flex;flex-direction:column;gap:8px;">`;
@@ -1286,7 +1900,12 @@ function renderRoleAdvice(total) {
 
 function setStartBtn(disabled, reason) {
   let btn = $('start-btn'), hint = $('start-btn-hint');
+  if(!players.length && (pNames.length !== humanCount || dupNames)) {
+    disabled = true; reason = dupNames ? 'Deux joueurs ont le même prénom' : (humanCount > 1 ? `Renseignez le prénom des ${humanCount} joueurs` : 'Renseignez votre prénom');
+  }
   btn.disabled = disabled;
+  renderStepTitles(); updateFinalRecap(disabled, reason);
+  if(typeof wizUpdate === 'function' && $('wiz-row')) setTimeout(wizUpdate, 0);
   if (hint) {
     hint.style.display = disabled ? 'block' : 'none';
     if (disabled && reason) hint.textContent = reason;
@@ -1294,10 +1913,15 @@ function setStartBtn(disabled, reason) {
 }
 
 function checkConfig() {
-  let n = pNames.length;
   renderBotCount();
+  let n = humanCount;
   let total = n + botCount; 
   $('setup-role-advice').innerHTML = renderRoleAdvice(total);
+  if(isOneNight) {
+    $('error-box').style.display = 'none';
+    setStartBtn(n < 1 || total < 3 || total > 10, n < 1 ? 'Ajoutez au moins un joueur' : (total < 3 ? 'Il faut au moins 3 joueurs (bots compris)' : 'Maximum 10 joueurs'));
+    return;
+  }
   let btn = $('start-btn');
   let err = $('error-box');
   let adv = $('advice-box');
@@ -1337,6 +1961,8 @@ function checkConfig() {
 }
 
 function initGame() {
+  rebuildPNames();
+  if(dupNames || pNames.length !== humanCount) { customAlert('Renseignez le prénom de chaque joueur (sans doublon).'); return; }
   ensureAudioContext();
   resetAudio();
   isAuto = $('mode-auto').checked;
@@ -1380,6 +2006,7 @@ function initGame() {
       lives: deck[i] === 'ancien' ? 2 : 1,
       isBot: botNameSet.has(name)
   }));
+  if(isOneNight) { startOneNight(); return; }
   
   if($('opt-voleur').checked) {
       const pool = ['villageois', 'villageois', 'loup'];
@@ -1412,6 +2039,7 @@ function showDistrib() {
 }
 
 function revealRole() {
+  haptic('reveal');
   $('distrib-role').style.display = 'block';
   $('distrib-cta-pre').style.display = 'none';
   $('distrib-cta-post').style.display = 'flex';
@@ -1455,6 +2083,17 @@ function nextDistrib() { distribIdx++; saveGame('distrib'); showDistrib(); }
 // --- BOT INTELLIGENCE v2 (cerveau par bot, mémoire, rôles, débat évolutif) ---
 const BOT_TRAITS = ['meneur','prudent','suiveur','analyste','farceur'];
 const rnd = a => a[Math.floor(Math.random()*a.length)];
+// Seul humain de la partie : il ne peut pas être la toute première victime (nuit ou vote)
+function humanShield() {
+    let hs = players.filter(p => !p.isBot);
+    if(hs.length !== 1 || players.some(p => !p.alive)) return null;
+    return hs[0].id;
+}
+function withoutShield(list) {
+    let sh = humanShield(); if(!sh) return list;
+    let f = list.filter(t => t.id !== sh);
+    return f.length ? f : list;
+}
 function pickW(items, wf) {
     let ws = items.map(wf), tot = ws.reduce((a,b)=>a+(b>0?b:0),0);
     if(tot <= 0) return rnd(items);
@@ -1492,6 +2131,7 @@ function playBotLogic(rKey) {
         let targets = alive.filter(p => p.role !== 'loup');
         let lw = wolves.find(x => state.lovers.includes(x.id));
         if(lw) { let f = targets.filter(t => !state.lovers.includes(t.id)); if(f.length) targets = f; }
+        targets = withoutShield(targets);
         if(!targets.length) return;
         // Cible : les Voyantes déclarées et ceux qui accusent les loups sont menaçants ; le reste est varié
         let t = pickW(targets, x => (0.6 + Math.random()) * (1 + 5*state.claims.filter(c=>c.by===x.id && !c.fake).length + 2.5*(state.hits[x.id]||0)));
@@ -1529,7 +2169,7 @@ function playBotLogic(rKey) {
         }
         if(state.poison && state.day >= 2) {
             let lp = state.lovers.includes(bw.id) ? state.lovers.find(x => x !== bw.id) : null;
-            let c = alive.filter(p => p.id !== bw.id && p.id !== state.victim && p.id !== lp);
+            let c = withoutShield(alive.filter(p => p.id !== bw.id && p.id !== state.victim && p.id !== lp));
             c.sort((a,b) => botSus(bw,b) - botSus(bw,a));
             if(c.length && botSus(bw, c[0]) >= 4 && Math.random() < 0.45) { state.pz = c[0].id; state.poison = 0; }
         }
@@ -1579,6 +2219,8 @@ function botReason(b, t) {
 function botVotes() {
     let bots = players.filter(p => p.alive && p.isBot);
     if(!bots.length) return customAlert("Il n'y a pas/plus de Bots en vie !");
+    // Même jour = mêmes avis : on réaffiche le débat déjà généré au lieu d'en tirer un nouveau.
+    if(state.botMsg && state.botMsgDay === state.day) { saveGame('day'); return customAlert(state.botMsg); }
     state.pub = state.pub || {}; state.claims = state.claims || []; state.dayVotes = state.dayVotes || {};
     state.defended = state.defended || {}; state.lastAcc = state.lastAcc || {}; state.hits = state.hits || {};
     state.round = (state.round || 0) + 1;
@@ -1594,6 +2236,7 @@ function botVotes() {
         let lp = state.lovers.includes(b.id) ? state.lovers.find(x => x !== b.id) : null;
         let ok = t => t.alive && t.id !== b.id && t.id !== lp && !(wolf && t.role === 'loup') && br.known[t.id] !== 'clean';
         let targets = alive.filter(ok); if(!targets.length) targets = alive.filter(t => t.id !== b.id);
+        targets = withoutShield(targets);
         let accusers = Object.keys(state.dayVotes).filter(a => state.dayVotes[a] === b.id && a !== b.id && players.find(p => p.id === a && p.alive));
         let line = null, target = null, r = Math.random();
         let knownW = Object.keys(br.known).filter(k => br.known[k] === 'loup' && (players.find(p => p.id === k)||{}).alive);
@@ -1661,6 +2304,7 @@ function botVotes() {
     });
     let top = Object.entries(tally()).sort((a, b) => b[1] - a[1]).slice(0, 3);
     if(top.length) msg += `<div style="margin-top:6px;font-size:0.95rem;">🗳️ <b>Tendance des bots :</b> ${top.map(([id, n]) => nm(id) + ' (' + n + ')').join(' · ')}</div>`;
+    state.botMsg = msg; state.botMsgDay = state.day;
     saveGame('day');
     customAlert(msg);
 }
@@ -1678,6 +2322,33 @@ function botsLearn(id) {
 // Au lever du jour : on retient qui accusait les victimes de la nuit
 function botsDawn() {
     state.deadAcc = (state.deadThisTurn||[]).filter(p => (state.lastAcc||{})[p.id]).map(p => ({ v: p.name, t: state.lastAcc[p.id] }));
+}
+
+// --- INTRO PARLÉE (passable) ---
+let introSkip = false, introWake = null;
+function introPause(ms, jitter=250) {
+  return new Promise(res => { introWake = res; setTimeout(res, Math.max(150, ms + (Math.random()*jitter*2 - jitter))); });
+}
+async function playIntro() {
+  introSkip = false;
+  $('intro-skip').style.display = 'block';
+  for(let i = 0; i < TXT.introLines.length && !introSkip; i++) {
+      await speak(TXT.introLines[i]);
+      if(introSkip) break;
+      await introPause(i === 0 ? 1400 : 900, 300);
+  }
+  $('intro-skip').style.display = 'none';
+  let skipped = introSkip;
+  introSkip = false; introWake = null;
+  return skipped;
+}
+function skipIntro() {
+  introSkip = true;
+  $('intro-skip').style.display = 'none';
+  window.speechSynthesis.cancel();
+  if(window.currentFinish) window.currentFinish();
+  forceHideSubtitle();
+  if(introWake) introWake();
 }
 
 // --- MOTEUR DE LA NUIT ---
@@ -1714,17 +2385,18 @@ async function runNightEngine() {
       $('night-status').textContent = isFamily ? "Tout le monde dort..." : "Le village s'endort...";
       
       if(state.day === 1) {
-          await speak(TXT.nightIntro1); await pause(900);
-          await speak(TXT.nightIntro2); await pause(900);
-          await speak(TXT.nightIntro3); await pause(900);
-          await speak(TXT.nightIntro4); await pause(1800, 400);
+          $('night-status').textContent = isFamily ? "✨ L'histoire commence..." : "🌒 La nuit approche...";
+          let skipped = await playIntro();
+          $('night-status').textContent = isFamily ? "Tout le monde dort..." : "Le village s'endort...";
+          await speak(skipped ? TXT.nightFalls : TXT.introEnd); await pause(3500, 500);
+      } else {
+          await speak(TXT.nightFalls); await pause(3500, 500);
       }
-      await speak(TXT.nightFalls); await pause(3500, 500); 
   } else {
       let introLines = state.day === 1
-          ? [TXT.nightIntro1, TXT.nightIntro2, TXT.nightIntro3, TXT.nightIntro4, TXT.nightFalls]
+          ? [...TXT.introLines, TXT.introEnd]
           : [TXT.nightFalls];
-      $('night-instruction').innerHTML = `🗣️ <b>Maître du Jeu, lis à voix haute :</b><br><br><i>« ${introLines.join(' ')} »</i>`;
+      $('night-instruction').innerHTML = `🗣️ <b>Maître du Jeu, lis à voix haute :</b><br><br><i>${introLines.map(l => '« ' + l + ' »').join('<br><br>')}</i>`;
       $('night-status').textContent = "";
       $('night-timer').style.display = 'none';
       $('night-bot-text').textContent = "";
@@ -1973,6 +2645,7 @@ function witchPzAction(id) {
 
 // --- RESOLUTION DU JOUR ---
 function killPlayer(id, cause) {
+  haptic('death');
   let p = players.find(x => x.id === id);
   if(!p || !p.alive) return;
   p.alive = false;
@@ -1986,7 +2659,7 @@ function killPlayer(id, cause) {
   }
 }
 
-// L'attaque des loups tient compte de la résistance de l'Ancien (une vie de plus, uniquement face aux loups)
+// L'attaque des loups tient compte de la résistance de Queen Smita (ancien rôle « Ancien ») (une vie de plus, uniquement face aux loups)
 function wolfAttack(id) {
   let p = players.find(x => x.id === id);
   if(!p || !p.alive) return;
@@ -2003,7 +2676,7 @@ function dawn() {
   state.deadThisTurn = [];
   state.elderSurvived = null;
   if(state.victim) wolfAttack(state.victim);
-  if(state.pz && state.pz !== state.victim) killPlayer(state.pz, 'poison');
+  if(state.pz) killPlayer(state.pz, 'poison');
   botsDawn();
   saveGame('day');
   resolveDeaths(async () => { 
@@ -2019,7 +2692,7 @@ function dawn() {
               for (let p of state.deadThisTurn) {
                   let R_DICT = isFamily ? R_FAM : R_STD;
                   let loveTxt = state.lovers.includes(p.id) ? (isFamily ? " Son meilleur ami part aussi avec lui." : " Cette âme a succombé au chagrin, après la perte de son amour.") : "";
-                  await speak(p.name + " " + TXT.vocabKilled + ". Son rôle était " + R_DICT[p.role][1] + "." + loveTxt);
+                  await speak(p.name + " " + TXT.vocabKilled + ". Son rôle était " + R_DICT[p.role][1].replace("Queen Smita", "Reine Smita") + "." + loveTxt);
               }
           }
           await speak(TXT.speechDebate);
@@ -2038,12 +2711,12 @@ function resolveDeaths(next) {
 
 function showDay() {
   let R_DICT = isFamily ? R_FAM : R_STD;
-  state.dayVotes = {}; state.round = 0; state.defended = {}; Object.keys(state.pub||{}).forEach(k => state.pub[k] *= 0.5);
+  state.dayVotes = {}; state.round = 0; state.botMsg = null; state.defended = {}; Object.keys(state.pub||{}).forEach(k => state.pub[k] *= 0.5);
   showScreen('day-screen');
   let h = `<h2 style="color:var(--accent)">☀️ Jour ${state.day}</h2>`;
   
   if(state.elderSurvived) {
-      h += `<div class="info-box" style="text-align:center;border-color:var(--highlight);background:rgba(217,119,6,0.15)">👴 <b>${players.find(x => x.id === state.elderSurvived).name}</b> a résisté à l'attaque cette nuit !</div>`;
+      h += `<div class="info-box" style="text-align:center;border-color:var(--highlight);background:rgba(217,119,6,0.15)">👑 <b>${players.find(x => x.id === state.elderSurvived).name}</b> a résisté à l'attaque cette nuit !</div>`;
   }
   
   if(state.deadThisTurn.length === 0) {
@@ -2072,16 +2745,63 @@ function showDay() {
 }
 
 // --- LE VOTE ---
+const pname = id => (players.find(p => p.id === id) || {}).name;
+
+// Chaque bot vivant qui n'a pas encore désigné quelqu'un vote maintenant (même logique de soupçon que le débat)
+function botFinalTarget(b) {
+    let br = brain(b), wolf = b.role === 'loup';
+    let lp = state.lovers.includes(b.id) ? state.lovers.find(x => x !== b.id) : null;
+    let alive = players.filter(p => p.alive);
+    let ok = t => t.id !== b.id && t.id !== lp && !(wolf && t.role === 'loup') && br.known[t.id] !== 'clean';
+    let targets = alive.filter(ok); if(!targets.length) targets = alive.filter(t => t.id !== b.id);
+    targets = withoutShield(targets);
+    if(!targets.length) return null;
+    let T = {}; Object.values(state.dayVotes || {}).forEach(v => { T[v] = (T[v]||0) + 1; });
+    return pickW(targets, t => Math.pow(botSus(b, t) * (br.trait === 'suiveur' ? 1 + 2*(T[t.id]||0) : 1), br.trait === 'analyste' ? 2 : 1.3));
+}
+function settleBotVotes() {
+    state.dayVotes = state.dayVotes || {}; state.lastAcc = state.lastAcc || {};
+    state.statCast = state.statCast || {}; state.statReceived = state.statReceived || {};
+    players.filter(p => p.alive && p.isBot).forEach(b => {
+        let cur = state.dayVotes[b.id];
+        if(cur && players.some(p => p.id === cur && p.alive)) return;
+        let t = botFinalTarget(b); if(!t) return;
+        state.dayVotes[b.id] = t.id; state.lastAcc[b.id] = t.id;
+        state.statCast[b.id] = (state.statCast[b.id]||0) + 1;
+        state.statReceived[t.id] = (state.statReceived[t.id]||0) + 1;
+    });
+}
+// Décompte : seules les voix des joueurs vivants comptent, vers des joueurs vivants
+function tallyVotes() {
+    let t = {}, by = {};
+    Object.keys(state.dayVotes || {}).forEach(vid => {
+        let voter = players.find(p => p.id === vid), tg = state.dayVotes[vid];
+        if(!voter || !voter.alive || !players.some(p => p.id === tg && p.alive)) return;
+        t[tg] = (t[tg]||0) + 1; (by[tg] = by[tg] || []).push(voter.name);
+    });
+    return { t, by };
+}
+
 async function startVote() {
   showScreen('vote-screen');
   playBell();
+  settleBotVotes();
+  let humans = players.filter(p => p.alive && !p.isBot);
+  let solo = humans.length === 1;
+  let { t } = tallyVotes();
+
   let h = `<h2 style="color:var(--accent)">${TXT.uiVoteTitle}</h2>`;
-  h += `<div class="info-box">Validez le choix de la majorité ci-dessous.</div>`;
+  if(solo) {
+      h += `<div class="info-box"><b>${humans[0].name}</b>, pour qui votez-vous ?<br><span style="font-size:0.85rem;color:var(--text-muted)">Les bots ont déjà voté. Celui qui aura le plus de voix sera ${TXT.vocabVote}.</span></div>`;
+  } else {
+      h += `<div class="info-box">Les bots ont voté (🤖 = nombre de voix). Ajoutez les voix des joueurs humains, puis validez le choix de la majorité.</div>`;
+  }
   h += `<div class="targets">`;
-  
   // On ne peut voter que contre les joueurs VIVANTS
-  players.filter(p => p.alive).forEach(p => {
-      h += `<button class="tgt" onclick="executeVote('${p.id}')">${TXT.uiVoteBtn} ${p.name}</button>`;
+  players.filter(p => p.alive && !(solo && p.id === humans[0].id)).forEach(p => {
+      let badge = (!solo && t[p.id]) ? ` · 🤖 ${t[p.id]}` : '';
+      let fn = solo ? `soloVote('${p.id}')` : `executeVote('${p.id}')`;
+      h += `<button class="tgt" onclick="${fn}">${TXT.uiVoteBtn} ${p.name}${badge}</button>`;
   });
   h += `</div>`;
   $('vote-content').innerHTML = h;
@@ -2092,10 +2812,29 @@ async function startVote() {
       ? `⚖️ Égalité (${scapegoatAlive.name}, ${R_DICT_vote['boucemissaire'][1]}, sera ${TXT.vocabVote})`
       : '⚖️ Égalité (On ne fait rien)';
   $('vote-tie-btn').textContent = tieLabel;
-  $('vote-cta').style.display = 'flex';
+  // Seul face aux bots : le décompte est automatique, pas de bouton d'égalité manuel
+  $('vote-cta').style.display = solo ? 'none' : 'flex';
 
   resetAudio();
-  if(isAuto) await speak(TXT.speechVote);
+  if(isAuto) await speak(solo ? "C'est l'heure de voter. Les bots ont déjà fait leur choix. À vous de voter." : TXT.speechVote);
+}
+
+// Vote d'un joueur unique : sa voix + celles des bots, le plus de voix est éliminé
+function soloVote(id) {
+  let human = players.find(p => p.alive && !p.isBot);
+  customConfirm(`Confirmer votre vote contre <b>${pname(id)}</b> ?<br><span style="font-size:0.85rem;color:var(--text-muted)">Les voix des bots sont ajoutées à la vôtre.</span>`, () => {
+      state.dayVotes[human.id] = id;
+      let { t, by } = tallyVotes();
+      let ranked = Object.keys(t).sort((a, b) => t[b] - t[a]);
+      let top = ranked.filter(x => t[x] === t[ranked[0]]);
+      let recap = `<div style="margin-bottom:14px;"><b>🗳️ Résultat du vote</b>` + ranked.map(x =>
+          `<div style="margin:4px 0;"><b>${pname(x)}</b> : ${t[x]} voix <span style="font-size:0.8rem;color:var(--text-muted)">(${by[x].join(', ')})</span></div>`).join('') + `</div>`;
+      if(top.length === 1) { performVote(top[0], recap); return; }
+      let scapegoat = players.find(p => p.alive && p.role === 'boucemissaire');
+      if(scapegoat && scapegoat.id === humanShield()) scapegoat = null;
+      if(scapegoat) performVote(scapegoat.id, recap + `<div style="margin-bottom:10px;">⚖️ Égalité : <b>${scapegoat.name}</b> est ${TXT.vocabVote} à la place de tout le monde.</div>`);
+      else performVote(null, recap);
+  });
 }
 
 // Étape de confirmation avant toute élimination par vote (action irréversible)
@@ -2116,15 +2855,16 @@ function executeVote(id) {
   customConfirm(`Confirmer : ${confirmVerb} <b>${p.name}</b> ?<br><span style="font-size:0.85rem;color:var(--text-muted)">Cette action est irréversible.</span>`, () => performVote(id));
 }
 
-function performVote(id) {
+function performVote(id, extra) {
+  extra = extra || '';
   botsLearn(id);
   let R_DICT = isFamily ? R_FAM : R_STD;
   state.deadThisTurn = []; 
   if(id) {
       killPlayer(id, 'vote');
       let p = players.find(x=>x.id===id);
-      let msg = `Choix validé pour <b>${p.name}</b> ! \n\nIl/Elle était...\n<br><span style="font-size:1.8rem;color:var(--accent);display:block;margin-top:10px">${R_DICT[p.role][0]} ${R_DICT[p.role][1]}</span>`;
-      let voiceMsg = `C'est fait. ${p.name} a été ${TXT.vocabVote}. Son rôle était ${R_DICT[p.role][1]}.`;
+      let msg = extra + `${extra ? 'Verdict pour' : 'Choix validé pour'} <b>${p.name}</b> ! \n\nIl/Elle était...\n<br><span style="font-size:1.8rem;color:var(--accent);display:block;margin-top:10px">${R_DICT[p.role][0]} ${R_DICT[p.role][1]}</span>`;
+      let voiceMsg = `${extra ? 'Les votes sont comptés.' : "C'est fait."} ${p.name} a été ${TXT.vocabVote}. Son rôle était ${R_DICT[p.role][1]}.`;
       
       if(state.deadThisTurn.length > 1) { 
           let lover = state.deadThisTurn.find(x => x.id !== id);
@@ -2140,7 +2880,7 @@ function performVote(id) {
   } else {
       resetAudio();
       if(isAuto) speak("Égalité. Il ne se passe rien.");
-      customAlert(`Égalité. Personne n'est ${TXT.vocabVote}.`, () => {
+      customAlert(extra + `Égalité. Personne n'est ${TXT.vocabVote}.`, () => {
           resolveDeaths(() => { state.day++; runNightEngine(); });
       });
   }
@@ -2151,12 +2891,15 @@ async function hunterRevenge(hId, nextCallback) {
   let R_DICT = isFamily ? R_FAM : R_STD;
   let p = players.find(x => x.id === hId);
   $('vote-cta').style.display = 'none';
+  // Plus personne de vivant à viser (ex. le Chasseur meurt en dernier avec son amoureux) : pas de tir, on conclut la partie
+  if(!players.some(x => x.alive)) { resolveDeaths(nextCallback); return; }
   
   if(p.isBot) {
       showScreen('vote-screen'); 
       let targets = players.filter(x => x.alive && x.id !== hId);
       if(state.lovers.includes(hId)) targets = targets.filter(t => !state.lovers.includes(t.id));
       let target = pickW(targets, t => Math.pow(botSus(p, t), 2));
+      if(!target) { resolveDeaths(nextCallback); return; }
       
       $('vote-content').innerHTML = `<div class="story-box" style="text-align:center;">🤖 Le Bot ${p.name} riposte...</div>`;
       state.hunterNext = nextCallback;
@@ -2236,6 +2979,8 @@ function checkWin() {
   
   if(wolvesCount === 0) { showWin('village'); return true; }
   if(wolvesCount >= villagersCount) { showWin('loups'); return true; }
+  // Plus aucun joueur humain en vie : inutile de continuer à faire jouer les bots
+  if(!alivePlayers.some(p => !p.isBot)) { showWin('humansOut'); return true; }
   return false;
 }
 
@@ -2277,7 +3022,7 @@ function causeLabel(c) {
   return map[c] || map.autre;
 }
 function playerWon(p, team) {
-  if (team === 'draw') return null;
+  if (team === 'draw' || team === 'humansOut') return null;
   if (team === 'amoureux') return state.lovers.includes(p.id);
   if (team === 'village') return p.role !== 'loup';
   return p.role === 'loup';
@@ -2332,7 +3077,48 @@ function buildStatsHTML(team) {
   return h;
 }
 
+// Explication claire de la raison de la fin de partie
+function endReasonHTML(team) {
+  let alive = players.filter(p => p.alive);
+  let wolves = alive.filter(p => p.role === 'loup'), others = alive.filter(p => p.role !== 'loup');
+  let W = TXT.vocabWolf, wl = n => n > 1 ? (isFamily ? 'Loups Malins' : 'Loups-Garous') : W;
+  let list = a => a.map(p => `<b>${p.name}</b>`).join(', ');
+  let out = isFamily ? 'endormis' : 'éliminés';
+  let why, rule;
+  if (team === 'village') {
+    let all = players.filter(p => p.role === 'loup');
+    why = `Tous les ${wl(2)} ont été ${out} : ${list(all)}.`;
+    rule = `Le village gagne dès qu'il ne reste plus aucun ${W} en vie.`;
+  } else if (team === 'loups') {
+    why = `Il reste <b>${wolves.length} ${wl(wolves.length)}</b> (${list(wolves)}) pour <b>${others.length} autre${others.length > 1 ? 's' : ''} joueur${others.length > 1 ? 's' : ''}</b> en vie.`;
+    rule = `Les ${wl(2)} gagnent dès qu'ils sont <b>au moins aussi nombreux</b> que les autres joueurs : le village ne peut plus les battre au vote.`;
+  } else if (team === 'amoureux') {
+    why = `Les deux derniers survivants, ${list(alive)}, sont les amoureux, et l'un est ${W} alors que l'autre ne l'est pas.`;
+    rule = `Un couple « mixte » qui reste seul à deux gagne contre tout le monde.`;
+  } else if (team === 'humansOut') {
+    let nH = players.filter(p => !p.isBot).length;
+    why = `${nH > 1 ? 'Tous les joueurs humains sont ' + out : 'Le joueur humain est ' + (isFamily ? 'endormi(e)' : 'éliminé(e)')}. Il reste ${alive.length} bot${alive.length > 1 ? 's' : ''} en vie : ${list(alive)}.`;
+    rule = `Sans joueur humain en vie, les bots ne jouent pas seuls : la partie s'arrête (personne ne gagne ni ne perd).`;
+  } else {
+    why = `Plus personne n'est en vie.`;
+    rule = `Les derniers joueurs sont tombés ensemble : c'est une égalité.`;
+  }
+  let causes = isFamily
+    ? { loup: 'le doudou a été caché par les Loups Malins', vote: 'a été renvoyé(e) au coin par le vote', poison: 'a bu la Potion de Dodo', chasseur: 'a été touché(e) par le Chasseur', amour: 'par amitié pour son/sa meilleur(e) ami(e)', autre: '' }
+    : { loup: 'dévoré(e) par les loups', vote: 'condamné(e) par le vote du village', poison: 'empoisonné(e)', chasseur: 'abattu(e) par le Chasseur', amour: 'mort(e) de chagrin d\'amour', autre: '' };
+  let dead = players.filter(p => !p.alive && p.deathDay);
+  let lastDay = dead.reduce((m, p) => Math.max(m, p.deathDay), 0);
+  let last = dead.filter(p => p.deathDay === lastDay);
+  let lastTxt = last.length ? `<div style="margin-top:10px;font-size:0.95rem;color:var(--text-muted)">Dernière${last.length > 1 ? 's' : ''} victime${last.length > 1 ? 's' : ''} (jour ${lastDay}) : ${last.map(p => `<b>${p.name}</b>${causes[p.deathCause] ? ' (' + causes[p.deathCause] + ')' : ''}`).join(', ')}.</div>` : '';
+  return `<div style="width:100%;text-align:left;background:var(--input-bg);padding:18px 20px;border-radius:12px;border:1px solid var(--highlight);margin-bottom:6px;">
+    <div style="font-family:var(--font-title);font-weight:800;color:var(--highlight);font-size:1.1rem;margin-bottom:8px;">❓ Pourquoi la partie est terminée</div>
+    <div style="font-size:1.05rem;line-height:1.5;color:var(--text);">${why}</div>
+    <div style="margin-top:8px;font-size:0.95rem;line-height:1.5;color:var(--text-muted);font-style:italic;">${rule}</div>${lastTxt}
+  </div>`;
+}
+
 function showWin(team) {
+  haptic('win');
   let R_DICT = isFamily ? R_FAM : R_STD;
   stopAmbience();
   clearSave();
@@ -2347,6 +3133,13 @@ function showWin(team) {
       msg = isFamily ? TXT.winDraw : TXT.winDraw;
       color = '#94a3b8';
       sub = isFamily ? TXT.winDrawSub : TXT.winDrawSub;
+  } else if (team === 'humansOut') {
+      let nH = players.filter(p => !p.isBot).length;
+      msg = isFamily ? (nH > 1 ? "💤 Les amis se reposent" : "💤 Tu vas te reposer")
+                     : (nH > 1 ? "💀 Vous êtes tous éliminés" : "💀 Vous êtes éliminé(e)");
+      color = '#94a3b8';
+      sub = isFamily ? "Plus aucun ami humain n'est éveillé : la partie s'arrête ici."
+                     : (nH > 1 ? "Plus aucun joueur humain en vie : la partie s'arrête ici." : "Vous n'êtes plus en vie : la partie s'arrête ici.");
   } else if (team === 'amoureux') {
       msg = TXT.winLovers;
       color = '#db2777';
@@ -2361,8 +3154,10 @@ function showWin(team) {
       sub = isFamily ? 'Les Loups Malins ont caché tous les doudous !' : 'Le dernier cri résonne dans la nuit...';
   }
   
+  histRecordStd(team, msg);
   let h = `<h2 style="font-size:2.5rem;color:${color};margin-bottom:5px;text-shadow:0 2px 4px rgba(0,0,0,0.5);text-transform:uppercase;line-height:1.2;">${msg}</h2>`;
-  h += `<p style="text-align:center;color:var(--text);font-style:italic;margin-bottom:25px;font-size:1.2rem">${sub}</p>`;
+  h += `<p style="text-align:center;color:var(--text);font-style:italic;margin-bottom:18px;font-size:1.2rem">${sub}</p>`;
+  h += endReasonHTML(team);
   h += `<div style="text-align:left;width:100%;background:var(--input-bg);padding:20px;border-radius:12px;border:1px solid rgba(150,150,150,0.2);margin-top:20px;">`;
   
   h += `<h3 style="color:var(--text);text-align:center;margin-bottom:15px;font-size:1.2rem">${TXT.endTitle}</h3>`;
@@ -2379,15 +3174,198 @@ function showWin(team) {
   
   h += `</div>`;
   h += buildStatsHTML(team);
-  h += `<div style="height:90px;"></div>`;
+  h += `<div style="height:160px;"></div>`;
   $('end-content').innerHTML = h;
   $('end-cta').style.display = 'flex';
 
   if(isAuto) {
       resetAudio();
-      speak("La partie est terminée. " + msg);
+      speak("La partie est terminée. " + msg.replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}]/gu, '').trim());
   }
 }
+
+// ================================================================
+// VIBES (skins de couleurs) — choix 100% local, jamais partagé
+// ================================================================
+const VIBES = [
+  { key: 'basic', emoji: '🎮', name: 'Nuit des Loups', desc: 'Les couleurs d\'origine du jeu' },
+  { key: 'blackpepper', emoji: '🖤', name: 'Black Pepper', desc: 'Noir profond, légèrement piquant' },
+  { key: 'coconut', emoji: '🥥', name: 'Coconut Shake', desc: 'Blanc laiteux et douillet' },
+  { key: 'strawberry', emoji: '🍓', name: 'Strawberry Spicy', desc: 'Rouge vif pimenté' },
+  { key: 'bubblegum', emoji: '🍬', name: 'Bubblegum Fizz', desc: 'Rose bonbon éclatant' },
+  { key: 'blueberry', emoji: '🫐', name: 'Blueberry Chill', desc: 'Bleu nuit intense et frais' },
+  { key: 'banana', emoji: '🍌', name: 'Banana Buzz', desc: 'Jaune solaire très vitaminé' },
+  { key: 'lime', emoji: '🍏', name: 'Lime Zest', desc: 'Vert citron hyper acide' },
+  { key: 'mango', emoji: '🥭', name: 'Mango Tango', desc: 'Orange chaud et fruité' },
+  { key: 'dragonfruit', emoji: '🐉', name: 'Dragonfruit Zap', desc: 'Pourpre/fuchsia électrique' },
+  { key: 'cocoa', emoji: '🍫', name: 'Cocoa Crunch', desc: 'Brun riche et gourmand' },
+  { key: 'honeygold', emoji: '🍯', name: 'Honey Gold', desc: 'Or chaud, liquide et hyper lumineux' },
+  { key: 'silverspark', emoji: '✨', name: 'Silver Spark', desc: 'Argent chromé, vif et étincelant' },
+  { key: 'melonsplash', emoji: '🍈', name: 'Melon Splash', desc: 'Vert-corail frais et désaltérant' },
+  { key: 'wasabicrunch', emoji: '🌶️', name: 'Wasabi Crunch', desc: 'Vert néon piquant et décalé' },
+  { key: 'passionpunch', emoji: '🍹', name: 'Passion Punch', desc: 'Rouge-pourpre exotique et ultra vif' }
+];
+const VIBE_STORAGE_KEY = 'lndl-vibe';
+const VIBE_GRADIENTS = { basic: '#02040a, #e11d48', blackpepper: '#0a0a0a, #e63946', coconut: '#faf6f0, #c9a876', strawberry: '#2a0a0f, #ff1744', bubblegum: '#2a0e24, #ff4fd8', blueberry: '#050b1f, #3b6eff', banana: '#1f1a00, #ffd60a', lime: '#0a1f0a, #aef22c', mango: '#2a1400, #ff8c1a', dragonfruit: '#150826, #d925ff', cocoa: '#1f130a, #c9834a', honeygold: '#2a1a00, #ffb800', silverspark: '#12161c, #aebccb', melonsplash: '#062018, #2fe6a6', wasabicrunch: '#050f05, #3dff7a', passionpunch: '#1a0510, #e0175e' };
+
+function getVibe() {
+  let v = 'basic';
+  try { v = localStorage.getItem(VIBE_STORAGE_KEY) || 'basic'; } catch(e) {}
+  return VIBES.some(x => x.key === v) ? v : 'basic';
+}
+function applyVibe(key, persist) {
+  if (key && key !== 'basic') document.documentElement.setAttribute('data-vibe', key);
+  else document.documentElement.removeAttribute('data-vibe');
+  if (persist) { try { localStorage.setItem(VIBE_STORAGE_KEY, key); } catch(e) {} }
+  renderVibeGrid();
+}
+function renderVibeGrid() {
+  const grid = $('vibe-grid'); if (!grid) return;
+  const cur = getVibe();
+  grid.innerHTML = VIBES.map(v => `
+    <div class="vibe-swatch${v.key === cur ? ' active' : ''}" onclick="applyVibe('${v.key}', true)" title="${v.desc}">
+      <div class="vibe-swatch-preview" style="background:linear-gradient(135deg, ${VIBE_GRADIENTS[v.key] || VIBE_GRADIENTS.basic});">${v.emoji}</div>
+      <div class="vibe-swatch-name">${v.name}</div>
+    </div>`).join('');
+}
+// ================================================================
+// HISTORIQUE DES PARTIES — enregistré sur cet appareil (localStorage), jamais partagé
+// ================================================================
+const HIST_KEY = 'lndl-history', HIST_MAX = 100;
+const HIST_MODES = { standard: '🐺 Standard', famille: '🧸 Famille', onu: '🌙 Une Nuit' };
+let histSel = new Set(), histOpen = new Set();
+function hEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function histLoad() { try { let a = JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); return Array.isArray(a) ? a : []; } catch(e) { return []; } }
+function histSave(a) { try { localStorage.setItem(HIST_KEY, JSON.stringify(a.slice(0, HIST_MAX))); } catch(e) {} }
+function histAdd(entry) {
+  entry.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  entry.ts = Date.now();
+  let a = histLoad(); a.unshift(entry); histSave(a);
+}
+function histRecordStd(team, msg) {
+  try {
+    if(state._histDone) return; state._histDone = true;
+    let R = isFamily ? R_FAM : R_STD;
+    histAdd({ mode: isFamily ? 'famille' : 'standard', title: String(msg).trim(), day: state.day, humans: players.filter(p => !p.isBot).length,
+      players: players.map(p => ({ n: p.name, r: R[p.role][0] + ' ' + R[p.role][1], a: p.alive ? 1 : 0, b: p.isBot ? 1 : 0, l: state.lovers.includes(p.id) ? 1 : 0 })) });
+  } catch(e) {}
+}
+function histRecordOnu(title, subtitle, dead, win) {
+  try {
+    histAdd({ mode: 'onu', title: title, sub: subtitle, humans: players.filter(p => !p.isBot).length,
+      players: players.map(p => ({ n: p.name, r: onuName(p.orig) + ' → ' + onuName(p.role), a: dead.has(p.id) ? 0 : 1, b: p.isBot ? 1 : 0, w: win(p) ? 1 : 0 })) });
+  } catch(e) {}
+}
+function histRender() {
+  let a = histLoad();
+  histSel = new Set([...histSel].filter(id => a.some(e => e.id === id)));
+  let n = a.length;
+  $('hist-count').textContent = n ? n + ' partie' + (n > 1 ? 's' : '') + ' · enregistrée' + (n > 1 ? 's' : '') + ' sur cet appareil (' + HIST_MAX + ' max.)' : 'Enregistré sur cet appareil.';
+  if(!n) {
+    $('hist-list').innerHTML = '<p style="text-align:center;color:var(--text-muted);margin:24px 0;line-height:1.5">Aucune partie enregistrée pour l\'instant.<br>Elles apparaîtront ici à la fin de chaque partie.</p>';
+  } else {
+    $('hist-list').innerHTML = a.map(e => {
+      let open = histOpen.has(e.id);
+      let d = new Date(e.ts);
+      let date = d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' }) + ' · ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      let np = (e.players || []).length, nh = e.humans || 0;
+      let meta = date + '<br>' + (HIST_MODES[e.mode] || '🎮 Partie') + ' · ' + np + ' joueur' + (np > 1 ? 's' : '') + (nh ? ' (' + nh + ' humain' + (nh > 1 ? 's' : '') + ')' : '') + (e.day ? ' · jour ' + e.day : '');
+      let detail = '';
+      if(open) {
+        detail = '<div class="hist-detail">' + (e.sub ? '<div style="margin-bottom:6px;color:var(--text-muted)">' + hEsc(e.sub) + '</div>' : '') +
+          (e.players || []).map(p => '<div class="hist-row"><span>' + (e.mode === 'onu' ? (p.a ? '' : '💀 ') + (p.w ? '🏆 ' : '') : (p.a ? (e.mode === 'famille' ? '🌟' : '❤️') : (e.mode === 'famille' ? '💤' : '💀')) + ' ') +
+            '<b>' + hEsc(p.n) + '</b>' + (p.b ? ' 🤖' : '') + (p.l ? ' 💘' : '') + '</span><span>' + hEsc(p.r) + '</span></div>').join('') + '</div>';
+      }
+      return '<div class="hist-card"><input type="checkbox" aria-label="Sélectionner cette partie" ' + (histSel.has(e.id) ? 'checked ' : '') + 'onchange="histToggleSel(\'' + e.id + '\')">' +
+        '<div class="hist-main" onclick="histToggleOpen(\'' + e.id + '\')"><div class="hist-title">' + hEsc(e.title) + '</div><div class="hist-meta">' + meta + '</div>' + detail +
+        '<div class="hist-meta">' + (open ? '▲ Masquer le détail' : '▼ Voir le détail') + '</div></div></div>';
+    }).join('');
+  }
+  let k = histSel.size;
+  let del = $('hist-del-btn'); del.textContent = '🗑️ Supprimer la sélection' + (k ? ' (' + k + ')' : ''); del.disabled = !k;
+  $('hist-all-btn').textContent = (n && k === n) ? '◻️ Tout désélectionner' : '☑️ Tout sélectionner'; $('hist-all-btn').disabled = !n;
+  $('hist-clear-btn').disabled = !n;
+}
+function histToggleSel(id) { if(histSel.has(id)) histSel.delete(id); else histSel.add(id); histRender(); }
+function histToggleOpen(id) { if(histOpen.has(id)) histOpen.delete(id); else histOpen.add(id); histRender(); }
+function histToggleAll() {
+  let a = histLoad();
+  if(a.length && histSel.size === a.length) histSel.clear(); else histSel = new Set(a.map(e => e.id));
+  histRender();
+}
+function histDeleteSelected() {
+  let k = histSel.size; if(!k) return;
+  customConfirm('Supprimer ' + (k > 1 ? 'ces ' + k + ' parties' : 'cette partie') + ' de l\'historique ?<br><small style="color:var(--text-muted)">Cette action est irréversible.</small>', () => {
+    histSave(histLoad().filter(e => !histSel.has(e.id)));
+    histSel.clear(); histRender();
+  });
+}
+function histClearAll() {
+  let n = histLoad().length; if(!n) return;
+  customConfirm('Vider tout l\'historique (' + n + ' partie' + (n > 1 ? 's' : '') + ') ?<br><small style="color:var(--text-muted)">Cette action est irréversible.</small>', () => {
+    histSave([]); histSel.clear(); histOpen.clear(); histRender();
+  });
+}
+function openHistory() { histRender(); $('history-modal').classList.add('open'); }
+function closeHistory() { $('history-modal').classList.remove('open'); }
+
+// ================================================================
+// INSTALLATION DE L'APPLICATION (PWA) + service worker
+// ================================================================
+let _installEvt = null;
+function isStandalone() { return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; }
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); _installEvt = e; });   // Chrome / Edge / Android : vrai popup d'installation
+window.addEventListener('appinstalled', () => { _installEvt = null; let c = $('install-card'); if(c) c.style.display = 'none'; });
+function initInstallCard() { let c = $('install-card'); if(c && !isStandalone()) c.style.display = 'block'; }
+async function installApp() {
+  if(_installEvt) {
+    try { _installEvt.prompt(); await _installEvt.userChoice; } catch(e) {}
+    _installEvt = null;
+    return;
+  }
+  // Pas de popup natif (iPhone, Firefox, page ouverte en local, appli intégrée…) : mode d'emploi
+  let ua = navigator.userAgent || '';
+  let ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  let msg;
+  if(location.protocol === 'file:') {
+    msg = "Cette page est ouverte depuis un fichier local.\n\nPour installer l'application, il faut l'héberger en ligne (adresse en https://), puis l'ouvrir depuis Safari ou Chrome.";
+  } else if(ios) {
+    msg = "Sur iPhone / iPad :\n\n1. Ouvre cette page dans <b>Safari</b> (pas dans une autre appli).\n2. Touche le bouton <b>Partager</b> ⬆️.\n3. Choisis <b>« Sur l'écran d'accueil »</b>.\n4. Touche <b>Ajouter</b> : l'icône 🐺 « Loup » apparaît.";
+  } else {
+    msg = "Sur Android / ordinateur :\n\n1. Ouvre cette page dans <b>Chrome</b> (ou Edge).\n2. Ouvre le menu <b>⋮</b> du navigateur.\n3. Choisis <b>« Installer l'application »</b> (ou « Ajouter à l'écran d'accueil »).";
+  }
+  customAlert(msg);
+}
+document.addEventListener('DOMContentLoaded', initInstallCard);
+// Icône de l'appli = l'emoji 🐺 (aucun fichier image) : générée en PNG pour l'onglet et pour l'écran d'accueil iPhone
+function initEmojiIcons() {
+  try {
+    const make = px => {
+      let c = document.createElement('canvas'); c.width = c.height = px;
+      let g = c.getContext('2d');
+      g.fillStyle = '#02040a'; g.fillRect(0, 0, px, px);
+      g.font = Math.round(px * 0.66) + 'px "Apple Color Emoji","Noto Color Emoji","Segoe UI Emoji",sans-serif';
+      g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.fillText('🐺', px / 2, px / 2 + px * 0.04);
+      return c.toDataURL('image/png');
+    };
+    const set = (rel, href, sizes) => {
+      let l = document.querySelector('link[rel="' + rel + '"]');
+      if(!l) { l = document.createElement('link'); l.rel = rel; document.head.appendChild(l); }
+      if(sizes) l.setAttribute('sizes', sizes);
+      l.href = href;
+    };
+    set('apple-touch-icon', make(180), '180x180');
+    set('icon', make(64));
+  } catch(e) {}
+}
+document.addEventListener('DOMContentLoaded', initEmojiIcons);
+if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+}
+
+function openVibeModal() { renderVibeGrid(); $('vibe-modal').classList.add('open'); }
+function closeVibeModal() { $('vibe-modal').classList.remove('open'); }
 </script>
 </body>
 </html>
