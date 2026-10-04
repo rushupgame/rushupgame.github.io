@@ -4,7 +4,7 @@
   "short_name": "Loup",
   "description": "La Nuit des Loups : le loup-garou à jouer sur un seul appareil, avec des bots.",
   "lang": "fr",
-  "start_url": "./wolf.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
