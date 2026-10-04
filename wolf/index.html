@@ -509,7 +509,7 @@ body.theme-day .edition-pill { background:rgba(0,0,0,0.05); }
   </div>
 
   <div class="sticky-cta">
-    <button class="btn" onclick="showScreen('setup-screen')">▶️ Je joue</button>
+    <button class="btn" onclick="unlockAudio(); showScreen('setup-screen')">▶️ Je joue</button>
   </div>
 </div>
 
@@ -1023,20 +1023,43 @@ function syncMenuAmbience() {
     if(players.length > 0) return;
     startNightAmbience();
 }
-// Les navigateurs interdisent tout son avant un premier geste de l'utilisateur : on tente de lancer
-// l'ambiance dès le chargement, puis au tout premier toucher / clic / touche (sans aucun message à l'écran).
+// Les navigateurs interdisent tout son avant un premier geste de l'utilisateur : on prépare l'ambiance dès le chargement,
+// et le tout premier toucher / clic (sur « Je joue », une ambiance, n'importe quel bouton…) l'active immédiatement, sans aucun message à l'écran.
 function unlockAudio() {
-    try { audioCtx.resume(); } catch(e) {}
-    try { if(audioCtx.state === 'running') ['pointerdown','touchstart','touchend','click','keydown'].forEach(ev => window.removeEventListener(ev, unlockAudio, true)); } catch(e) {}
+    try { if(audioCtx.state !== 'running') audioCtx.resume(); } catch(e) {}
+    primeAudio();
+    // l'ambiance du menu aurait dû jouer mais ne tourne pas : on la (re)lance
+    try { if(players.length === 0 && !currentAmbienceLoops.length) syncMenuAmbience(); } catch(e) {}
 }
+// On garde ces écouteurs en permanence : le son peut se couper (appel, verrouillage, retour dans l'appli) et doit repartir au toucher suivant.
 ['pointerdown', 'touchstart', 'touchend', 'click', 'keydown'].forEach(ev => window.addEventListener(ev, unlockAudio, true));
 window.addEventListener('DOMContentLoaded', unlockAudio);
 window.addEventListener('load', unlockAudio);
+['visibilitychange', 'pageshow', 'focus'].forEach(ev => window.addEventListener(ev, () => {
+    try { if(document.visibilityState !== 'hidden' && audioCtx.state !== 'running') audioCtx.resume(); } catch(e) {}
+}));
 
 window.addEventListener('DOMContentLoaded', updateTheme);
 
 // --- AUDIO PROCEDURAL ---
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+// iPhone : le bouton silencieux coupe le Web Audio. On demande une session audio « lecture » pour que l'ambiance soit audible quand même.
+try { if(navigator.audioSession) navigator.audioSession.type = 'playback'; } catch(e) {}
+const SILENT_WAV = 'data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==';
+let _silentEl = null, _pendingCue = false;
+function primeAudio() {
+    if(audioCtx.state === 'running') return;
+    // geste de l'utilisateur : on joue un échantillon silencieux, ce qui déverrouille le son sur iOS
+    try { let b = audioCtx.createBuffer(1, 1, 22050), src = audioCtx.createBufferSource(); src.buffer = b; src.connect(audioCtx.destination); src.start(0); } catch(e) {}
+    // iOS < 16.4 (pas d'audioSession) : un son silencieux en boucle force la lecture malgré le bouton silencieux
+    try {
+        let ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        if(ios && !navigator.audioSession) { if(!_silentEl) { _silentEl = new Audio(SILENT_WAV); _silentEl.loop = true; } let pr = _silentEl.play(); if(pr && pr.catch) pr.catch(() => {}); }
+    } catch(e) {}
+}
+try { audioCtx.addEventListener('statechange', () => {
+    if(audioCtx.state === 'running' && _pendingCue) { _pendingCue = false; setTimeout(_ambCue, 1200); }
+}); } catch(e) {}
 let currentAmbienceLoops = [];
 let ambienceBaseGain = null;
 let ambienceBaseVolume = 0;
@@ -1049,102 +1072,119 @@ function duckAmbience(active) {
     ambienceBaseGain.gain.linearRampToValueAtTime(active ? ambienceBaseVolume * 0.4 : ambienceBaseVolume, now + 0.35);
 }
 
+// --- Briques de l'ambiance (tout passe par un volume général : ambienceBaseGain, utilisé pour baisser le son pendant la voix) ---
+let _noiseBuf = null;
+function _ambMaster() { let m = audioCtx.createGain(); m.gain.value = 1; m.connect(audioCtx.destination); ambienceBaseGain = m; ambienceBaseVolume = 1; return m; }
+function _ambLayer(m, type, freq, q, level) {
+    if(!_noiseBuf) {
+        let size = audioCtx.sampleRate * 2; _noiseBuf = audioCtx.createBuffer(1, size, audioCtx.sampleRate);
+        let d = _noiseBuf.getChannelData(0); for(let i = 0; i < size; i++) d[i] = Math.random() * 2 - 1;
+    }
+    let n = audioCtx.createBufferSource(); n.buffer = _noiseBuf; n.loop = true;
+    let f = audioCtx.createBiquadFilter(); f.type = type; f.frequency.value = freq; if(q) f.Q.value = q;
+    let g = audioCtx.createGain(); g.gain.value = level;
+    n.connect(f); f.connect(g); g.connect(m); n.start();
+    currentAmbienceLoops.push({source: n, gain: m});
+    return {f: f, g: g};
+}
+function _ambTone(m, type, freq, level) {
+    let o = audioCtx.createOscillator(); o.type = type; o.frequency.value = freq;
+    let g = audioCtx.createGain(); g.gain.value = level;
+    o.connect(g); g.connect(m); o.start();
+    currentAmbienceLoops.push({source: o, gain: m});
+    return g;
+}
+function _ambLFO(m, target, rate, depth) {
+    let o = audioCtx.createOscillator(); o.frequency.value = rate;
+    let d = audioCtx.createGain(); d.gain.value = depth;
+    o.connect(d); d.connect(target); o.start();
+    currentAmbienceLoops.push({source: o, gain: m});
+}
+function _ambDest() { return ambienceBaseGain || audioCtx.destination; }
+function _howl() {
+    let dest = _ambDest(), now = audioCtx.currentTime;
+    [[1, 0.05], [2, 0.02]].forEach(([mult, peak]) => {      // fondamentale + octave : l'octave reste audible sur un petit haut-parleur
+        let osc = audioCtx.createOscillator(), g = audioCtx.createGain();
+        osc.type = 'sine'; osc.connect(g); g.connect(dest);
+        osc.frequency.setValueAtTime(320 * mult, now);
+        osc.frequency.linearRampToValueAtTime(450 * mult, now + 1.5);
+        osc.frequency.setValueAtTime(450 * mult, now + 2.5);
+        osc.frequency.linearRampToValueAtTime(250 * mult, now + 4);
+        g.gain.setValueAtTime(0, now);
+        g.gain.linearRampToValueAtTime(peak, now + 1.5);
+        g.gain.setValueAtTime(peak, now + 2.5);
+        g.gain.linearRampToValueAtTime(0, now + 4);
+        osc.start(now); osc.stop(now + 4);
+    });
+}
+function _lullabyNote() {
+    let notes = [523.25, 587.33, 659.25, 783.99, 880.00];
+    let osc = audioCtx.createOscillator(), g = audioCtx.createGain(), now = audioCtx.currentTime;
+    osc.type = 'triangle'; osc.connect(g); g.connect(_ambDest());
+    osc.frequency.setValueAtTime(notes[Math.floor(Math.random() * notes.length)], now);
+    g.gain.setValueAtTime(0, now);
+    g.gain.linearRampToValueAtTime(0.07, now + 0.4);
+    g.gain.linearRampToValueAtTime(0, now + 2);
+    osc.start(now); osc.stop(now + 2);
+}
+function _bird() {
+    let osc = audioCtx.createOscillator(), g = audioCtx.createGain(), now = audioCtx.currentTime;
+    osc.type = 'sine'; osc.connect(g); g.connect(_ambDest());
+    osc.frequency.setValueAtTime(3000 + Math.random() * 1500, now);
+    osc.frequency.exponentialRampToValueAtTime(4000 + Math.random() * 1500, now + 0.1);
+    osc.frequency.exponentialRampToValueAtTime(3000, now + 0.2);
+    g.gain.setValueAtTime(0, now);
+    g.gain.linearRampToValueAtTime(0.07, now + 0.05);
+    g.gain.linearRampToValueAtTime(0, now + 0.2);
+    osc.start(now); osc.stop(now + 0.25);
+}
+// Premier « événement » sonore (hurlement, note, oiseau) peu après le début, pour qu'on entende tout de suite que ça joue
+function _ambCue() {
+    if(audioCtx.state !== 'running') { _pendingCue = true; return; }
+    try { if(ambienceKind === 'night-std') _howl(); else if(ambienceKind === 'night-fam') _lullabyNote(); else if(ambienceKind === 'day') _bird(); } catch(e) {}
+}
+function _ambFirstCue(delay) { let t = setTimeout(_ambCue, delay); currentAmbienceLoops.push({interval: t}); }
+
 function startNightAmbience() {
     // Si l'ambiance de nuit joue déjà (lancée dès l'accueil), on ne la coupe pas
     let kind = isFamily ? 'night-fam' : 'night-std';
     if(ambienceKind === kind && currentAmbienceLoops.length) return;
     stopAmbience();
     ambienceKind = kind;
-    try { if(audioCtx.state === 'suspended') audioCtx.resume(); } catch(e){}
-    
-    let bufferSize = audioCtx.sampleRate * 2;
-    let buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    let data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-    let noise = audioCtx.createBufferSource();
-    noise.buffer = buffer; noise.loop = true;
-    let filter = audioCtx.createBiquadFilter();
-    filter.type = 'lowpass'; filter.frequency.value = isFamily ? 400 : 220; 
-    let gain = audioCtx.createGain();
-    gain.gain.value = isFamily ? 0.05 : 0.2; 
-    noise.connect(filter).connect(gain).connect(audioCtx.destination);
-    noise.start();
-    currentAmbienceLoops.push({source: noise, gain: gain});
-    ambienceBaseGain = gain;
-    ambienceBaseVolume = gain.gain.value;
-    
+    try { if(audioCtx.state !== 'running') audioCtx.resume(); } catch(e){}
+    let m = _ambMaster();
     if(!isFamily) {
-        let wolfInterval = setInterval(() => {
-            if(audioCtx.state === 'running' && Math.random() > 0.4) {
-                let osc = audioCtx.createOscillator();
-                let wGain = audioCtx.createGain();
-                osc.type = 'sine'; osc.connect(wGain); wGain.connect(audioCtx.destination);
-                let now = audioCtx.currentTime;
-                osc.frequency.setValueAtTime(320, now);
-                osc.frequency.linearRampToValueAtTime(450, now + 1.5);
-                osc.frequency.setValueAtTime(450, now + 2.5);
-                osc.frequency.linearRampToValueAtTime(250, now + 4);
-                wGain.gain.setValueAtTime(0, now);
-                wGain.gain.linearRampToValueAtTime(0.015, now + 1.5);
-                wGain.gain.setValueAtTime(0.015, now + 2.5);
-                wGain.gain.linearRampToValueAtTime(0, now + 4);
-                osc.start(now); osc.stop(now + 4);
-            }
-        }, 14000); 
+        // Nuit : grondement grave + vent médium (audible sur un téléphone) + bourdon + hurlements de loup
+        _ambLayer(m, 'lowpass', 200, 0, 0.10);
+        let wind = _ambLayer(m, 'bandpass', 520, 0.8, 0.09);
+        _ambLFO(m, wind.f.frequency, 0.07, 220);      // le vent monte et descend
+        _ambLFO(m, wind.g.gain, 0.11, 0.05);
+        let d1 = _ambTone(m, 'triangle', 110, 0.05);
+        _ambTone(m, 'triangle', 164.81, 0.035);
+        _ambLFO(m, d1.gain, 0.09, 0.02);
+        let wolfInterval = setInterval(() => { if(audioCtx.state === 'running' && Math.random() > 0.3) { try { _howl(); } catch(e) {} } }, 14000);
         currentAmbienceLoops.push({interval: wolfInterval});
     } else {
-        let notes = [261.63, 293.66, 329.63, 392.00, 440.00]; 
-        let lullabyInterval = setInterval(() => {
-            if(audioCtx.state !== 'running') return;
-            let osc = audioCtx.createOscillator();
-            let lGain = audioCtx.createGain();
-            osc.type = 'sine'; osc.connect(lGain); lGain.connect(audioCtx.destination);
-            let now = audioCtx.currentTime;
-            osc.frequency.setValueAtTime(notes[Math.floor(Math.random()*notes.length)], now);
-            lGain.gain.setValueAtTime(0, now);
-            lGain.gain.linearRampToValueAtTime(0.02, now + 0.5);
-            lGain.gain.linearRampToValueAtTime(0, now + 2);
-            osc.start(now); osc.stop(now + 2);
-        }, 3000);
+        // Nuit (famille) : brise douce + berceuse
+        _ambLayer(m, 'bandpass', 600, 0.7, 0.035);
+        _ambLayer(m, 'lowpass', 400, 0, 0.03);
+        let lullabyInterval = setInterval(() => { if(audioCtx.state === 'running') { try { _lullabyNote(); } catch(e) {} } }, 2600);
         currentAmbienceLoops.push({interval: lullabyInterval});
     }
+    _ambFirstCue(1500);
 }
 
 function startDayAmbience() {
     stopAmbience();
     ambienceKind = 'day';
-    try { if(audioCtx.state === 'suspended') audioCtx.resume(); } catch(e){}
-    
-    let bufferSize = audioCtx.sampleRate * 2;
-    let buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    let data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-    let noise = audioCtx.createBufferSource();
-    noise.buffer = buffer; noise.loop = true;
-    let filter = audioCtx.createBiquadFilter();
-    filter.type = 'lowpass'; filter.frequency.value = 500;
-    let gain = audioCtx.createGain(); gain.gain.value = 0.04; 
-    noise.connect(filter).connect(gain).connect(audioCtx.destination);
-    noise.start();
-    currentAmbienceLoops.push({source: noise, gain: gain});
-    ambienceBaseGain = gain;
-    ambienceBaseVolume = gain.gain.value;
-
-    let birdInterval = setInterval(() => {
-        if(audioCtx.state !== 'running') return;
-        let osc = audioCtx.createOscillator();
-        let bGain = audioCtx.createGain();
-        osc.type = 'sine'; osc.connect(bGain); bGain.connect(audioCtx.destination);
-        let now = audioCtx.currentTime;
-        osc.frequency.setValueAtTime(3000 + Math.random()*1500, now);
-        osc.frequency.exponentialRampToValueAtTime(4000 + Math.random()*1500, now + 0.1);
-        osc.frequency.exponentialRampToValueAtTime(3000, now + 0.2);
-        bGain.gain.setValueAtTime(0, now);
-        bGain.gain.linearRampToValueAtTime(0.03, now + 0.05);
-        bGain.gain.linearRampToValueAtTime(0, now + 0.2);
-        osc.start(now); osc.stop(now + 0.25);
-    }, 2500 + Math.random()*3500);
+    try { if(audioCtx.state !== 'running') audioCtx.resume(); } catch(e){}
+    let m = _ambMaster();
+    let breeze = _ambLayer(m, 'bandpass', 900, 0.6, 0.05);
+    _ambLFO(m, breeze.g.gain, 0.1, 0.02);
+    _ambLayer(m, 'lowpass', 500, 0, 0.02);
+    let birdInterval = setInterval(() => { if(audioCtx.state === 'running') { try { _bird(); } catch(e) {} } }, 2500 + Math.random() * 3500);
     currentAmbienceLoops.push({interval: birdInterval});
+    _ambFirstCue(1200);
 }
 
 function stopAmbience() {
@@ -3214,6 +3254,7 @@ function getVibe() {
   return VIBES.some(x => x.key === v) ? v : 'basic';
 }
 function applyVibe(key, persist) {
+  if (persist) unlockAudio();   // choisir une ambiance = geste de l'utilisateur : le son démarre en même temps
   if (key && key !== 'basic') document.documentElement.setAttribute('data-vibe', key);
   else document.documentElement.removeAttribute('data-vibe');
   if (persist) { try { localStorage.setItem(VIBE_STORAGE_KEY, key); } catch(e) {} }
