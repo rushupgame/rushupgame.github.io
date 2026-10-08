@@ -450,6 +450,40 @@ body.theme-day .edition-pill { background:rgba(0,0,0,0.05); }
 .ol-tile.reconnecting { opacity:0.5; }
 @media (max-width:430px){ .app-header-inner{gap:6px;padding:12px 10px;} .app-header .grimoire-link{padding:8px 9px;font-size:0.78rem;} .app-header .app-name{font-size:0.95rem;} .live-badge{margin-left:0;padding:2px 6px;} }
 
+.ol-tile{width:var(--tile,84px)!important;height:var(--tile,84px)!important;}
+.ol-tile.spot{width:180px!important;height:135px!important;}
+.ol-tile-sr{position:absolute;top:4px;left:4px;width:26px;height:26px;border-radius:50%;border:none;background:rgba(0,0,0,0.6);color:#fff;font-size:0.8rem;cursor:pointer;padding:0;}
+#ol-react-btn{flex:0 0 48px;border-radius:var(--radius-sm);border:none;background:var(--input-bg);font-size:1.3rem;cursor:pointer;}
+.ol-react-pop{position:fixed;right:10px;bottom:150px;z-index:260;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px;flex-wrap:wrap;gap:6px;width:230px;}
+.ol-react-pop button{font-size:1.6rem;background:transparent;border:none;cursor:pointer;padding:4px;}
+.ol-react-layer{position:fixed;inset:0;pointer-events:none;z-index:280;overflow:hidden;}
+.ol-react{position:absolute;bottom:20%;display:flex;flex-direction:column;align-items:center;font-size:2.2rem;animation:olfloat 2.6s ease-out forwards;}
+.ol-react small{font-size:0.7rem;color:#fff;font-weight:800;text-shadow:0 1px 3px #000;}
+@keyframes olfloat{from{transform:translateY(0);opacity:1}to{transform:translateY(-240px);opacity:0}}
+.ol-pause{position:fixed;inset:0;z-index:350;background:rgba(2,6,15,0.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:18px;}
+.ol-pause-card{width:100%;max-width:360px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;color:var(--text);text-align:center;}
+.ol-hmenu{position:fixed;inset:0;z-index:330;background:rgba(2,6,15,0.7);backdrop-filter:blur(6px);display:none;align-items:flex-start;justify-content:center;padding:70px 14px 14px;box-sizing:border-box;}
+.ol-hmenu.open{display:flex;}
+.ol-hm-card{width:100%;max-width:440px;max-height:100%;overflow-y:auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;color:var(--text);box-sizing:border-box;}
+.ol-hm-head{display:flex;justify-content:space-between;align-items:center;font-family:var(--font-title);font-size:1.2rem;font-weight:800;margin-bottom:10px;}
+.ol-hm-head button{background:transparent;border:none;color:var(--text-muted);font-size:1.2rem;cursor:pointer;}
+.ol-hm-item{display:flex;width:100%;justify-content:space-between;align-items:center;gap:10px;padding:12px;margin-bottom:6px;border-radius:var(--radius-sm);background:var(--input-bg);border:1px solid rgba(150,150,150,0.2);color:var(--text);font-weight:800;font-size:0.95rem;cursor:pointer;text-align:left;font-family:var(--font-text);box-sizing:border-box;}
+.ol-hm-item b{color:var(--highlight);font-size:0.85rem;}
+.ol-hm-item.danger{color:#f87171;}
+.ol-hm-profile{padding:12px;border-radius:var(--radius-sm);background:var(--input-bg);margin-bottom:10px;font-size:0.88rem;}
+.ol-hm-vip{color:var(--text-muted);font-weight:700;margin-top:4px;}
+.ol-hm-vip.on{color:var(--highlight);}
+.ol-hm-pw{display:flex;justify-content:space-between;align-items:center;margin-top:6px;gap:8px;font-size:0.85rem;color:var(--text-muted);}
+.ol-hm-pw button{background:transparent;border:none;cursor:pointer;font-size:1rem;}
+.ol-hm-langs{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 4px;font-weight:800;font-size:0.9rem;}
+.ol-hm-langs span{margin-right:auto;}
+.ol-hm-langs button{padding:6px 10px;border-radius:999px;border:1px solid rgba(150,150,150,0.4);background:transparent;color:var(--text);font-weight:800;cursor:pointer;}
+.ol-hm-langs button.on{border-color:var(--highlight);background:rgba(217,119,6,0.2);}
+.ol-hm-sep{height:1px;background:rgba(150,150,150,0.25);margin:8px 0;}
+.ol-net-banner{position:fixed;left:10px;right:10px;top:calc(64px + env(safe-area-inset-top,0px));z-index:260;background:#92400e;color:#fff;font-weight:800;font-size:0.85rem;padding:8px 10px;border-radius:var(--radius-sm);display:flex;align-items:center;gap:8px;}
+.ol-net-banner span{flex:1;}
+.ol-net-banner button{border:none;background:rgba(255,255,255,0.2);color:#fff;border-radius:999px;padding:6px 10px;font-weight:800;cursor:pointer;}
+
 </style>
 <script>try{var _v=localStorage.getItem('lndl-vibe');if(_v&&_v!=='basic')document.documentElement.setAttribute('data-vibe',_v);}catch(e){}</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -486,9 +520,17 @@ body.theme-day .edition-pill { background:rgba(0,0,0,0.05); }
     <button class="grimoire-link" onclick="toggleRules()" aria-label="Ouvrir le Grimoire">📜 Grimoire</button>
     <button class="grimoire-link" onclick="openVibeModal()" aria-label="Choisir une Vibe">🎨</button>
     <button class="grimoire-link" onclick="goHome()" aria-label="Retour au choix du mode">🏠</button>
+    <button class="grimoire-link" id="ol-menu-btn" onclick="OL.openHMenu()" style="display:none" aria-label="Menu">☰</button>
   </div>
 </header>
 <div id="ol-rtc" class="ol-rtc"><div class="ol-rtc-ctl"><button id="ol-mic-btn" onclick="OL.toggleMic()">🎤</button><button id="ol-cam-btn" onclick="OL.toggleCam()">📹</button></div><div id="ol-tiles" class="ol-tiles"></div></div>
+<div id="ol-hmenu" class="ol-hmenu" onclick="if(event.target===this)OL.closeHMenu()">
+  <div class="ol-hm-card"><div class="ol-hm-head"><span id="ol-hm-title"></span><button type="button" onclick="OL.closeHMenu()">✕</button></div><div id="ol-hm-body"></div></div>
+</div>
+<div id="ol-pause" class="ol-pause" style="display:none;"><div class="ol-pause-card"><div style="font-size:3rem;">⏸️</div><div id="ol-pause-title" class="ol-modal-title" style="text-align:center;"></div><p id="ol-pause-sub" class="ol-modal-sub" style="text-align:center;"></p><button type="button" class="btn btn-highlight" id="ol-pause-resume" onclick="OL.setPause(false)"></button></div></div>
+<div id="ol-react-pop" class="ol-react-pop" style="display:none;"><button type="button" onclick="OL.react('👍')">👍</button><button type="button" onclick="OL.react('😂')">😂</button><button type="button" onclick="OL.react('😱')">😱</button><button type="button" onclick="OL.react('🤔')">🤔</button><button type="button" onclick="OL.react('👏')">👏</button><button type="button" onclick="OL.react('🔥')">🔥</button><button type="button" onclick="OL.react('😈')">😈</button><button type="button" onclick="OL.react('🐺')">🐺</button></div>
+<div id="ol-react-layer" class="ol-react-layer"></div>
+<div id="ol-net-banner" class="ol-net-banner" style="display:none;"><span id="ol-net-text"></span><button type="button" id="ol-net-cam" onclick="OL.netDismiss(true)"></button><button type="button" onclick="OL.netDismiss(false)">✕</button></div>
 
 
 <!-- MODAL DES RÈGLES -->
@@ -808,7 +850,7 @@ body.theme-day .edition-pill { background:rgba(0,0,0,0.05); }
   <div id="ol-dead-banner" class="info-box"></div>
   <h4 id="ol-chat-title"></h4>
   <div id="ol-chat-list"></div>
-  <div class="ol-chat-row"><input type="text" id="ol-chat-input" maxlength="140" onkeydown="if(event.key==='Enter')OL.chatSend()"><button id="ol-chat-send" onclick="OL.chatSend()">➤</button></div>
+  <div class="ol-chat-row"><button id="ol-react-btn" type="button" onclick="OL.toggleReact()">😀</button><input type="text" id="ol-chat-input" maxlength="140" onkeydown="if(event.key==='Enter')OL.chatSend()"><button id="ol-chat-send" onclick="OL.chatSend()">➤</button></div>
 </div>
 
   <div class="sticky-cta" id="day-cta" style="display:none;">
@@ -2750,6 +2792,7 @@ async function runNightEngine() {
           playBotLogic(rKey); 
       }
 
+      if(window.OL && OL.on && !OL.ingame) return;
       let humansWithRole = players.filter(p => p.role === rKey && !p.isBot);
       if(window.OL && OL.on && OL.isHost && OL.ingame) { await OL.nightStep(step, rKey, humansWithRole, players.some(p => p.role === 'petite' && p.alive)); continue; }
 
@@ -5195,6 +5238,13 @@ zh: {
 }
 };
 
+OL_T.fr=Object.assign(OL_T.fr||{}, {"restartConfirm": "Recommencer la partie ? Tout le monde revient au salon avec les mêmes joueurs.", "hostLostWait": "L'hôte a quitté : transfert du rôle d'hôte…", "youAreHost": "👑 Tu es le nouvel hôte.", "hostChanged": "👑 {name} est le nouvel hôte.", "rejoined": "↩️ {name} a repris sa place.", "pauseTitle": "⏸️ Partie en pause", "pauseSub": "L'hôte a mis la partie en pause.", "hmResume": "▶️ Reprendre", "hmPause": "⏸️ Pause", "hmRestart": "🔄 Recommencer", "hmOn": "Activé", "hmOff": "Coupé", "hmPwHidden": "•••• (reconnecte-toi pour l'afficher)", "hmPassword": "Mot de passe", "hmSound": "🔊 Son", "hmVibration": "📳 Vibrations", "hmLang": "🌐 Langue", "hmVibes": "🎨 Ambiances", "hmRules": "📜 Règles", "hmLegal": "⚖️ Mentions légales", "hmVip": "👑 Passer VIP", "hmInstall": "📲 Installer l'appli", "hmLeave": "🚪 Quitter le salon", "menuBtn": "Menu", "vipVibe": "Les ambiances supplémentaires sont réservées aux comptes VIP.", "netSlow": "Connexion lente : la caméra peut saccader.", "netCamOff": "Couper ma caméra"});
+OL_T.en=Object.assign(OL_T.en||{}, {"restartConfirm": "Restart the game? Everyone goes back to the room with the same players.", "hostLostWait": "The host left: transferring the host role…", "youAreHost": "👑 You are the new host.", "hostChanged": "👑 {name} is the new host.", "rejoined": "↩️ {name} took back their seat.", "pauseTitle": "⏸️ Game paused", "pauseSub": "The host paused the game.", "hmResume": "▶️ Resume", "hmPause": "⏸️ Pause", "hmRestart": "🔄 Restart", "hmOn": "On", "hmOff": "Off", "hmPwHidden": "•••• (log in again to show it)", "hmPassword": "Password", "hmSound": "🔊 Sound", "hmVibration": "📳 Vibration", "hmLang": "🌐 Language", "hmVibes": "🎨 Vibes", "hmRules": "📜 Rules", "hmLegal": "⚖️ Legal notice", "hmVip": "👑 Go VIP", "hmInstall": "📲 Install the app", "hmLeave": "🚪 Leave the room", "menuBtn": "Menu", "vipVibe": "Extra vibes are reserved for VIP accounts.", "netSlow": "Slow connection: the camera may stutter.", "netCamOff": "Turn my camera off"});
+OL_T.es=Object.assign(OL_T.es||{}, {"restartConfirm": "¿Reiniciar la partida? Todos vuelven a la sala con los mismos jugadores.", "hostLostWait": "El anfitrión ha salido: transfiriendo el rol de anfitrión…", "youAreHost": "👑 Eres el nuevo anfitrión.", "hostChanged": "👑 {name} es el nuevo anfitrión.", "rejoined": "↩️ {name} ha recuperado su sitio.", "pauseTitle": "⏸️ Partida en pausa", "pauseSub": "El anfitrión ha pausado la partida.", "hmResume": "▶️ Reanudar", "hmPause": "⏸️ Pausa", "hmRestart": "🔄 Reiniciar", "hmOn": "Activado", "hmOff": "Desactivado", "hmPwHidden": "•••• (vuelve a iniciar sesión para verla)", "hmPassword": "Contraseña", "hmSound": "🔊 Sonido", "hmVibration": "📳 Vibraciones", "hmLang": "🌐 Idioma", "hmVibes": "🎨 Ambientes", "hmRules": "📜 Reglas", "hmLegal": "⚖️ Aviso legal", "hmVip": "👑 Hazte VIP", "hmInstall": "📲 Instalar la app", "hmLeave": "🚪 Salir de la sala", "menuBtn": "Menú", "vipVibe": "Los ambientes extra son para cuentas VIP.", "netSlow": "Conexión lenta: la cámara puede entrecortarse.", "netCamOff": "Apagar mi cámara"});
+OL_T.zh=Object.assign(OL_T.zh||{}, {"restartConfirm": "重新开始游戏？所有人将回到房间，玩家不变。", "hostLostWait": "房主已离开：正在转移房主身份…", "youAreHost": "👑 你成为新的房主。", "hostChanged": "👑 {name} 成为新的房主。", "rejoined": "↩️ {name} 已回到座位。", "pauseTitle": "⏸️ 游戏已暂停", "pauseSub": "房主暂停了游戏。", "hmResume": "▶️ 继续", "hmPause": "⏸️ 暂停", "hmRestart": "🔄 重新开始", "hmOn": "开", "hmOff": "关", "hmPwHidden": "•••• （重新登录后可查看）", "hmPassword": "密码", "hmSound": "🔊 声音", "hmVibration": "📳 震动", "hmLang": "🌐 语言", "hmVibes": "🎨 氛围", "hmRules": "📜 规则", "hmLegal": "⚖️ 法律声明", "hmVip": "👑 开通 VIP", "hmInstall": "📲 安装应用", "hmLeave": "🚪 离开房间", "menuBtn": "菜单", "vipVibe": "额外氛围仅限 VIP 账号。", "netSlow": "网络较慢：摄像头可能卡顿。", "netCamOff": "关闭我的摄像头"});
+
+const OL_NOSLEEP_SRC = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAARnbW9vdgAAAGxtdmhkAAAAAAAAAAAAAAAAAAAD6AAAA+gAAQAAAQAA';
+
 /* ================================================================
    JEU EN LIGNE — même projet Supabase / PayPal que onlinegame
    Architecture : l'hôte fait tourner le moteur de jeu existant ; les autres joueurs
@@ -5323,7 +5373,7 @@ OL.submitAuth = async function () {
                                    : await OL.sb.auth.signInWithPassword({ email, password });
     if (error) throw error;
     if (signup && !data.session) { olSetStatus('ol-auth-status', olt('authSignupCheckMail'), 'ok'); OL.authMode = 'login'; applyAuthUI(); olSetStatus('ol-auth-status', olt('authSignupCheckMail'), 'ok'); return; }
-    OL.authSession = data.session;
+    OL.authSession = data.session; OL.accountPassword = password;
     const after = OL.afterAuth; OL.closeAuth();
     await OL.checkVip(); OL.renderMenu();
     if (after) after();
@@ -5346,7 +5396,7 @@ OL.submitReset = async function () {
 };
 OL.signOut = async function () {
   try { await OL.sb.auth.signOut(); } catch (e) {}
-  OL.authSession = null; OL.persistVip({ isVip: false, planType: null, expiresAt: null }); OL.closeVip(); OL.renderMenu();
+  OL.accountPassword = null; OL.pwVisible = false; OL.authSession = null; OL.persistVip({ isVip: false, planType: null, expiresAt: null }); OL.closeVip(); OL.renderMenu();
 };
 
 OL.openVip = function (reason) {
@@ -5484,11 +5534,11 @@ OL.connect = function (asHost) {
   let once = false;
   ch.subscribe(async (status) => {
     if (status === 'SUBSCRIBED') {
-      await ch.track({ id: OL.myId, name: OL.myName, joinedAt: Date.now(), host: asHost });
+      OL.joinedAt = Date.now(); await ch.track({ id: OL.myId, name: OL.myName, joinedAt: OL.joinedAt, host: asHost });
       if (!once) {
         once = true;
         OL.requestWakeLock();
-        if (asHost) { OL.on = true; g$('ol-room-code').textContent = OL.code; OL.pushLobby(); showScreen('ol-lobby-screen'); OL.applyLang(); }
+        if (asHost) { OL.on = true; g$('ol-room-code').textContent = OL.code; OL.pushLobby(); showScreen('ol-lobby-screen'); OL.applyLang(); OL.rtcSync(); }
         else { clearTimeout(OL.hostTimer); OL.hostTimer = setTimeout(() => { if (!OL.hostId) OL.fail(olt('roomNotFound')); }, 4500); }
       } else OL.banner(false);
     } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
@@ -5511,9 +5561,10 @@ OL.confirmLeave = function () { customConfirm(olt('leaveConfirm'), () => OL.leav
 OL.leave = function () { OL.teardown(); showScreen('ol-menu-screen'); olSetStatus('ol-menu-status', ''); OL.applyLang(); };
 
 OL.requestWakeLock = async function () {
-  try { if ('wakeLock' in navigator && !OL.wl) { OL.wl = await navigator.wakeLock.request('screen'); OL.wl.addEventListener('release', () => { OL.wl = null; }); } } catch (e) { OL.wl = null; }
+  if (!('wakeLock' in navigator) || !navigator.wakeLock || !navigator.wakeLock.request) { OL.startNoSleep(); return; }
+  try { if ('wakeLock' in navigator && !OL.wl) { OL.wl = await navigator.wakeLock.request('screen'); OL.wl.addEventListener('release', () => { OL.wl = null; }); } } catch (e) { OL.wl = null; OL.startNoSleep(); }
 };
-OL.releaseWakeLock = function () { try { if (OL.wl) OL.wl.release(); } catch (e) {} OL.wl = null; };
+OL.releaseWakeLock = function () { try { if (OL.wl) OL.wl.release(); } catch (e) {} OL.wl = null; OL.stopNoSleep(); };
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && OL.ch) OL.requestWakeLock(); });
 window.addEventListener('beforeunload', (e) => { if (OL.ch && OL.on) { e.preventDefault(); e.returnValue = ''; } });
 
@@ -5526,7 +5577,7 @@ OL.readPresence = function () {
 OL.onPresence = function () {
   if (!OL.ch) return;
   OL.readPresence();
-  if (!OL.isHost && OL.hostId && !OL.on) { OL.on = true; clearTimeout(OL.hostTimer); g$('ol-room-code').textContent = OL.code; showScreen('ol-lobby-screen'); OL.applyLang(); }
+  if (!OL.isHost && OL.hostId && !OL.on) { OL.on = true; clearTimeout(OL.hostTimer); g$('ol-room-code').textContent = OL.code; if (!OL.clientInGame) showScreen('ol-lobby-screen'); OL.applyLang(); }
   OL.rtcSync();
   if (OL.isHost) { if (!OL.ingame) OL.pushLobby(); }
 };
@@ -5540,7 +5591,7 @@ OL.onJoin = function (list) {
     if (OL.ingame) {
       list.forEach(p => {
         const known = (typeof players !== 'undefined') && players.some(x => x.remote === p.id);
-        if (!known && p.id !== OL.myId) OL.send(p.id, 'busy', {});
+        if (!known && p.id !== OL.myId && !OL.tryReclaim(p)) OL.send(p.id, 'busy', {});
       });
     } else OL.pushLobby();
   }
@@ -5549,7 +5600,7 @@ OL.onLeave = function (list) {
   if (!OL.ch) return;
   OL.readPresence();
   list.forEach(p => {
-    if (!OL.isHost && p.id === OL.hostId) { OL.hostGone(); return; }
+    if (!OL.isHost && p.id === OL.hostId) { OL.hostLost(); return; }
     if (OL.isHost && OL.ingame) {
       // 8 s de grâce (micro-coupure réseau) avant de remplacer le joueur par un bot
       OL.graceTimers[p.id] = setTimeout(() => { delete OL.graceTimers[p.id]; OL.takeover(p.id); }, 8000);
@@ -5570,7 +5621,7 @@ OL.pushLobby = function () {
   const list = Object.values(OL.peers).sort((a, b) => a.id === OL.myId ? -1 : b.id === OL.myId ? 1 : a.joinedAt - b.joinedAt);
   const seen = new Set(); const accepted = [];
   list.forEach(p => {
-    if (accepted.length >= cap) { if (!OL.rejected.has(p.id)) { OL.rejected.add(p.id); OL.send(p.id, 'full', { n: cap }); } return; }
+    if (accepted.length >= cap) { OL.rejected.add(p.id); OL.send(p.id, 'full', { n: cap }); return; } // renvoyé à chaque mise à jour : le joueur refusé peut ne pas encore connaître l'hôte
     let base = (p.name || '?').trim().slice(0, 16) || '?', nm = base, i = 2;
     while (seen.has(nm.toLowerCase())) nm = base + ' ' + (i++);
     seen.add(nm.toLowerCase()); accepted.push({ id: p.id, name: nm });
@@ -5649,7 +5700,7 @@ OL.startMedia = async function () {
 OL.stopMedia = function () {
   Object.keys(OL.pcs).forEach(OL.rtcClose);
   if (OL.stream) OL.stream.getTracks().forEach(t => t.stop());
-  OL.stream = null; OL.hasMedia = false; OL.remoteStreams = {};
+  OL.stream = null; OL.hasMedia = false; OL.remoteStreams = {}; OL.stopBeacons();
   const tiles = g$('ol-tiles'); if (tiles) tiles.innerHTML = '';
   const bar = g$('ol-rtc'); if (bar) bar.style.display = 'none';
 };
@@ -5678,8 +5729,8 @@ OL.styleTile = function (id) {
   const tile = g$('tile-' + id); if (!tile) return;
   const why = id === OL.myId ? (OL.canTalk() ? '' : (OL.phase === 'night' ? 'night' : 'dead')) : OL.peerMuted(id);
   tile.classList.toggle('muted-night', why === 'night'); tile.classList.toggle('muted-dead', why === 'dead');
-  const v = tile.querySelector('video'); if (v && id !== OL.myId) v.muted = !!why;
-  const st = tile.querySelector('.ol-tile-state'); if (st) st.textContent = why === 'night' ? '🌙' : why === 'dead' ? '💀' : '';
+  const v = tile.querySelector('video'); if (v && id !== OL.myId) v.muted = !!why || OL.sameRoom.has(id);
+  const st = tile.querySelector('.ol-tile-state'); if (st) st.textContent = why === 'night' ? '🌙' : why === 'dead' ? '💀' : (OL.sameRoom.has(id) ? '🔇' : '');
 };
 OL.renderRtcBar = function () {
   const bar = g$('ol-rtc'); if (!bar) return;
@@ -5697,15 +5748,17 @@ OL.addTile = function (id, name, stream, isLocal) {
   let tile = g$('tile-' + id);
   if (!tile) {
     tile = document.createElement('div'); tile.className = 'ol-tile'; tile.id = 'tile-' + id;
-    tile.innerHTML = '<video autoplay playsinline></video><div class="ol-tile-name"></div><div class="ol-tile-state"></div>';
+    tile.innerHTML = '<video autoplay playsinline></video><div class="ol-tile-name"></div><div class="ol-tile-state"></div><button class="ol-tile-sr" type="button">🔊</button>';
     wrap.appendChild(tile);
+    tile.onclick = () => OL.setSpot(id);
+    tile.querySelector('.ol-tile-sr').onclick = e => { e.stopPropagation(); OL.toggleSameRoom(id); };
   }
   const v = tile.querySelector('video');
   if (v.srcObject !== stream) v.srcObject = stream;
   v.muted = !!isLocal; if (isLocal) v.style.transform = 'scaleX(-1)';
   tile.querySelector('.ol-tile-name').textContent = name || '?';
   const p = v.play && v.play(); if (p && p.catch) p.catch(() => {});
-  OL.styleTile(id); OL.renderRtcBar();
+  OL.styleTile(id); OL.renderRtcBar(); OL.updateTileSize();
 };
 OL.removeTile = function (id) { const t = g$('tile-' + id); if (t) t.remove(); delete OL.remoteStreams[id]; OL.renderRtcBar(); };
 OL.refreshTileNames = function () {
@@ -5719,6 +5772,8 @@ OL.rtcSync = function () {
   Object.keys(OL.peers).forEach(id => { if (id !== OL.myId && !OL.pcs[id]) OL.rtcCreate(id, OL.myId < id); });
   Object.keys(OL.pcs).forEach(id => { if (!OL.peers[id] && !OL.graceTimers[id]) OL.rtcClose(id); });
   OL.refreshTileNames(); OL.adjustBitrates();
+  if (OL.stream) OL.startBeacons();
+  OL.checkNetwork();
 };
 OL.rtcCreate = function (id, initiator) {
   const pc = new RTCPeerConnection({ iceServers: OL_ICE_SERVERS });
@@ -5791,7 +5846,11 @@ OL.origAlert = customAlert;
 
 OL.onMsg = function (m) {
   if (!m || (m.to !== 'all' && m.to !== OL.myId)) return;
-  const d = m.data || {}, from = m.from, fromHost = (from === OL.hostId);
+  const d = m.data || {}, from = m.from;
+  const earlyHostMsg = !OL.hostId && (m.type === 'full' || m.type === 'busy');
+  const fromHost = (from === OL.hostId) || earlyHostMsg;
+  if (m.type === 'react') { OL.onReact(from, d.e); return; }
+  if (m.type === 'rejoin' && !OL.isHost) { OL.onRejoin(d); return; }
   if (m.type === 'resp') { if (OL.isHost) OL.onResp(from, d.rid, d.data, d.final); return; }
   if (m.type === 'rtc') { OL.rtcSignal(m); return; }
   if (m.type === 'chat') { if (OL.alivePeers && OL.alivePeers[from] === false) return; OL.chatShow(d.name, d.text); return; }
@@ -5820,6 +5879,7 @@ OL.onMsg = function (m) {
     case 'toast': olToast(olt(d.k, { name: d.name })); break;
     case 'end': OL.clientEnd(d); break;
     case 'lobby-return': OL.clientBackToLobby(); break;
+    case 'pause': OL.paused = !!d.on; OL.applyPause(); break;
   }
 };
 
@@ -5878,6 +5938,7 @@ OL.showStatusHTML = function (html) {
   if (!OL.cur) showScreen('ol-status-screen');
 };
 OL.statusAll = function (html, except) {
+  if (!OL.ingame) return; // message d'une partie abandonnée : ignoré
   OL.send('all', 'status', { html, except: except || [] });
   if (!except || !except.includes(OL.myId)) OL.showStatusHTML(html);
 };
@@ -5905,7 +5966,7 @@ OL.chatSend = function () {
 OL.ask = function (p, spec, onData, timeout) {
   const rid = ++OL.rid;
   const pr = new Promise(res => {
-    const e = { p, onData, done: false };
+    const e = { p, onData, done: false, spec };
     e.finish = (val) => { if (e.done) return; e.done = true; clearTimeout(e.tm); delete OL.pending[rid]; res(val); };
     OL.pending[rid] = e;
     if (timeout) e.tm = setTimeout(() => { if (!e.done) { OL.endPrompt(p, rid); e.finish(null); } }, timeout);
@@ -6054,6 +6115,7 @@ OL.start = function () {
 };
 
 OL.distrib = async function () {
+  const g = OL.gen;
   const humans = players.filter(p => !p.isBot);
   humans.forEach(p => { const peer = OL.nameToPeer[p.name.toLowerCase()]; if (peer === OL.myId) { p.local = true; OL.meId = p.id; } else p.remote = peer; });
   humans.filter(p => p.remote).forEach(p => OL.send(p.remote, 'start', { family: isFamily, you: p.id }));
@@ -6061,11 +6123,13 @@ OL.distrib = async function () {
   const asks = humans.map(p => OL.ask(p, { kind: 'role', role: p.role, mates: p.role === 'loup' ? players.filter(x => x.role === 'loup' && x.id !== p.id).map(x => x.name) : [] }, null, 150000)
     .then(() => { seen++; OL.statusAll(`<div style="font-size:3rem;">👁️</div><h2 style="margin:10px 0;">${oesc(olt('rolesSeen', { n: seen, m: total }))}</h2>`); }));
   await Promise.all(asks);
+  if (g !== OL.gen) return;
   if (OL.ingame) runNightEngine();
 };
 
 /* ---------- la nuit, côté hôte ---------- */
 OL.nightStep = async function (step, rKey, humansWithRole, petiteFille) {
+  const g = OL.gen;
   const R = isFamily ? R_FAM : R_STD, alive = players.filter(p => p.alive), tg = x => ({ id: x.id, name: x.name });
   const actors = humansWithRole.filter(p => p.alive && !p.isBot);
   const setNS = txt => { g$('night-status').textContent = txt; OL.send('all', 'nstatus', { t: txt }); };
@@ -6073,6 +6137,7 @@ OL.nightStep = async function (step, rKey, humansWithRole, petiteFille) {
   if (step.id === 'wolves' && petiteFille) { await speak("Si la " + R['petite'][1] + " est réveillée..."); await pause(900); await speak("Elle peut ouvrir un tout petit peu les yeux."); await pause(2200, 400); }
   await speak(step.vocal1); await pause(1200, 350); await speak(step.vocal2);
 
+  if (g !== OL.gen) return;
   const res = {}, wolfPicks = {}, wolfAsks = [];
   const asks = actors.map(p => {
     let spec, handler = null;
@@ -6124,6 +6189,7 @@ OL.nightStep = async function (step, rKey, humansWithRole, petiteFille) {
     }
   }
 
+  if (g !== OL.gen) return;
   showScreen('night-auto-screen');
   if (step.id === 'cupid' && state.lovers.length === 2) {
     state.lovers.forEach(id => {
@@ -6143,6 +6209,7 @@ OL.nightStep = async function (step, rKey, humansWithRole, petiteFille) {
 
 /* ---------- le vote, côté hôte ---------- */
 OL.doVote = async function () {
+  const g = OL.gen;
   playBell(); settleBotVotes();
   const humans = players.filter(p => p.alive && !p.isBot), aliveList = players.filter(p => p.alive);
   let done = 0; const votes = {};
@@ -6154,6 +6221,7 @@ OL.doVote = async function () {
     .then(r => { if (r && r.id && aliveList.some(x => x.id === r.id && x.id !== p.id)) votes[p.id] = r.id; done++; OL.statusAll(prog()); }));
   await Promise.all(asks);
 
+  if (g !== OL.gen) return;
   state.dayVotes = state.dayVotes || {}; state.lastAcc = state.lastAcc || {}; state.statCast = state.statCast || {}; state.statReceived = state.statReceived || {};
   humans.forEach(p => { const v = votes[p.id]; if (!v) return; state.dayVotes[p.id] = v; state.lastAcc[p.id] = v; state.statCast[p.id] = (state.statCast[p.id] || 0) + 1; state.statReceived[v] = (state.statReceived[v] || 0) + 1; });
   const { t: tl, by } = tallyVotes();
@@ -6171,11 +6239,13 @@ OL.hunterStatus = function (p) {
   OL.statusAll(`<div class="story-box" style="text-align:center;">${oesc(olt('hunterWait', { name: p.name }))}</div>`, p.local ? [OL.myId] : (p.remote ? [p.remote] : []));
 };
 OL.hunterAsk = async function (p) {
+  const g = OL.gen;
   const R = isFamily ? R_FAM : R_STD;
   resetAudio();
   speak("Attendez. " + p.name + " a été " + TXT.vocabVote + " mais c'était le " + R['chasseur'][1] + ". Il doit choisir qui " + TXT.vocabHunter + " avec lui.");
   const alive = players.filter(x => x.alive);
   const r = await OL.ask(p, { kind: 'hunter', targets: alive.map(x => ({ id: x.id, name: x.name })) }, null, 45000);
+  if (g !== OL.gen) return;
   let id = r && r.id; if (!id || !alive.some(x => x.id === id)) id = alive[Math.floor(Math.random() * alive.length)].id;
   performHunter(id);
 };
@@ -6193,7 +6263,7 @@ OL.takeover = function (peerId) {
 OL.finishGame = function () { OL.ingame = false; OL.alive = true; OL.alivePeers = null; OL.setPhase('free'); Object.values(OL.graceTimers).forEach(clearTimeout); OL.graceTimers = {}; OL.pushLobby(); };
 OL.backToLobby = function () {
   if (!OL.isHost) return OL.clientBackToLobby();
-  OL.send('all', 'lobby-return', {});
+  OL.send('all', 'lobby-return', {}); OL.abortGame();
   OL.ingame = false; OL.clientInGame = false; OL.resetEngine();
   g$('end-cta').innerHTML = '<button class="btn btn-secondary" onclick="openHistory()">📜 Historique des parties</button><button class="btn" onclick="reloadToMenu()">🔄 Rejouer une Partie</button>';
   OL.pushLobby(); showScreen('ol-lobby-screen');
@@ -6224,7 +6294,7 @@ const olHostGame = () => OL.on && OL.isHost && OL.ingame;
       g$('day-bots-btn').style.display = players.some(p => p.isBot && p.alive) ? '' : 'none';
       const alive = {}, alivePeers = {};
       players.forEach(p => { alive[p.id] = p.alive; if (p.remote) alivePeers[p.remote] = p.alive; else if (p.local) alivePeers[OL.myId] = p.alive; });
-      OL.send('all', 'pub', { html: g$('day-content').innerHTML, alive, alivePeers }); // lu avant toute traduction locale
+      const pub = { html: g$('day-content').innerHTML, alive, alivePeers }; OL.lastPub = pub; OL.send('all', 'pub', pub);
       OL.applyAlive(alive, alivePeers); OL.chatReset();
     }
     return r;
@@ -6251,6 +6321,294 @@ window.addEventListener('load', () => {
   OL.applyLang(); OL.initSupabase();
   if (OL.pendingRoom && !g$('landing-screen').classList.contains('active')) { OL.openMenu(); g$('ol-code-input').value = OL.pendingRoom; OL.pendingRoom = null; }
 });
+
+/* ================================================================
+   EXTRAS (repris de onlinegame) : recommencer en partie, transfert d'hôte, reprise de place,
+   pause, réactions, menu ☰, vignettes agrandissables, réseau lent, même pièce, écran allumé,
+   ambiances VIP, mot de passe du compte
+   ================================================================ */
+// Ambiances réservées aux VIP quand on est dans un salon (modifiable). Les 6 premières restent gratuites.
+const OL_FREE_VIBES = ['basic', 'blackpepper', 'coconut', 'strawberry', 'bubblegum', 'blueberry'];
+const OL_REACTIONS = ['👍', '😂', '😱', '🤔', '👏', '🔥', '😈', '🐺'];
+Object.assign(OL, { gen: 0, roomCap: 0, paused: false, resumeWaiters: [], sameRoom: new Set(), sameOverride: {}, spot: null, lastPub: null, accountPassword: null, pwVisible: false, hostGrace: null, lastReact: 0 });
+OL.soundOn = true; try { OL.soundOn = localStorage.getItem('wolf-ol-sound') !== 'off'; } catch (e) {}
+const olRoomVip = () => olIsVip() || OL.roomCap > OL_FREE_MAX;
+
+/* ---------- abandon de partie / recommencer ---------- */
+OL.abortGame = function () {
+  OL.gen++; OL.ingame = false; OL.clientInGame = false;
+  Object.values(OL.graceTimers).forEach(clearTimeout); OL.graceTimers = {};
+  OL.paused = false; OL.resetEngine();
+};
+OL.restart = function () {
+  if (!OL.isHost || !(OL.ingame || OL.clientInGame)) return;
+  customConfirm(olt('restartConfirm'), () => OL.backToLobby('restart'));
+};
+
+/* ---------- l'hôte est parti : transfert ---------- */
+OL.hostLost = function () {
+  clearTimeout(OL.hostGrace); olToast(olt('hostLostWait'));
+  OL.hostGrace = setTimeout(() => OL.electHost(), 8000);
+};
+OL.electHost = async function () {
+  OL.hostGrace = null; if (!OL.ch) return;
+  OL.readPresence();
+  const old = OL.hostId;
+  const cands = Object.values(OL.peers).filter(p => p.id !== old).sort((a, b) => a.joinedAt - b.joinedAt || (a.id < b.id ? -1 : 1));
+  if (!cands.length) return OL.hostGone();
+  const next = cands[0];
+  const prevCap = (OL.lobby && OL.lobby.cap) || OL_FREE_MAX;
+  OL.roomCap = Math.max(OL.roomCap, prevCap);
+  OL.abortGame(); OL.paused = false;
+  if (next.id === OL.myId) {
+    OL.isHost = true; OL.hostId = OL.myId; OL.rejected = new Set();
+    OL.cfg = Object.assign({ family: false, roles: { voyante: true }, bots: 0 }, (OL.lobby && OL.lobby.cfg) || {});
+    try { await OL.ch.track({ id: OL.myId, name: OL.myName, joinedAt: OL.joinedAt, host: true }); } catch (e) {}
+    OL.pushLobby(); showScreen('ol-lobby-screen'); olToast(olt('youAreHost'));
+  } else {
+    OL.hostId = next.id; OL.renderLobby(); showScreen('ol-lobby-screen'); olToast(olt('hostChanged', { name: next.name }));
+  }
+};
+
+/* ---------- reprise de sa place après une coupure ---------- */
+OL.tryReclaim = function (pres) {
+  if (typeof players === 'undefined' || !players.length) return false;
+  if (players.some(x => x.remote === pres.id)) return true;
+  const nm = String(pres.name || '').trim().toLowerCase();
+  const x = players.find(q => !q.local && q.name.toLowerCase() === nm && (q.left || (q.remote && !OL.peers[q.remote])));
+  if (!x) return false;
+  const old = x.remote;
+  if (old) { clearTimeout(OL.graceTimers[old]); delete OL.graceTimers[old]; OL.rtcClose(old); }
+  x.isBot = false; delete x.left; x.remote = pres.id;
+  OL.send(pres.id, 'rejoin', {
+    family: isFamily, you: x.id, role: x.role, phase: OL.phase, pub: OL.lastPub, paused: OL.paused,
+    mates: x.role === 'loup' ? players.filter(q => q.role === 'loup' && q.id !== x.id).map(q => q.name) : []
+  });
+  Object.keys(OL.pending).forEach(rid => { const e = OL.pending[rid]; if (e.p === x && e.spec) OL.send(pres.id, 'prompt', { rid: +rid, spec: e.spec }); });
+  OL.send('all', 'toast', { k: 'rejoined', name: x.name }); olToast(olt('rejoined', { name: x.name }));
+  return true;
+};
+OL.onRejoin = function (d) {
+  OL.startClient({ family: d.family, you: d.you });
+  OL.setPhase(d.phase || 'free');
+  if (d.pub) { g$('day-content').innerHTML = d.pub.html; g$('day-cta').style.display = 'none'; OL.applyAlive(d.pub.alive, d.pub.alivePeers); }
+  OL.paused = !!d.paused; OL.applyPause();
+  OL.lastScreen = d.phase === 'night' ? 'night-auto-screen' : (d.pub ? 'day-screen' : 'ol-status-screen');
+  if (d.phase === 'night') OL.clientScreen('night-auto-screen'); else if (d.pub) OL.clientScreen('day-screen');
+};
+
+/* ---------- pause ---------- */
+OL.gate = () => OL.paused ? new Promise(r => OL.resumeWaiters.push(r)) : Promise.resolve();
+OL.togglePause = function () { if (!OL.isHost || !OL.ingame) return; OL.setPause(!OL.paused); };
+OL.setPause = function (on) { OL.paused = !!on; OL.send('all', 'pause', { on: OL.paused }); OL.applyPause(); };
+OL.applyPause = function () {
+  const o = g$('ol-pause'); if (o) o.style.display = OL.paused ? 'flex' : 'none';
+  const rb = g$('ol-pause-resume'); if (rb) rb.style.display = OL.isHost ? '' : 'none';
+  const sub = g$('ol-pause-sub'); if (sub) sub.textContent = olt('pauseSub');
+  const tt = g$('ol-pause-title'); if (tt) tt.textContent = olt('pauseTitle');
+  if (rb) rb.textContent = olt('hmResume');
+  try { OL.paused ? speechSynthesis.pause() : speechSynthesis.resume(); } catch (e) {}
+  Object.values(OL.pending).forEach(e => { if (OL.paused) clearTimeout(e.tm); else if (e.arm) e.arm(); });
+  if (!OL.paused) { const w = OL.resumeWaiters; OL.resumeWaiters = []; w.forEach(f => f()); }
+};
+
+/* ---------- réactions ---------- */
+OL.toggleReact = function () { const p = g$('ol-react-pop'); p.style.display = p.style.display === 'flex' ? 'none' : 'flex'; };
+OL.react = function (e) {
+  if (!OL.canTalk() || !OL_REACTIONS.includes(e)) return;
+  const now = Date.now(); if (now - OL.lastReact < 350) return; OL.lastReact = now;
+  OL.showReaction(OL.myId, e); OL.send('all', 'react', { e });
+};
+OL.onReact = function (from, e) {
+  if (!OL_REACTIONS.includes(e) || OL.phase === 'night') return;
+  if (OL.alivePeers && OL.alivePeers[from] === false) return;
+  OL.showReaction(from, e);
+};
+OL.showReaction = function (id, e) {
+  const layer = g$('ol-react-layer'); if (!layer) return;
+  const el = document.createElement('div'); el.className = 'ol-react';
+  el.innerHTML = `<span>${e}</span><small>${oesc(OL.nameOf(id))}</small>`;
+  el.style.left = (10 + Math.random() * 75) + '%'; layer.appendChild(el);
+  setTimeout(() => el.remove(), 2600);
+};
+
+/* ---------- vignettes : agrandir / taille adaptée ---------- */
+OL.setSpot = function (id) { OL.spot = OL.spot === id ? null : id; OL.applySpot(); };
+OL.applySpot = function () {
+  document.querySelectorAll('.ol-tile').forEach(t => t.classList.toggle('spot', OL.spot && t.id === 'tile-' + OL.spot));
+  const bar = g$('ol-rtc'); if (bar) bar.classList.toggle('has-spot', !!OL.spot);
+};
+OL.updateTileSize = function () {
+  const n = document.querySelectorAll('.ol-tile').length;
+  const px = n <= 3 ? 108 : n <= 6 ? 84 : 66;
+  const w = g$('ol-tiles'); if (w) w.style.setProperty('--tile', px + 'px');
+};
+
+/* ---------- réseau lent ---------- */
+OL.checkNetwork = function () {
+  const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection; if (!c) return;
+  const slow = c.saveData || ['slow-2g', '2g'].includes(c.effectiveType);
+  const hasCam = OL.stream && OL.stream.getVideoTracks().length && OL.camPref;
+  const b = g$('ol-net-banner'); if (!b) return;
+  if (slow && hasCam && !OL.netShown) { OL.netShown = true; g$('ol-net-text').textContent = olt('netSlow'); g$('ol-net-cam').textContent = olt('netCamOff'); b.style.display = 'flex'; }
+};
+try { const c = navigator.connection; if (c && c.addEventListener) c.addEventListener('change', () => { if (OL.on) OL.checkNetwork(); }); } catch (e) {}
+
+/* ---------- écran allumé : repli pour les navigateurs sans Wake Lock (iPhone) ---------- */
+OL.startNoSleep = function () {
+  if (!OL.noSleepVideo) {
+    const v = document.createElement('video'); v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', ''); v.muted = true; v.loop = true;
+    v.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;'; v.src = OL_NOSLEEP_SRC; document.body.appendChild(v); OL.noSleepVideo = v;
+  }
+  OL.noSleepVideo.play().catch(() => {});
+};
+OL.stopNoSleep = function () { if (OL.noSleepVideo) OL.noSleepVideo.pause(); };
+
+/* ---------- joueurs dans la même pièce : balises ultrasonores (comme onlinegame) ---------- */
+const OLB = { MIN: 18500, STEP: 45, SLOTS: 20, FFT: 16384, DB: -65, CONFIRM: 2, RELEASE: 5, TICK: 250 };
+OL.beaconFreq = id => { let h = 0; for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0; return OLB.MIN + (h % OLB.SLOTS) * OLB.STEP; };
+OL.startBeacons = function () {
+  if (OL.beaconOn || !OL.stream || !OL.stream.getAudioTracks().length) return; OL.beaconOn = true;
+  try {
+    OL.bEmit = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = OL.bEmit.createOscillator(), gain = OL.bEmit.createGain();
+    osc.type = 'sine'; osc.frequency.value = OL.beaconFreq(OL.myId); gain.gain.value = 0.09; osc.connect(gain); gain.connect(OL.bEmit.destination); osc.start(); OL.bOsc = osc;
+  } catch (e) {}
+  (async () => {
+    try {
+      OL.bRaw = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+      OL.bCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const src = OL.bCtx.createMediaStreamSource(OL.bRaw); OL.bAn = OL.bCtx.createAnalyser(); OL.bAn.fftSize = OLB.FFT; OL.bAn.smoothingTimeConstant = 0.2; src.connect(OL.bAn);
+      OL.bHit = {}; OL.bMiss = {}; OL.bTimer = setInterval(OL.beaconTick, OLB.TICK);
+    } catch (e) {}
+  })();
+};
+OL.stopBeacons = function () {
+  OL.beaconOn = false;
+  try { if (OL.bOsc) OL.bOsc.stop(); } catch (e) {} try { if (OL.bEmit) OL.bEmit.close(); } catch (e) {} OL.bOsc = null; OL.bEmit = null;
+  clearInterval(OL.bTimer); OL.bTimer = null;
+  try { if (OL.bRaw) OL.bRaw.getTracks().forEach(t => t.stop()); } catch (e) {} OL.bRaw = null;
+  try { if (OL.bCtx) OL.bCtx.close(); } catch (e) {} OL.bCtx = null; OL.bAn = null;
+  OL.sameRoom = new Set();
+};
+OL.beaconTick = function () {
+  if (!OL.bAn) return;
+  const data = new Float32Array(OL.bAn.frequencyBinCount); OL.bAn.getFloatFrequencyData(data);
+  const bin = OL.bCtx.sampleRate / OL.bAn.fftSize;
+  Object.keys(OL.pcs).forEach(id => {
+    if (Date.now() < (OL.sameOverride[id] || 0)) return;
+    const c = Math.round(OL.beaconFreq(id) / bin); let mx = -Infinity;
+    for (let b = c - 2; b <= c + 2; b++) if (data[b] !== undefined) mx = Math.max(mx, data[b]);
+    if (mx > OLB.DB) { OL.bHit[id] = (OL.bHit[id] || 0) + 1; OL.bMiss[id] = 0; if (OL.bHit[id] >= OLB.CONFIRM) OL.setSameRoom(id, true); }
+    else { OL.bMiss[id] = (OL.bMiss[id] || 0) + 1; OL.bHit[id] = 0; if (OL.bMiss[id] >= OLB.RELEASE) OL.setSameRoom(id, false); }
+  });
+};
+OL.setSameRoom = function (id, mute) {
+  if (OL.sameRoom.has(id) === mute) return;
+  if (mute) OL.sameRoom.add(id); else OL.sameRoom.delete(id);
+  OL.styleTile(id);
+};
+OL.toggleSameRoom = function (id) { OL.sameOverride[id] = Date.now() + 15000; OL.setSameRoom(id, !OL.sameRoom.has(id)); };
+
+OL.netDismiss = function (cam) { g$('ol-net-banner').style.display = 'none'; if (cam && OL.camPref) OL.toggleCam(); };
+/* ---------- compte, langue, son ---------- */
+OL.togglePw = function () { OL.pwVisible = !OL.pwVisible; OL.renderHMenu(); };
+OL.toggleSound = function () {
+  OL.soundOn = !OL.soundOn; try { localStorage.setItem('wolf-ol-sound', OL.soundOn ? 'on' : 'off'); } catch (e) {}
+  try { if (audioCtx) { OL.soundOn ? audioCtx.resume() : audioCtx.suspend(); } } catch (e) {}
+  OL.renderHMenu();
+};
+OL.toggleHaptic = function () { hapticOn = !hapticOn; try { localStorage.setItem('lndl-haptic', hapticOn ? 'on' : 'off'); } catch (e) {} OL.renderHMenu(); };
+OL.setLang = function (code) {
+  if (!LND_I18N[code]) return;
+  currentLang = landingLang = code; langChosen = true;
+  try { localStorage.setItem(LND_LANG_KEY, code); } catch (e) {}
+  try { applyLandingLang(); } catch (e) {} try { applyGameLang(); } catch (e) {}
+  OL.applyLang(); if (OL.cur) OL.renderCur(); OL.renderHMenu();
+};
+(function () {
+  try { const sp = SpeechSynthesis.prototype.speak; SpeechSynthesis.prototype.speak = function (u) { if (OL.on && !OL.soundOn) u.volume = 0; return sp.call(this, u); }; } catch (e) {}
+  setInterval(() => { try { if (OL.on && !OL.soundOn && audioCtx && audioCtx.state === 'running') audioCtx.suspend(); } catch (e) {} }, 600);
+})();
+
+/* ---------- menu ☰ ---------- */
+OL.openHMenu = function () { OL.renderHMenu(); g$('ol-hmenu').classList.add('open'); };
+OL.closeHMenu = function () { g$('ol-hmenu').classList.remove('open'); };
+OL.hm = function (fn) { OL.closeHMenu(); setTimeout(fn, 0); };
+OL.renderHMenu = function () {
+  const logged = olIsLoggedIn(), inGame = !!(OL.ingame || OL.clientInGame), host = OL.isHost;
+  const row = (label, state, click, extra) => `<button class="ol-hm-item${extra || ''}" onclick="${click}"><span>${label}</span>${state ? `<b>${state}</b>` : ''}</button>`;
+  const onoff = v => oesc(v ? olt('hmOn') : olt('hmOff'));
+  let h = `<div class="ol-hm-profile"><div style="font-weight:900;">👤 ${oesc(logged ? (OL.authSession.user.email || '') : olt('notLogged'))}</div><div class="ol-hm-vip${olIsVip() ? ' on' : ''}">${oesc(olIsVip() ? olt('vipPlanLine') : olt('free'))}</div>`;
+  if (logged) {
+    const pw = OL.accountPassword ? (OL.pwVisible ? oesc(OL.accountPassword) : '•'.repeat(Math.max(8, OL.accountPassword.length))) : oesc(olt('hmPwHidden'));
+    h += `<div class="ol-hm-pw"><span>${oesc(olt('hmPassword'))} : <code>${pw}</code></span>${OL.accountPassword ? `<button onclick="OL.togglePw()">👁️</button>` : ''}</div>`;
+  }
+  h += `</div>`;
+  h += row(oesc(olt('hmSound')), onoff(OL.soundOn), 'OL.toggleSound()');
+  h += row(oesc(olt('hmVibration')), onoff(hapticOn), 'OL.toggleHaptic()');
+  h += `<div class="ol-hm-langs"><span>${oesc(olt('hmLang'))}</span>` + [['fr', 'FR'], ['en', 'EN'], ['es', 'ES'], ['zh', '中文']].map(([c, l]) => `<button class="${currentLang === c ? 'on' : ''}" onclick="OL.setLang('${c}')">${l}</button>`).join('') + `</div>`;
+  h += row(oesc(olt('hmVibes')), '', 'OL.hm(openVibeModal)');
+  h += row(oesc(olt('hmRules')), '', 'OL.hm(toggleRules)');
+  h += row(oesc(olt('hmLegal')), '', 'OL.hm(openLegal)');
+  h += row(oesc(olt('hmVip')), '', 'OL.hm(()=>OL.openVip())');
+  let standalone = false; try { standalone = isStandalone(); } catch (e) {}
+  if (!standalone) h += row(oesc(olt('hmInstall')), '', 'OL.hm(installApp)');
+  if (host && inGame) {
+    h += `<div class="ol-hm-sep"></div>`;
+    h += row(oesc(OL.paused ? olt('hmResume') : olt('hmPause')), '', 'OL.hm(OL.togglePause)');
+    h += row(oesc(olt('hmRestart')), '', 'OL.hm(OL.restart)');
+  }
+  h += `<div class="ol-hm-sep"></div>` + row(oesc(olt('hmLeave')), '', 'OL.hm(OL.confirmLeave)', ' danger');
+  g$('ol-hm-body').innerHTML = h;
+  g$('ol-hm-title').textContent = olt('menuBtn');
+};
+
+/* ---------- ambiances VIP dans un salon ---------- */
+(function () {
+  const oa = window.applyVibe;
+  window.applyVibe = function (key, persist) {
+    if (OL.on && persist && !OL_FREE_VIBES.includes(key) && key && !olIsVip()) { OL.openVip(olt('vipVibe')); return; }
+    return oa.apply(this, arguments);
+  };
+  const orv = window.renderVibeGrid;
+  window.renderVibeGrid = function () {
+    orv.apply(this, arguments);
+    if (!OL.on || olIsVip()) return;
+    document.querySelectorAll('#vibe-grid .vibe-swatch').forEach(sw => {
+      const m = (sw.getAttribute('onclick') || '').match(/applyVibe\('(\w+)'/);
+      if (m && !OL_FREE_VIBES.includes(m[1])) { const n = sw.querySelector('.vibe-swatch-name'); if (n && !n.dataset.lock) { n.dataset.lock = 1; n.textContent = '🔒 ' + n.textContent; } }
+    });
+  };
+})();
+
+/* ---------- en-tête : menu ☰ à la place des boutons ambiance / maison dans un salon ---------- */
+(function () {
+  // pause : l'hôte gèle aussi le déroulé (attentes, voix) tant que la partie est en pause
+  ['wait', 'pause', 'speak'].forEach(n => {
+    try {
+      const o = window[n]; if (typeof o !== 'function') return;
+      window[n] = function () {
+        const a = arguments, t = this;
+        if (!(OL.on && OL.isHost)) return o.apply(t, a);
+        if (OL.paused) return OL.gate().then(() => o.apply(t, a));
+        const r = o.apply(t, a);
+        return (r && r.then) ? r.then(v => OL.paused ? OL.gate().then(() => v) : v) : r;
+      };
+    } catch (e) {}
+  });
+  // en-tête : menu ☰ à la place des boutons ambiance / maison quand on est dans un salon
+  const ss = window.showScreen;
+  window.showScreen = function (id) {
+    const r = ss.apply(this, arguments);
+    try {
+      const on = !!OL.on;
+      g$('ol-menu-btn').style.display = on ? '' : 'none';
+      document.querySelectorAll('.app-header .grimoire-link').forEach(b => { const oc = b.getAttribute('onclick') || ''; if (/openVibeModal|goHome/.test(oc)) b.style.display = on ? 'none' : ''; });
+    } catch (e) {}
+    return r;
+  };
+})();
 
 </script>
 </body>
