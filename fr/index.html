@@ -97,6 +97,69 @@ footer{width:100%;max-width:1040px;background:rgba(255,255,255,.85);border:1px s
 .burger{display:block}.links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,.97);padding:16px;flex-direction:column;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.1)}.links.open{display:flex}
 .fb{flex-direction:column;text-align:center}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+
+html{scroll-padding-top:120px}
+body{padding:calc(10px + env(safe-area-inset-top,0px)) 12px 96px}
+main,header,footer{max-width:1120px}
+header{top:8px;margin-bottom:20px}
+.nav{padding:8px 10px 8px 18px}
+.burger{display:none}
+.navcta{width:auto;padding:10px 20px;font-size:.9rem;min-height:44px}
+.toc{display:flex;gap:8px;overflow-x:auto;margin-top:8px;padding:2px 2px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.toc::-webkit-scrollbar{display:none}
+.toc a{flex:none;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:50px;padding:0 16px;min-height:44px;display:inline-flex;align-items:center;color:var(--txt);text-decoration:none;font-size:.86rem;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.05)}
+.toc a.on,.links a.on{background:var(--txt);color:#fff}
+[id]{scroll-margin-top:120px}
+h1{font-size:clamp(1.7rem,4.6vw,2.9rem)}
+h2{font-size:clamp(1.4rem,3.2vw,1.9rem)}
+main{gap:clamp(24px,4vw,48px)}
+.sec{padding:clamp(22px,4vw,44px) clamp(18px,4vw,40px)}
+.trust{list-style:none;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.trust li{background:#fff;border:1px solid var(--bd);border-radius:50px;padding:7px 14px;font-size:.82rem;font-weight:700;color:var(--txt)}
+.trust li::before{content:'✓ ';color:#16a34a}
+.btn{min-height:52px;align-items:center}
+.games{gap:clamp(16px,3vw,28px)}
+.game{padding:clamp(24px,4vw,40px) clamp(18px,3vw,32px)}
+.grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.more,.legal-wrap{margin-top:14px;border:1px solid var(--bd);border-radius:var(--r-md);background:rgba(255,255,255,.55)}
+.night .more{border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.04)}
+.more>summary,.legal-wrap>summary{cursor:pointer;list-style:none;padding:0 20px;min-height:56px;font-weight:800;display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--primary)}
+.night .more>summary{color:var(--gold)}
+.legal-wrap{margin-top:0;border-radius:var(--r-lg)}.legal-wrap>summary{color:var(--txt)}
+.more>summary::-webkit-details-marker,.legal-wrap>summary::-webkit-details-marker{display:none}
+.more>summary::after,.legal-wrap>summary::after{content:'▾';transition:transform .3s}
+.more[open]>summary::after,.legal-wrap[open]>summary::after{transform:rotate(180deg)}
+.more-b{padding:0 20px 16px}
+.legal-wrap #legal{padding:4px 22px 22px}
+.section-card{background:transparent}
+.section-header-wrap{display:flex;align-items:center;gap:10px;margin-bottom:10px}.section-header-wrap h2{margin:0;font-size:1.2rem}
+.gradient-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#1e1b4b}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--bd);border-radius:var(--r-lg);padding:clamp(18px,3vw,28px);box-shadow:0 10px 40px rgba(0,0,0,.03)}
+.stat{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}.stat strong{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;line-height:1.1}.stat span{font-size:.85rem;color:var(--mut);font-weight:600}
+@media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr);row-gap:18px}}
+.logos{list-style:none;display:flex;flex-wrap:wrap;gap:12px;justify-content:center}.logos li{font-weight:900;font-size:1.2rem;color:var(--mut);padding:10px 20px;border:1px solid var(--bd);border-radius:16px;background:#fff}
+.dock{display:none}
+.links,.navcta{display:none}
+@media(min-width:1000px){.links{left:auto;right:0;width:340px}.navcta{display:inline-flex}[id]{scroll-margin-top:96px}html{scroll-padding-top:96px}body{padding-bottom:24px}}
+@media(max-width:859px){.games{grid-template-columns:1fr}
+.dock{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:900;display:flex;gap:8px;padding:8px;background:rgba(255,255,255,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--bd);border-radius:50px;box-shadow:0 10px 30px rgba(0,0,0,.18);transform:translateY(150%);transition:transform .35s}
+.dock.show{transform:none}.dock .btn{flex:1;max-width:none;padding:0 8px;font-size:.95rem;min-height:48px}}
+@media(min-width:1000px){body{padding-bottom:24px}.dock{display:none}}
+@media all{.burger{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.05);color:var(--txt);padding:0}
+.nav{position:relative}
+.links{position:absolute;top:calc(100% + 8px);left:0;right:0;flex-direction:column;gap:2px;padding:10px;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--bd);border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,.15)}
+.links.open{display:flex}
+.links a{display:flex;align-items:center;min-height:50px;padding:0 16px;font-size:1rem;border-radius:16px}}
+.dock .btn{text-align:center;justify-content:center;line-height:1.15;white-space:normal;font-size:.9rem}
+header{margin-bottom:clamp(28px,6vw,64px)}
+.hero{padding-top:clamp(8px,3vw,32px);gap:clamp(20px,3.2vw,32px)}
+.hero h1{max-width:22ch;margin:0 auto;line-height:1.2}
+.hero>p{margin:0 auto}
+.trust{gap:10px;margin:2px 0 6px}
+.games{margin-top:clamp(12px,3vw,32px);gap:clamp(20px,3.5vw,32px)}
+.game{gap:16px}.game .ico{margin-bottom:4px}.modes{gap:12px;margin-top:14px}
+.stats{margin-top:clamp(0px,1vw,8px)}
+.legal-wrap #legal .section-header-wrap>span{display:none}
 </style>
 </head>
 <body>
@@ -104,20 +167,25 @@ footer{width:100%;max-width:1040px;background:rgba(255,255,255,.85);border:1px s
 <header><nav class="nav" aria-label="Navigation principale">
 <a href="/fr/" class="logo" aria-label="Whoops! Accueil">Whoops!</a>
 <div class="nav-r"><ul class="links" id="nav-menu">
-<li><a href="#whoops">🎯 Whoops!</a></li><li><a href="#loups">🐺 La Nuit des Loups</a></li><li><a href="#occasions">🎉 Occasions</a></li><li><a href="#faq">❓ FAQ</a></li><li><a href="#legal">⚖️ Mentions</a></li></ul>
+<li><a href="#whoops">🎯 Whoops!</a></li><li><a href="#regles">📖 Règles</a></li><li><a href="#loups">🐺 La Nuit des Loups</a></li><li><a href="#occasions">🎉 Occasions</a></li><li><a href="#faq">❓ FAQ</a></li><li><a href="#legal">⚖️ Mentions</a></li></ul>
 <select class="lang" aria-label="Choisir la langue" onchange="window.location.href=this.value"><option value="/">🇬🇧 EN</option><option value="/fr/" selected>🇫🇷 FR</option><option value="/es/">🇪🇸 ES</option><option value="/zh/">🇨🇳 ZH</option></select>
-<button class="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-menu" onclick="var m=document.getElementById('nav-menu');var o=m.classList.toggle('open');this.setAttribute('aria-expanded',o)">☰</button></div></nav></header>
+<a class="btn navcta" href="#jeux">▶ Jouer</a>
+<button class="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-menu"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg></button></div></nav></header></header>
 <main>
 <section id="jeux" class="hero" aria-labelledby="h1">
 <h1 class="gt" id="h1">Jeux de soirée gratuits sur téléphone : devinettes et Loup-Garou en ligne</h1>
 <p class="slogan">Deux jeux, quatre façons de jouer, zéro pub.</p>
 <p>Whoops! réunit un party game de devinettes et un Loup-Garou en ligne avec bots intelligents. Choisissez votre jeu, puis votre mode : <strong>local</strong> autour d'un seul téléphone ou <strong>en ligne</strong> en visio, sans installation ni compte.</p>
+<ul class="trust"><li>100 % gratuit</li><li>Zéro publicité</li><li>Sans application ni compte</li><li>Local ou en visio</li></ul>
 <div class="games">
 <article class="game w"><span class="ico">🎯</span><h2 class="gt">Whoops!</h2><p>Le jeu de devinettes en 3 manches. Décrivez, donnez un mot, mimez : le même paquet revient trois fois, les fous rires aussi.</p>
 <div class="modes"><a class="btn pulse" href="https://www.playwhoops.com/localgame/">📱 Jouer en local</a><a class="btn blue" href="https://www.playwhoops.com/onlinegame/">🎥 Jouer en ligne (visio)</a></div></article>
 <article class="game l"><span class="ico">🐺</span><h2>La Nuit des Loups</h2><p>Le Loup-Garou version Whoops! Rôles secrets, maître du jeu vocal, bots intelligents et mode Famille avec les doudous.</p>
 <div class="modes"><a class="btn gold" href="https://www.playwhoops.com/wolf/">🌙 Jouer en local</a><a class="btn vio" href="https://www.playwhoops.com/wolfonline/">🎥 Jouer en ligne (visio)</a></div></article>
 </div></section>
+<section class="stats" aria-label="Whoops! en chiffres"><div class="stat"><strong class="gt">12 M+</strong><span>joueurs ont déjà joué à Whoops!</span></div><div class="stat"><strong class="gt">2</strong><span>jeux et 4 façons de jouer</span></div><div class="stat"><strong class="gt">4</strong><span>langues : FR, EN, ES, ZH</span></div><div class="stat"><strong class="gt">25+</strong><span>thèmes de cartes</span></div></section><!-- PARTENAIRES : décommentez et remplacez par vos vrais partenaires (noms ou logos autorisés)
+<section class="sec partners" aria-labelledby="h-pt"><h2 class="gt" id="h-pt">Ils jouent avec nous</h2><ul class="logos"><li>Partenaire 1</li><li>Partenaire 2</li><li>Partenaire 3</li></ul></section>
+-->
 <section id="whoops" class="sec w-sec" aria-labelledby="h-w">
 <h2 class="gt" id="h-w">Whoops! : le party game de devinettes à jouer entre amis</h2><p>Whoops! est un jeu de devinettes par équipes, inspiré des grands classiques des soirées jeux, mais entièrement numérique. Plus de boîte à transporter, plus de cartes à mélanger, plus de sablier introuvable : un navigateur suffit. Vous formez deux équipes ou plus, choisissez un thème, réglez le minuteur et lancez la partie.</p>
 <h3 class="gt">Le principe : un seul paquet, trois manches</h3><p>Le secret de Whoops! tient dans la répétition. Les mêmes cartes reviennent à chaque manche, avec une contrainte de plus. Les mots que votre équipe a vus passer en première manche deviennent des réflexes en troisième, et le jeu gagne en vitesse comme en absurdité. C'est ce qui rend le jeu addictif : on veut toujours refaire « une dernière partie ».</p>
@@ -143,7 +211,7 @@ footer{width:100%;max-width:1040px;background:rgba(255,255,255,.85);border:1px s
 <section id="lexique" class="sec" aria-labelledby="h-x"><h2 class="gt" id="h-x">Lexique : party game, jeu d'ambiance, déduction sociale</h2><p>Les jeux de soirée sur téléphone portent des noms variés selon les habitudes de chacun. Voici les termes qui décrivent Whoops! et La Nuit des Loups, pour comprendre ce que vous allez jouer et le retrouver facilement.</p><h3 class="gt">Party game et jeu d'ambiance</h3><p>Un <strong>party game</strong>, ou jeu d'ambiance, est un jeu à règles simples, pensé pour être joué en groupe, avec des parties courtes qui privilégient le rire et l'interaction au calcul. Whoops! en est un exemple typique : on comprend les règles en une minute et on rejoue aussitôt.</p><h3 class="gt">Jeu de devinettes et jeu d'équipe</h3><p>Un <strong>jeu de devinettes</strong> demande de faire deviner des mots ou des personnages à ses coéquipiers dans un temps limité. Whoops! ajoute trois manches avec le même paquet, ce qui transforme la mémoire collective en mécanique de jeu.</p><h3 class="gt">Jeu de déduction sociale, bluff et jeu de rôle</h3><p>Un <strong>jeu de déduction sociale</strong> repose sur la parole : on cherche à repérer les menteurs en observant les comportements et les votes. Le Loup-Garou y ajoute un <strong>jeu de rôle</strong> léger, puisque chacun incarne un personnage secret, et le <strong>bluff</strong> est au cœur de la partie.</p><h3 class="gt">Jeu en ligne, jeu en visio et jeu à distance</h3><p>Un <strong>jeu en visio</strong> se joue à distance avec caméras et voix, comme si l'on était autour de la même table. Nos modes en ligne combinent salon privé, visio dans le navigateur et minuteurs synchronisés : c'est le <strong>Loup-Garou en ligne</strong> et le <strong>jeu de devinettes en ligne</strong> que beaucoup cherchent pour leurs soirées à distance.</p><h3 class="gt">Jeu gratuit, sans pub, sans application</h3><p>Nos jeux sont des <strong>jeux navigateur</strong> : ils s'ouvrent sur n'importe quel téléphone ou ordinateur, sans téléchargement ni compte, et sans publicité. Vous pouvez les ajouter à l'écran d'accueil pour les retrouver comme une application.</p></section>
 <section id="faq" class="sec" aria-labelledby="h-f"><h2 class="gt" id="h-f">Questions fréquentes</h2><details class="acc"><summary><h3>Comment jouer au Loup-Garou en ligne à distance ?</h3></summary><div class="acc-b"><p>Ouvrez La Nuit des Loups en ligne, créez un salon privé et partagez le code à vos amis. Chacun rejoint depuis son téléphone ou son ordinateur, la visio s&#x27;active dans le navigateur, puis le maître du jeu vocal rythme les nuits et les jours. Si vous manquez de joueurs, des bots complètent la table.</p></div></details><details class="acc"><summary><h3>Quels sont les meilleurs jeux de soirée sur téléphone ?</h3></summary><div class="acc-b"><p>Les meilleurs jeux de soirée sur téléphone se lancent en quelques secondes, sans compte ni installation, et se jouent à plusieurs. Whoops! (devinettes en 3 manches) et La Nuit des Loups (déduction sociale) répondent à ces critères : un seul téléphone suffit en mode local, et chacun joue sur le sien en mode en ligne.</p></div></details><details class="acc"><summary><h3>Faut-il télécharger une application ?</h3></summary><div class="acc-b"><p>Non. Les deux jeux fonctionnent directement dans le navigateur, sur iPhone, Android, Mac et PC. Vous pouvez ajouter Whoops! à l&#x27;écran d&#x27;accueil de votre téléphone pour y accéder en un geste, mais ce n&#x27;est jamais obligatoire.</p></div></details><details class="acc"><summary><h3>Whoops! est-il gratuit et sans publicité ?</h3></summary><div class="acc-b"><p>Oui, jouer est gratuit et vous ne verrez aucune publicité. Le projet vit grâce aux dons volontaires ; certaines options, comme le mode VIP pour les grandes tables en ligne, peuvent être payantes.</p></div></details><details class="acc"><summary><h3>Combien de joueurs faut-il pour La Nuit des Loups ?</h3></summary><div class="acc-b"><p>En mode local, vous pouvez même jouer seul : les bots occupent les autres places. En ligne, comptez de 4 à 16 joueurs, humains et bots confondus, les plus grandes tables étant proposées avec le mode VIP. Plus la table est grande, plus les rôles spéciaux prennent de la valeur.</p></div></details><details class="acc"><summary><h3>Peut-on jouer au Loup-Garou sans maître du jeu ?</h3></summary><div class="acc-b"><p>Oui. Le maître du jeu vocal, une voix de synthèse masculine ou féminine, annonce la nuit, réveille chaque rôle et proclame les résultats du matin. Personne n&#x27;a besoin de sacrifier sa partie pour animer, et personne ne triche en espionnant le narrateur.</p></div></details><details class="acc"><summary><h3>Le mode Famille convient-il aux enfants ?</h3></summary><div class="acc-b"><p>Oui. Le mode Famille remplace l&#x27;ambiance sombre par une histoire de doudous : les Loups Malins cachent les doudous, la Magicienne a des potions « Rend le doudou » et « Fait Dodo », et on se retrouve au coin au lieu d&#x27;être éliminé. Le vocabulaire est doux, le ton reste joueur.</p></div></details><details class="acc"><summary><h3>Quelle différence entre le mode local et le mode en ligne ?</h3></summary><div class="acc-b"><p>Le mode local se joue dans la même pièce, avec un seul téléphone qui circule. Le mode en ligne réunit des joueurs distants dans un salon avec caméras en direct, minuteurs synchronisés et rôles distribués en secret sur l&#x27;écran de chacun.</p></div></details><details class="acc"><summary><h3>Comment organiser un team building à distance avec un jeu en visio ?</h3></summary><div class="acc-b"><p>Lancez une room Whoops! en ligne pour un échauffement de 20 minutes, ou une partie de La Nuit des Loups pour un moment plus stratégique. Partagez le code dans votre messagerie d&#x27;équipe : aucune installation, aucun compte, et tout le monde se voit à l&#x27;écran.</p></div></details><details class="acc"><summary><h3>Les jeux existent-ils dans plusieurs langues ?</h3></summary><div class="acc-b"><p>Oui. Whoops! est proposé en français, anglais, espagnol et chinois, et La Nuit des Loups est traduit dans ces mêmes langues. Le sélecteur en haut de page vous renvoie vers la bonne version du site.</p></div></details><details class="acc"><summary><h3>Quelles sont les règles de Whoops! ?</h3></summary><div class="acc-b"><p>Whoops! se joue par équipes en trois manches avec le même paquet de cartes : description libre, un seul mot, puis mime. Chaque carte devinée rapporte un point, les cartes passées reviennent dans le paquet et l&#x27;équipe qui totalise le plus de points après les trois manches gagne. Le détail complet figure dans la section « Règles complètes de Whoops! » de cette page.</p></div></details><details class="acc"><summary><h3>Combien de temps dure une partie ?</h3></summary><div class="acc-b"><p>Une partie de Whoops! dure en général entre 20 et 40 minutes selon le minuteur et le nombre de cartes, et une version express tient en 10 à 15 minutes. Une partie de La Nuit des Loups dure le plus souvent de 15 à 45 minutes, et le mode « Loup-Garou pour une nuit » se joue en quelques minutes.</p></div></details><details class="acc"><summary><h3>Quel rôle choisir quand on débute au Loup-Garou ?</h3></summary><div class="acc-b"><p>Pour une première partie, jouez avec peu de rôles : Voyante et simples villageois suffisent. Ajoutez ensuite la Sorcière et le Chasseur, puis Cupidon, l&#x27;Ancien et la Petite Fille quand tout le monde a compris le rythme de la nuit. Le jeu propose une composition conseillée selon le nombre de joueurs.</p></div></details><details class="acc"><summary><h3>Faut-il Zoom, Teams ou Meet pour jouer en visio ?</h3></summary><div class="acc-b"><p>Non. La visio est intégrée au salon en ligne : vous partagez le code, chacun active sa caméra et son micro dans le navigateur, et vous jouez sans quitter la page. Aucun autre logiciel de réunion n&#x27;est nécessaire.</p></div></details><details class="acc"><summary><h3>Whoops! convient-il aux enfants ?</h3></summary><div class="acc-b"><p>Oui. Le pack enfants (dès 4 ans) propose des cartes simples, le minuteur est réglable et le mode Famille de La Nuit des Loups remplace l&#x27;élimination par une histoire de doudous. Les adultes jouent à égalité avec les plus jeunes.</p></div></details><details class="acc"><summary><h3>Comment gagner à Whoops! ?</h3></summary><div class="acc-b"><p>Mémorisez les cartes dès la première manche, choisissez en équipe un indice standard pour la manche à un mot, passez les cartes qui résistent et mimez en exagérant. Faire jouer tout le monde, y compris les plus timides, améliore aussi les résultats de l&#x27;équipe.</p></div></details></section>
 <section id="mission" class="sec" aria-labelledby="h-m"><h2 class="gt" id="h-m">Notre mission : rapprocher les gens, un jeu à la fois</h2><p>Dans un monde où les écrans isolent, Whoops! utilise le numérique pour créer des liens bien réels. Né d'une frustration simple, vouloir jouer à un bon jeu entre amis sans le matériel qui manque toujours, le projet a été créé de façon indépendante pour offrir une expérience rapide, universelle et sans publicité.</p><p style="margin-bottom:0">Si vous aimez le projet, vous pouvez le <a href="https://www.paypal.com/donate?hosted_button_id=2NGJSLT76DX2G" target="_blank" rel="noopener noreferrer">soutenir par un don</a> ; un mode VIP existe aussi pour les joueurs les plus fidèles.</p></section>
-<!-- SECTION MENTIONS LÉGALES & CGV -->
+<details class="legal-wrap" id="legal-box"><summary>⚖️ Mentions légales et conditions d'utilisation</summary><!-- SECTION MENTIONS LÉGALES & CGV -->
         <section id="legal" class="section-card">
             <div class="section-header-wrap">
                 <span style="font-size: 1.8rem;">⚖️</span>
@@ -152,7 +220,7 @@ footer{width:100%;max-width:1040px;background:rgba(255,255,255,.85);border:1px s
             <p style="font-size: 0.85rem; color: var(--text-muted); text-align: justify; line-height: 1.6; margin-bottom: 0;">
                 Publisher: Whoops! S.A.S | NIF 3004082242 | RCS 2020B00582 | STAT N° 70202 11 2020 0 10628. TERMS OF SERVICE & CONDITIONS (T&C): Access to and use of this site and game implies express, unconditional, and unreserved acceptance of these terms. The service is provided purely on an "AS IS" and "AS AVAILABLE" basis, without warranties of any kind, either express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement. Whoops! S.A.S explicitly disclaims all liability for any direct, indirect, incidental, consequential, special, or exemplary damages, including data loss or service disruption, arising out of your use or inability to use the service. We reserve the absolute and unilateral right to modify, suspend, limit, or terminate the service (including VIP modes) at our sole discretion, at any time, without notice and without any liability to you. Any disputes shall be subject to the exclusive jurisdiction of the courts where the publisher is registered.
             </p>
-        </section>
+        </section></details>
 </main>
 <footer><div class="ft">
 <div class="fc"><h2 class="fh">Whoops!</h2><p style="font-size:.9rem;margin:0">Jeux de soirée gratuits : devinettes et Loup-Garou, en local ou en visio.</p></div>
@@ -161,5 +229,14 @@ footer{width:100%;max-width:1040px;background:rgba(255,255,255,.85);border:1px s
 <div class="fc"><h2 class="fh">Le site</h2><ul><li><a href="#occasions">Occasions de jeu</a></li><li><a href="#faq">FAQ</a></li><li><a href="#legal">Mentions légales</a></li><li><a href="https://www.paypal.com/donate?hosted_button_id=2NGJSLT76DX2G" target="_blank" rel="noopener noreferrer">Soutenir le projet</a></li></ul></div>
 </div>
 <div class="fb"><div>© 2026 <strong>Whoops!</strong> Ultimate edition.</div><div>Hébergé sur <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a></div></div></footer>
+<nav class="dock" id="dock" aria-label="▶ Jouer"><a class="btn" href="#whoops">🎯 Whoops!</a><a class="btn gold" href="#loups">🐺 La Nuit des Loups</a></nav>
+<script>(function(){var d=document;function ol(){var l=d.getElementById('legal-box');if(l&&location.hash=='#legal')l.open=true}
+addEventListener('hashchange',ol);ol();
+d.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href="#legal"]');if(a){var l=d.getElementById('legal-box');if(l)l.open=true}});
+if(matchMedia('(min-width:1000px)').matches)d.querySelectorAll('details.more').forEach(function(x){x.open=true});
+var b=d.querySelector('.burger'),m=d.getElementById('nav-menu');if(b&&m){var cl=function(){m.classList.remove('open');b.setAttribute('aria-expanded','false')};b.addEventListener('click',function(e){e.stopPropagation();var o=m.classList.toggle('open');b.setAttribute('aria-expanded',o)});m.addEventListener('click',function(e){if(e.target.closest('a'))cl()});d.addEventListener('click',function(e){if(!m.contains(e.target))cl()});d.addEventListener('keydown',function(e){if(e.key=='Escape')cl()})}
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){d.querySelectorAll('.links a').forEach(function(a){a.classList.toggle('on',a.getAttribute('href')=='#'+e.target.id)})}})},{rootMargin:'-40% 0px -55% 0px'});
+d.querySelectorAll('.links a').forEach(function(a){var s=d.getElementById(a.getAttribute('href').slice(1));if(s)io.observe(s)});
+var h=d.getElementById('jeux'),k=d.getElementById('dock');if(h&&k)new IntersectionObserver(function(es){k.classList.toggle('show',!es[0].isIntersecting)}).observe(h)}})();</script>
 </body>
 </html>
